@@ -10,6 +10,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Hyperlink;
 import javafx.stage.Stage;
 import java.io.IOException;
 
@@ -20,10 +25,25 @@ import java.io.IOException;
 public class LoginController {
     
     @FXML
-    private Button adminButton;
+    private ToggleButton adminToggle;
     
     @FXML
-    private Button parentButton;
+    private ToggleButton parentToggle;
+
+    @FXML
+    private ToggleGroup roleToggle;
+
+    @FXML
+    private TextField usernameField;
+
+    @FXML
+    private PasswordField passwordField;
+
+    @FXML
+    private Button loginButton;
+
+    @FXML
+    private Hyperlink forgotLink;
     
     // Services
     private UserService userService;
@@ -41,13 +61,28 @@ public class LoginController {
     }
     
     /**
-     * Handle admin login button click.
-     * Authenticates as admin and navigates to admin dashboard.
+     * Handle login button click.
+     * Authenticates user and navigates to dashboard.
      */
     @FXML
+    private void handleLogin() {
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+        boolean isAdmin = adminToggle.isSelected();
+
+        // TODO: Implement actual authentication logic here
+        // For now, just simulate navigation based on role
+        
+        if (isAdmin) {
+            handleAdminLogin();
+        } else {
+            handleParentLogin();
+        }
+    }
+
     private void handleAdminLogin() {
         // Disable button to prevent multiple clicks
-        adminButton.setDisable(true);
+        loginButton.setDisable(true);
         
         try {
             System.out.println("Starting admin login...");
@@ -63,7 +98,7 @@ public class LoginController {
                 if (fxmlUrl == null) {
                     System.err.println("ERROR: Cannot find AdminDashboard.fxml");
                     showError("Error", "Cannot find AdminDashboard.fxml file.\nPlease check if the file exists in src/main/resources/view/");
-                    adminButton.setDisable(false);
+                    loginButton.setDisable(false);
                     return;
                 }
                 
@@ -78,7 +113,7 @@ public class LoginController {
                 if (controller == null) {
                     System.err.println("ERROR: Controller is null");
                     showError("Error", "Failed to load AdminController.\nCheck if fx:controller is set correctly in AdminDashboard.fxml");
-                    adminButton.setDisable(false);
+                    loginButton.setDisable(false);
                     return;
                 }
                 
@@ -93,7 +128,7 @@ public class LoginController {
                 System.out.println("Admin dashboard loaded successfully!");
             } else {
                 showError("Authentication Error", "Failed to authenticate as Admin.\nPlease check UserService.");
-                adminButton.setDisable(false);
+                loginButton.setDisable(false);
             }
         } catch (Exception e) {
             System.err.println("EXCEPTION in handleAdminLogin:");
@@ -101,7 +136,7 @@ public class LoginController {
             showError("Error Loading Admin Dashboard", 
                      "An error occurred:\n" + e.getClass().getSimpleName() + ": " + e.getMessage() + 
                      "\n\nCheck the NetBeans Output window for details.");
-            adminButton.setDisable(false);
+            loginButton.setDisable(false);
         }
     }
     
@@ -109,10 +144,9 @@ public class LoginController {
      * Handle parent login button click.
      * Authenticates as parent and navigates to parent dashboard.
      */
-    @FXML
     private void handleParentLogin() {
         // Disable button to prevent multiple clicks
-        parentButton.setDisable(true);
+        loginButton.setDisable(true);
         
         try {
             System.out.println("Starting parent login...");
@@ -128,7 +162,7 @@ public class LoginController {
                 if (fxmlUrl == null) {
                     System.err.println("ERROR: Cannot find ParentDashboard.fxml");
                     showError("Error", "Cannot find ParentDashboard.fxml file.\nPlease check if the file exists in src/main/resources/view/");
-                    parentButton.setDisable(false);
+                    loginButton.setDisable(false);
                     return;
                 }
                 
@@ -143,7 +177,7 @@ public class LoginController {
                 if (controller == null) {
                     System.err.println("ERROR: Controller is null");
                     showError("Error", "Failed to load ParentController.\nCheck if fx:controller is set correctly in ParentDashboard.fxml");
-                    parentButton.setDisable(false);
+                    loginButton.setDisable(false);
                     return;
                 }
                 
@@ -158,7 +192,7 @@ public class LoginController {
                 System.out.println("Parent dashboard loaded successfully!");
             } else {
                 showError("Authentication Error", "Failed to authenticate as Parent.\nPlease check UserService.");
-                parentButton.setDisable(false);
+                loginButton.setDisable(false);
             }
         } catch (Exception e) {
             System.err.println("EXCEPTION in handleParentLogin:");
@@ -166,7 +200,7 @@ public class LoginController {
             showError("Error Loading Parent Dashboard", 
                      "An error occurred:\n" + e.getClass().getSimpleName() + ": " + e.getMessage() + 
                      "\n\nCheck the NetBeans Output window for details.");
-            parentButton.setDisable(false);
+            loginButton.setDisable(false);
         }
     }
     

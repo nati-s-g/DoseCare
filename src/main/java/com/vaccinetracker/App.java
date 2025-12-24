@@ -24,16 +24,16 @@ public class App extends Application {
             System.out.println("App.start() called");
             
             // Load the login view
-            java.net.URL fxmlUrl = getClass().getResource("/view/LoginView.fxml");
+            java.net.URL fxmlUrl = getClass().getResource("/view/Login.fxml");
             if (fxmlUrl == null) {
-                System.err.println("ERROR: Cannot find LoginView.fxml");
-                showErrorAndExit(stage, "Cannot find LoginView.fxml file.\nPlease check if the file exists in src/main/resources/view/");
+                System.err.println("ERROR: Cannot find Login.fxml");
+                showErrorAndExit(stage, "Cannot find Login.fxml file.\nPlease check if the file exists in src/main/resources/view/");
                 return;
             }
             
-            System.out.println("Loading LoginView.fxml from: " + fxmlUrl);
+            System.out.println("Loading Login.fxml from: " + fxmlUrl);
             Parent root = FXMLLoader.load(fxmlUrl);
-            System.out.println("LoginView.fxml loaded successfully");
+            System.out.println("Login.fxml loaded successfully");
             
             // Create scene
             mainScene = new Scene(root, 1200, 800);
