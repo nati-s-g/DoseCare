@@ -1,0 +1,17 @@
+/* Global design tokens */
+.root {
+  /* Brand colors */
+  -brand-blue: #5AAFD6;   /* Care */
+  -brand-green: #8BCB75;  /* Dose */
+
+  /* Background gradients */
+  -bg-left-start: #3DA7C3;
+  -bg-left-end:   #79CCD6;
+  -bg-right-start:#A2D9B1;
+  -bg-right-end:  #8FD4C4;
+
+  /* Text */
+  -text-dark:  #24333E;
+  -text-muted: #6A7A89;
+  -white:      #FFFFFF;
+}

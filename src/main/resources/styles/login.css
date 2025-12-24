@@ -1,0 +1,98 @@
+/* Split background panels */
+.split-left {
+  -fx-background-color: linear-gradient(from 0% 0% to 100% 0%,
+    -bg-left-start 0%, -bg-left-end 100%);
+}
+.split-right {
+  -fx-background-color: linear-gradient(from 0% 0% to 100% 0%,
+    -bg-right-start 0%, -bg-right-end 100%);
+}
+
+/* Login card */
+.login-card {
+  -fx-background-color: -white;
+  -fx-background-radius: 18;
+  -fx-padding: 24 28 28 28;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 20, 0.0, 0, 8);
+}
+
+/* Brand header */
+.brand-title .brand-green {
+  -fx-text-fill: -brand-green;
+  -fx-font-size: 26px;
+  -fx-font-weight: 700;
+}
+.brand-title .brand-blue {
+  -fx-text-fill: -brand-blue;
+  -fx-font-size: 26px;
+  -fx-font-weight: 700;
+}
+.subtitle {
+  -fx-text-fill: -text-muted;
+  -fx-font-size: 12px;
+}
+.title {
+  -fx-text-fill: -text-dark;
+  -fx-font-size: 20px;
+  -fx-font-weight: 700;
+  -fx-padding: 8 0 4 0;
+}
+
+/* Segmented toggle */
+.segmented {
+  -fx-background-color: rgba(255,255,255,0.6);
+  -fx-background-radius: 22;
+  -fx-padding: 4;
+}
+.segmented .toggle-button {
+  -fx-background-color: transparent;
+  -fx-text-fill: -text-dark;
+  -fx-background-radius: 18;
+  -fx-padding: 6 18;
+  -fx-border-color: rgba(0,0,0,0.10);
+  -fx-border-radius: 18;
+  -fx-cursor: hand;
+}
+.segmented .toggle-button:selected {
+  -fx-background-color: -brand-blue;
+  -fx-text-fill: white;
+  -fx-border-color: transparent;
+}
+
+/* Inputs */
+.text-field, .password-field {
+  -fx-background-color: #F7F9FB;
+  -fx-background-radius: 22;
+  -fx-border-color: rgba(0,0,0,0.12);
+  -fx-border-radius: 22;
+  -fx-padding: 10 16;
+  -fx-prompt-text-fill: #8FA1B2;
+  -fx-text-fill: -text-dark;
+}
+.text-field:focused, .password-field:focused {
+  -fx-background-color: white;
+  -fx-border-color: derive(-brand-blue, -20%);
+}
+
+/* Primary button */
+.button.primary {
+  -fx-background-color: -brand-blue;
+  -fx-text-fill: white;
+  -fx-background-radius: 24;
+  -fx-padding: 10 18;
+  -fx-font-weight: 700;
+  -fx-cursor: hand;
+}
+.button.primary:hover {
+  -fx-background-color: derive(-brand-blue, -10%);
+}
+.button.primary:pressed {
+  -fx-background-color: derive(-brand-blue, -20%);
+}
+
+/* Link */
+.hyperlink {
+  -fx-text-fill: derive(-brand-blue, -10%);
+  -fx-underline: true;
+  -fx-padding: 6 0 0 0;
+}

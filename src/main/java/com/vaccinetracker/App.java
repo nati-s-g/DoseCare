@@ -36,15 +36,21 @@ public class App extends Application {
             System.out.println("LoginView.fxml loaded successfully");
             
             // Create scene
-            mainScene = new Scene(root, 800, 600);
+            mainScene = new Scene(root, 1200, 800);
             
-            // Load CSS
+            // Load Global Theme CSS
+            java.net.URL themeUrl = getClass().getResource("/styles/theme.css");
+            if (themeUrl != null) {
+                mainScene.getStylesheets().add(themeUrl.toExternalForm());
+                System.out.println("Theme CSS loaded successfully");
+            } else {
+                System.err.println("WARNING: Cannot find styles/theme.css");
+            }
+
+            // Load Legacy/Global CSS
             java.net.URL cssUrl = getClass().getResource("/styles.css");
             if (cssUrl != null) {
                 mainScene.getStylesheets().add(cssUrl.toExternalForm());
-                System.out.println("CSS loaded successfully");
-            } else {
-                System.err.println("WARNING: Cannot find styles.css");
             }
             
             // Set stage properties
@@ -93,7 +99,7 @@ public class App extends Application {
             
             // Apply CSS if not already applied
             if (mainScene.getStylesheets().isEmpty()) {
-                mainScene.getStylesheets().add(App.class.getResource("/styles.css").toExternalForm());
+                mainScene.getStylesheets().add(App.class.getResource("/styles/theme.css").toExternalForm());
             }
         }
     }
