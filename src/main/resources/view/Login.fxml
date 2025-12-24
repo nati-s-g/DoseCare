@@ -55,7 +55,7 @@
         <StackPane prefWidth="360.0" minWidth="360.0" styleClass="split-right">
           <children>
             <!-- Replace image path if different -->
-            <ImageView fitWidth="280" preserveRatio="true" opacity="0.95">
+            <ImageView fitWidth="280" preserveRatio="true">
               <image>
                 <Image url="@../images/login_illustration.png"/>
               </image>
