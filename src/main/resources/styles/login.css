@@ -1,19 +1,12 @@
 /* Split background panels */
-.split-left {
-  -fx-background-color: linear-gradient(from 0% 0% to 100% 0%,
-    -bg-left-start 0%, -bg-left-end 100%);
-}
 .split-right {
   -fx-background-color: linear-gradient(from 0% 0% to 100% 0%,
     -bg-right-start 0%, -bg-right-end 100%);
 }
 
-/* Login card */
-.login-card {
-  -fx-background-color: -white;
-  -fx-background-radius: 18;
+/* Login form container (no card shadow needed on white bg) */
+.login-form {
   -fx-padding: 24 28 28 28;
-  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 20, 0.0, 0, 8);
 }
 
 /* Brand header */

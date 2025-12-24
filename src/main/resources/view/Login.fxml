@@ -7,17 +7,17 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.vaccinetracker.controllers.LoginController"
             stylesheets="@../styles/theme.css, @../styles/login.css"
-            prefWidth="1200" prefHeight="800">
+            prefWidth="900" prefHeight="600">
   <children>
     <HBox AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
           AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
       <children>
-        <!-- Left: gradient + login card -->
-        <StackPane prefWidth="600" styleClass="split-left" HBox.hgrow="ALWAYS">
+        <!-- Left: White login container (60%) -->
+        <StackPane style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
           <children>
-            <VBox maxWidth="380" spacing="16" alignment="TOP_LEFT" styleClass="login-card">
+            <VBox maxWidth="300" spacing="16" alignment="CENTER" styleClass="login-form">
               <children>
-                <VBox spacing="6">
+                <VBox spacing="6" alignment="CENTER_LEFT">
                   <HBox spacing="4" alignment="CENTER_LEFT" styleClass="brand-title">
                     <children>
                       <Label text="Dose" styleClass="brand-green"/>
@@ -27,7 +27,7 @@
                   <Label text="Vaccination Management System" styleClass="subtitle"/>
                 </VBox>
 
-                <Label text="Login" styleClass="title"/>
+                <Label text="Login" styleClass="title" maxWidth="Infinity" alignment="CENTER_LEFT"/>
 
                 <!-- Segmented role toggle -->
                 <fx:define>
@@ -41,21 +41,21 @@
                   </children>
                 </HBox>
 
-                <TextField fx:id="usernameField" promptText="Username"/>
-                <PasswordField fx:id="passwordField" promptText="Password"/>
+                <TextField fx:id="usernameField" promptText="Username" maxWidth="300"/>
+                <PasswordField fx:id="passwordField" promptText="Password" maxWidth="300"/>
 
-                <Button fx:id="loginButton" text="Login" styleClass="primary" onAction="#handleLogin"/>
+                <Button fx:id="loginButton" text="Login" styleClass="primary" onAction="#handleLogin" maxWidth="300"/>
                 <Hyperlink fx:id="forgotLink" text="Forgot Password?"/>
               </children>
             </VBox>
           </children>
         </StackPane>
 
-        <!-- Right: gradient + illustration -->
-        <StackPane prefWidth="600" styleClass="split-right" HBox.hgrow="ALWAYS">
+        <!-- Right: Gradient + illustration (40% of 900 = 360) -->
+        <StackPane prefWidth="360.0" minWidth="360.0" styleClass="split-right">
           <children>
             <!-- Replace image path if different -->
-            <ImageView fitWidth="340" preserveRatio="true" opacity="0.95">
+            <ImageView fitWidth="280" preserveRatio="true" opacity="0.95">
               <image>
                 <Image url="@../images/login_illustration.png"/>
               </image>

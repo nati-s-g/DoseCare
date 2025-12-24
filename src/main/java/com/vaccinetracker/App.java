@@ -36,7 +36,7 @@ public class App extends Application {
             System.out.println("Login.fxml loaded successfully");
             
             // Create scene
-            mainScene = new Scene(root, 1200, 800);
+            mainScene = new Scene(root, 900, 600);
             
             // Load Global Theme CSS
             java.net.URL themeUrl = getClass().getResource("/styles/theme.css");
@@ -56,8 +56,9 @@ public class App extends Application {
             // Set stage properties
             stage.setTitle("Vaccine Tracker - Login");
             stage.setScene(mainScene);
-            stage.setMinWidth(600);
-            stage.setMinHeight(400);
+            stage.setMinWidth(900);
+            stage.setMinHeight(600);
+            stage.centerOnScreen();
             stage.show();
             
             System.out.println("Application started successfully!");
