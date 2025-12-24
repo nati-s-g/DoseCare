@@ -10,7 +10,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vaccinetracker.controllers.ParentController">
    <top>
-      <HBox style="-fx-background-color: #4CAF50; -fx-padding: 15px;" spacing="20">
+      <HBox style="-fx-background-color: -brand-blue; -fx-padding: 15px;" spacing="20">
          <Label fx:id="welcomeLabel" text="Welcome, Parent" styleClass="label-title" style="-fx-text-fill: white;" />
          <HBox HBox.hgrow="ALWAYS" />
          <Button text="Logout" fx:id="logoutButton" styleClass="button-secondary" onAction="#handleLogout" />

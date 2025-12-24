@@ -85,6 +85,13 @@ public class ParentController {
      * Initialize the controller and load data.
      */
     public void initialize() {
+        // Guard clause: If currentUser is not set yet (e.g. during FXMLLoader.load()),
+        // skip initialization. The LoginController will call this method again
+        // manually after setting the user.
+        if (currentUser == null) {
+            return;
+        }
+
         if (currentUser != null) {
             welcomeLabel.setText("Welcome, " + currentUser.getName());
         }
