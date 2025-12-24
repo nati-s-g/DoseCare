@@ -1,9 +1,16 @@
 /* Split background panels */
 .split-right {
-  /* Soft mint/teal gradient to match illustration background */
-  -fx-background-color: linear-gradient(to bottom right, #A8E6CF, #DCEFD9);
+  /* Left-to-right gradient per request */
+  -fx-background-color: linear-gradient(to right, #A0D4C5, #A0D5C1);
   -fx-border-width: 0;
   -fx-padding: 0;
+}
+
+/* Apply directly to the illustration */
+.split-right .image-view {
+  -fx-effect: null;
+  -fx-opacity: 1.0;
+  -fx-blend-mode: src-over;
 }
 
 /* Login form container (no card shadow needed on white bg) */
