@@ -30,14 +30,15 @@
                 <Label text="Login" styleClass="title"/>
 
                 <!-- Segmented role toggle -->
+                <fx:define>
+                    <ToggleGroup fx:id="roleToggle"/>
+                </fx:define>
+                
                 <HBox spacing="8" styleClass="segmented">
                   <children>
-                    <ToggleButton text="Admin" fx:id="adminToggle"/>
-                    <ToggleButton text="Parent" fx:id="parentToggle" selected="true"/>
+                    <ToggleButton text="Admin" fx:id="adminToggle" toggleGroup="$roleToggle"/>
+                    <ToggleButton text="Parent" fx:id="parentToggle" selected="true" toggleGroup="$roleToggle"/>
                   </children>
-                  <toggleGroup>
-                    <ToggleGroup fx:id="roleToggle"/>
-                  </toggleGroup>
                 </HBox>
 
                 <TextField fx:id="usernameField" promptText="Username"/>
