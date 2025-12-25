@@ -8,11 +8,12 @@ import com.vaccinetracker.services.UserService;
 import com.vaccinetracker.services.VaccinationService;
 import com.vaccinetracker.services.VaccinationSiteService;
 import com.vaccinetracker.services.VaccineService;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import java.io.IOException;
 
 /**
@@ -22,28 +23,22 @@ import java.io.IOException;
 public class AdminController {
     
     @FXML
-    private Label welcomeLabel;
-    
-    @FXML
     private Button logoutButton;
-    
+
     @FXML
-    private Button registerChildButton;
-    
+    private Button childrenMenuButton;
+
     @FXML
-    private Button manageVaccinesButton;
-    
+    private Button sitesMenuButton;
+
     @FXML
-    private Button manageSitesButton;
-    
+    private Button inventoryMenuButton;
+
     @FXML
-    private Button viewRecordsButton;
-    
+    private Button alertsMenuButton;
+
     @FXML
-    private Button viewAlertsButton;
-    
-    @FXML
-    private Label healthAlertsLabel;
+    private BarChart<String, Number> vaccinationChart;
     
     // Current user and services
     private User currentUser;
@@ -72,10 +67,6 @@ public class AdminController {
      * Initialize the controller and services.
      */
     public void initialize() {
-        if (currentUser != null) {
-            welcomeLabel.setText("Welcome, " + currentUser.getName());
-        }
-        
         // Initialize services
         childService = new ChildService();
         vaccineService = new VaccineService();
@@ -83,24 +74,17 @@ public class AdminController {
         vaccinationSiteService = new VaccinationSiteService();
         alertService = new AlertService();
         
-        // Load health alerts summary
-        updateHealthAlertsSummary();
-    }
-    
-    /**
-     * Update the health alerts summary label.
-     */
-    private void updateHealthAlertsSummary() {
-        int activeAlerts = alertService.getActiveAlertCount();
-        int highPriorityAlerts = alertService.getHighPriorityAlerts().size();
-        
-        if (activeAlerts > 0) {
-            healthAlertsLabel.setText(String.format(
-                "There are %d active health alert(s). %d high priority alert(s) require attention.",
-                activeAlerts, highPriorityAlerts
-            ));
-        } else {
-            healthAlertsLabel.setText("No active health alerts at this time.");
+        // Populate Chart
+        if (vaccinationChart != null) {
+            XYChart.Series<String, Number> series = new XYChart.Series<>();
+            series.setName("Children Vaccinated");
+            series.getData().add(new XYChart.Data<>("Jan", 15));
+            series.getData().add(new XYChart.Data<>("Feb", 25));
+            series.getData().add(new XYChart.Data<>("Mar", 35));
+            series.getData().add(new XYChart.Data<>("Apr", 25));
+            series.getData().add(new XYChart.Data<>("May", 45));
+            series.getData().add(new XYChart.Data<>("Jun", 55));
+            vaccinationChart.getData().add(series);
         }
     }
     

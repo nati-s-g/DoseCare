@@ -1,79 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 
-<BorderPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vaccinetracker.controllers.AdminController">
-   <top>
-      <HBox style="-fx-background-color: #2196F3; -fx-padding: 15px;" spacing="20">
-         <Label fx:id="welcomeLabel" text="Welcome, Admin" styleClass="label-title" style="-fx-text-fill: white;" />
-         <HBox HBox.hgrow="ALWAYS" />
-         <Button text="Logout" fx:id="logoutButton" styleClass="button-secondary" onAction="#handleLogout" />
-      </HBox>
-   </top>
+<BorderPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="com.vaccinetracker.controllers.AdminController"
+            stylesheets="@../styles/theme.css, @../styles/admin.css">
    
-   <center>
-      <VBox spacing="20" style="-fx-background-color: #f5f5f5; -fx-padding: 30px;" alignment="CENTER">
+   <!-- Left Sidebar -->
+   <left>
+      <VBox styleClass="sidebar">
+         <!-- Logo -->
+         <HBox alignment="CENTER" spacing="0">
+            <Label text="Dose" styleClass="brand-green" />
+            <Label text="Care" styleClass="brand-blue" />
+         </HBox>
          
-         <!-- Dashboard Title -->
-         <Label text="Admin Dashboard" styleClass="label-title" />
-         
-         <!-- Dashboard Cards Grid -->
-         <GridPane hgap="20" vgap="20" alignment="CENTER" maxWidth="800">
-            <columnConstraints>
-               <ColumnConstraints prefWidth="250" />
-               <ColumnConstraints prefWidth="250" />
-            </columnConstraints>
-            
-            <rowConstraints>
-               <RowConstraints prefHeight="200" />
-               <RowConstraints prefHeight="200" />
-            </rowConstraints>
-            
-            <!-- Register New Child Card -->
-            <VBox styleClass="card" alignment="CENTER" spacing="15" GridPane.columnIndex="0" GridPane.rowIndex="0">
-               <Label text="Register New Child" styleClass="label-header" />
-               <Label text="Register a newborn or child for vaccination tracking" wrapText="true" alignment="CENTER" />
-               <Button text="Register Child" fx:id="registerChildButton" styleClass="button" onAction="#handleRegisterChild" prefWidth="200" />
-            </VBox>
-            
-            <!-- Manage Vaccines Card -->
-            <VBox styleClass="card" alignment="CENTER" spacing="15" GridPane.columnIndex="1" GridPane.rowIndex="0">
-               <Label text="Manage Vaccines" styleClass="label-header" />
-               <Label text="View and manage available vaccines in the system" wrapText="true" alignment="CENTER" />
-               <Button text="View Vaccines" fx:id="manageVaccinesButton" styleClass="button-primary" onAction="#handleManageVaccines" prefWidth="200" />
-            </VBox>
-            
-            <!-- Manage Vaccination Sites Card -->
-            <VBox styleClass="card" alignment="CENTER" spacing="15" GridPane.columnIndex="0" GridPane.rowIndex="1">
-               <Label text="Manage Vaccination Sites" styleClass="label-header" />
-               <Label text="Add or modify vaccination site locations" wrapText="true" alignment="CENTER" />
-               <Button text="Manage Sites" fx:id="manageSitesButton" styleClass="button-primary" onAction="#handleManageSites" prefWidth="200" />
-            </VBox>
-            
-            <!-- View All Records Card -->
-            <VBox styleClass="card" alignment="CENTER" spacing="15" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <Label text="View All Records" styleClass="label-header" />
-               <Label text="View vaccination records for all children" wrapText="true" alignment="CENTER" />
-               <Button text="View Records" fx:id="viewRecordsButton" styleClass="button-primary" onAction="#handleViewRecords" prefWidth="200" />
-            </VBox>
-         </GridPane>
-         
-         <!-- Community Health Status Card -->
-         <VBox styleClass="card" alignment="CENTER" spacing="15" prefWidth="600" style="-fx-padding: 20px;">
-            <Label text="Community Health Status &amp; Alerts" styleClass="label-header" />
-            <Label fx:id="healthAlertsLabel" text="Loading health alerts..." wrapText="true" alignment="CENTER" />
-            <Button text="View Health Alerts" fx:id="viewAlertsButton" styleClass="button-secondary" onAction="#handleViewHealthAlerts" prefWidth="200" />
+         <!-- Profile Section -->
+         <VBox styleClass="profile-section">
+            <Circle radius="30" fill="TRANSPARENT" stroke="WHITE" strokeWidth="2" />
+            <Label text="Admin" styleClass="profile-name" />
          </VBox>
          
+         <!-- Menu Items -->
+         <VBox styleClass="menu-container">
+            <Button text="Dashboard" styleClass="menu-button, active" />
+            <Button text="Children" styleClass="menu-button" fx:id="childrenMenuButton" onAction="#handleRegisterChild"/>
+            <Button text="Vaccination Sites" styleClass="menu-button" fx:id="sitesMenuButton" onAction="#handleManageSites"/>
+            <Button text="Inventory" styleClass="menu-button" fx:id="inventoryMenuButton" onAction="#handleManageVaccines"/>
+            <Button text="Human Resources" styleClass="menu-button" />
+            <Button text="Alerts Health" styleClass="menu-button" fx:id="alertsMenuButton" onAction="#handleViewHealthAlerts"/>
+         </VBox>
+      </VBox>
+   </left>
+   
+   <!-- Center Content -->
+   <center>
+      <VBox styleClass="content-area">
+         <!-- Top Bar -->
+         <HBox alignment="TOP_RIGHT">
+             <HBox styleClass="top-bar">
+                <Button text="Back" styleClass="top-button" />
+                <Label text="|" textFill="#e0e0e0" />
+                <Button text="Logout" fx:id="logoutButton" styleClass="top-button" onAction="#handleLogout" />
+             </HBox>
+         </HBox>
+         
+         <!-- Dashboard Content -->
+         <VBox spacing="20" VBox.vgrow="ALWAYS">
+            
+            <!-- Stats Cards -->
+            <HBox spacing="20" alignment="CENTER_LEFT">
+               <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                  <Label text="14 Doctors" styleClass="stat-count" />
+               </VBox>
+               <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                  <Label text="29 Nurses" styleClass="stat-count" />
+               </VBox>
+               <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                  <Label text="1310 Children" styleClass="stat-count" />
+               </VBox>
+               <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                  <Label text="6 Vaccination Sites" styleClass="stat-count" />
+               </VBox>
+            </HBox>
+            
+            <!-- Chart Section -->
+            <VBox styleClass="chart-container" VBox.vgrow="ALWAYS">
+               <Label text="Children Vaccinated Per Month" styleClass="chart-title" />
+               <BarChart fx:id="vaccinationChart" legendVisible="false" animated="true" barGap="10" categoryGap="20" verticalGridLinesVisible="false">
+                 <xAxis>
+                   <CategoryAxis label="Month" />
+                 </xAxis>
+                 <yAxis>
+                   <NumberAxis label="Children" />
+                 </yAxis>
+               </BarChart>
+            </VBox>
+            
+         </VBox>
       </VBox>
    </center>
+   
 </BorderPane>
 

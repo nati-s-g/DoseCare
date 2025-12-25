@@ -1,0 +1,164 @@
+/* Admin Dashboard Styles */
+
+.sidebar {
+    -fx-background-color: -text-dark;
+    -fx-padding: 20;
+    -fx-spacing: 20;
+    -fx-pref-width: 250;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);
+}
+
+.brand-green {
+    -fx-text-fill: -brand-green;
+    -fx-font-size: 28px;
+    -fx-font-weight: 800;
+}
+
+.brand-blue {
+    -fx-text-fill: -brand-blue;
+    -fx-font-size: 28px;
+    -fx-font-weight: 800;
+}
+
+.profile-section {
+    -fx-alignment: CENTER;
+    -fx-spacing: 10;
+    -fx-padding: 20 0;
+}
+
+.profile-icon {
+    -fx-fill: transparent;
+    -fx-stroke: white;
+    -fx-stroke-width: 2;
+    -fx-radius: 30;
+}
+
+.profile-name {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+}
+
+.menu-container {
+    -fx-spacing: 5;
+}
+
+.menu-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -text-muted;
+    -fx-font-size: 14px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 15;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+    -fx-pref-width: 210;
+}
+
+.menu-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-text-fill: white;
+}
+
+.menu-button.active {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-text-fill: white;
+    -fx-border-color: transparent transparent transparent -brand-blue;
+    -fx-border-width: 0 0 0 4;
+}
+
+.content-area {
+    -fx-background-color: #F5F7FA;
+    -fx-padding: 20;
+    -fx-spacing: 20;
+}
+
+.top-bar {
+    -fx-spacing: 15;
+    -fx-alignment: CENTER_RIGHT;
+    -fx-padding: 10 20;
+    -fx-background-color: white;
+    -fx-background-radius: 30;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);
+    -fx-max-width: 200;
+    -fx-max-height: 50;
+}
+
+.top-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -text-muted;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+}
+
+.top-button:hover {
+    -fx-text-fill: -brand-blue;
+}
+
+.stat-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
+    -fx-padding: 20;
+    -fx-alignment: CENTER;
+    -fx-min-width: 150;
+    -fx-min-height: 100;
+}
+
+.stat-count {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -text-dark;
+}
+
+.stat-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: -text-muted;
+}
+
+.chart-container {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5);
+    -fx-padding: 25;
+}
+
+.chart-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -text-dark;
+    -fx-padding: 0 0 10 0;
+}
+
+.default-color0.chart-bar { -fx-bar-fill: -brand-blue; }
+.default-color1.chart-bar { -fx-bar-fill: -brand-green; }
+
+.chart-bar {
+    -fx-background-radius: 5 5 0 0;
+    -fx-background-insets: 0;
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.chart-vertical-grid-lines {
+    -fx-stroke: transparent;
+}
+
+.chart-horizontal-grid-lines {
+    -fx-stroke: #F0F0F0;
+    -fx-stroke-dash-array: 4;
+}
+
+.axis {
+    -fx-tick-label-fill: -text-muted;
+    -fx-tick-mark-visible: false;
+}
+
+.axis:bottom {
+    -fx-border-color: transparent;
+}
+
+.axis:left {
+    -fx-border-color: transparent;
+}

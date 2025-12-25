@@ -27,6 +27,9 @@
                   <Label text="Vaccination Management System" styleClass="subtitle"/>
                 </VBox>
 
+                <!-- Visual separator -->
+                <Region prefHeight="1" maxWidth="300" style="-fx-background-color: #E0E0E0;" />
+
                 <Label text="Login" styleClass="title" maxWidth="Infinity" alignment="CENTER"/>
 
                 <!-- Segmented role toggle -->
@@ -45,6 +48,7 @@
                 <PasswordField fx:id="passwordField" promptText="Password" maxWidth="300"/>
 
                 <Button fx:id="loginButton" text="Login" styleClass="primary" onAction="#handleLogin" maxWidth="300"/>
+                <Button fx:id="signUpButton" text="Sign Up" styleClass="primary" maxWidth="300"/>
                 <Hyperlink fx:id="forgotLink" text="Forgot Password?"/>
               </children>
             </VBox>
