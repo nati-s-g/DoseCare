@@ -18,7 +18,8 @@ public class VaccinationRecord {
     private LocalDate dateAdministered;     // When vaccine was actually given (null if not yet given)
     private LocalDate nextDueDate;          // When next dose is due (for multi-dose vaccines)
     private VaccinationStatus status;       // Current status (PENDING or COMPLETED)
-    
+    private String vaccinationSiteId;       // Where the vaccine was administered
+
     /**
      * Enum to represent vaccination status.
      * 
@@ -46,6 +47,7 @@ public class VaccinationRecord {
         this.nextDueDate = nextDueDate;
         this.status = VaccinationStatus.PENDING;
         this.dateAdministered = null;  // Not yet given
+        this.vaccinationSiteId = null;
     }
     
     /**
@@ -65,6 +67,26 @@ public class VaccinationRecord {
         this.dateAdministered = dateAdministered;
         this.nextDueDate = nextDueDate;
         this.status = VaccinationStatus.COMPLETED;
+        this.vaccinationSiteId = null;
+    }
+
+    /**
+     * Constructor for a vaccination record with site.
+     * 
+     * @param recordId Unique identifier
+     * @param childId Child identifier
+     * @param vaccineId Vaccine identifier
+     * @param nextDueDate When the vaccine is due
+     * @param vaccinationSiteId Where the vaccine is administered
+     */
+    public VaccinationRecord(String recordId, String childId, String vaccineId, LocalDate nextDueDate, String vaccinationSiteId) {
+        this.recordId = recordId;
+        this.childId = childId;
+        this.vaccineId = vaccineId;
+        this.nextDueDate = nextDueDate;
+        this.status = VaccinationStatus.PENDING;
+        this.dateAdministered = null;
+        this.vaccinationSiteId = vaccinationSiteId;
     }
     
     // Getter methods
@@ -140,6 +162,14 @@ public class VaccinationRecord {
                 ", nextDueDate=" + nextDueDate +
                 ", status=" + status +
                 '}';
+    }
+
+    public String getVaccinationSiteId() {
+        return vaccinationSiteId;
+    }
+
+    public void setVaccinationSiteId(String vaccinationSiteId) {
+        this.vaccinationSiteId = vaccinationSiteId;
     }
 }
 

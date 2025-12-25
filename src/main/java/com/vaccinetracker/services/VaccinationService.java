@@ -44,11 +44,12 @@ public class VaccinationService {
      * @param childId The child's ID
      * @param vaccineId The vaccine ID
      * @param nextDueDate The due date for the vaccine
+     * @param vaccinationSiteId The site ID where the vaccine is administered
      * @return The created VaccinationRecord
      */
-    public VaccinationRecord addVaccinationRecord(String childId, String vaccineId, LocalDate nextDueDate) {
+    public VaccinationRecord addVaccinationRecord(String childId, String vaccineId, LocalDate nextDueDate, String vaccinationSiteId) {
         String recordId = "REC" + String.format("%06d", nextRecordId++);
-        VaccinationRecord record = new VaccinationRecord(recordId, childId, vaccineId, nextDueDate);
+        VaccinationRecord record = new VaccinationRecord(recordId, childId, vaccineId, nextDueDate, vaccinationSiteId);
         vaccinationRecords.add(record);
         return record;
     }

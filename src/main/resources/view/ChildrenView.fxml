@@ -117,6 +117,11 @@
                                 <Label text="Vaccine Name" styleClass="form-label"/>
                                 <ComboBox fx:id="notifyVaccineComboBox" promptText="Select Vaccine" maxWidth="Infinity"/>
                             </VBox>
+
+                            <VBox spacing="5">
+                                <Label text="Vaccination Site" styleClass="form-label"/>
+                                <ComboBox fx:id="notifySiteComboBox" promptText="Select Site" maxWidth="Infinity"/>
+                            </VBox>
                             
                             <VBox spacing="5">
                                 <Label text="Explanation / Message" styleClass="form-label"/>
@@ -156,9 +161,10 @@
                                 <TableView fx:id="vaccinationRecordTable" VBox.vgrow="ALWAYS">
                                     <columns>
                                         <TableColumn fx:id="vrVaccineColumn" text="Vaccine" prefWidth="150"/>
+                                        <TableColumn fx:id="vrSiteColumn" text="Vaccination Site" prefWidth="150"/>
                                         <TableColumn fx:id="vrDueDateColumn" text="Due Date" prefWidth="100"/>
                                         <TableColumn fx:id="vrStatusColumn" text="Status" prefWidth="100"/>
-                                        <TableColumn fx:id="vrAdminDateColumn" text="Administered" prefWidth="100"/>
+                                        <TableColumn fx:id="vrAdminDateColumn" text="Date Administered" prefWidth="100"/>
                                     </columns>
                                     <columnResizePolicy>
                                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -168,6 +174,7 @@
                                 <Label text="Add Vaccination Record" styleClass="section-header"/>
                                 <HBox spacing="10" alignment="CENTER_LEFT">
                                     <ComboBox fx:id="vaccineComboBox" promptText="Select Vaccine" prefWidth="200"/>
+                                    <ComboBox fx:id="siteComboBox" promptText="Select Site" prefWidth="200"/>
                                     <DatePicker fx:id="vaccineDueDatePicker" promptText="Due Date" prefWidth="150"/>
                                     <Button text="Add Record" onAction="#handleAddVaccinationRecord" styleClass="button-primary"/>
                                 </HBox>

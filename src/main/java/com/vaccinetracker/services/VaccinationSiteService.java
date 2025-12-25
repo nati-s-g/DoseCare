@@ -30,30 +30,47 @@ public class VaccinationSiteService {
      * Initialize with some sample vaccination sites for demonstration.
      */
     private void initializeSampleSites() {
-        // Create sample vaccination sites
-        VaccinationSite site1 = createSite("City General Hospital", 
-                                           "123 Hospital Street, City Center", 
-                                           "phone: 123-456-7890");
+        // Addis Ababa Hospitals
+        VaccinationSite site1 = createSite("Black Lion Hospital (Tikur Anbessa)", 
+                                           "Churchill Ave, Addis Ababa", 
+                                           "Phone: +251 11 551 1211");
         site1.addVaccine("VAC001");  // BCG
         site1.addVaccine("VAC002");  // Hepatitis B
         site1.addVaccine("VAC003");  // DPT
         site1.addVaccine("VAC004");  // Polio
         site1.addVaccine("VAC010");  // Measles
         
-        VaccinationSite site2 = createSite("Community Health Center", 
-                                           "456 Health Avenue, Suburb District", 
-                                           "phone: 987-654-3210");
-        site2.addVaccine("VAC001");  // BCG
-        site2.addVaccine("VAC003");  // DPT
-        site2.addVaccine("VAC004");  // Polio
-        site2.addVaccine("VAC010");  // Measles
+        VaccinationSite site2 = createSite("St. Paul's Hospital Millennium Medical College", 
+                                           "Swaziland St, Addis Ababa", 
+                                           "Phone: +251 11 275 0125");
+        site2.addVaccine("VAC001");
+        site2.addVaccine("VAC003");
+        site2.addVaccine("VAC004");
+        site2.addVaccine("VAC010");
         
-        VaccinationSite site3 = createSite("Pediatric Clinic", 
-                                           "789 Children's Road, Medical Park", 
-                                           "email: pediatrics@clinic.com");
-        site3.addVaccine("VAC002");  // Hepatitis B
-        site3.addVaccine("VAC003");  // DPT
-        site3.addVaccine("VAC010");  // Measles
+        VaccinationSite site3 = createSite("Zewditu Memorial Hospital", 
+                                           "Churchill Ave, Addis Ababa", 
+                                           "Phone: +251 11 551 8085");
+        site3.addVaccine("VAC002");
+        site3.addVaccine("VAC003");
+        site3.addVaccine("VAC010");
+
+        VaccinationSite site4 = createSite("Yekatit 12 Hospital", 
+                                           "6 Kilo, Addis Ababa", 
+                                           "Phone: +251 11 155 3065");
+        site4.addVaccine("VAC001");
+        site4.addVaccine("VAC002");
+        site4.addVaccine("VAC003");
+        site4.addVaccine("VAC004");
+
+        VaccinationSite site5 = createSite("Alert Hospital", 
+                                           "Jimma Road, Addis Ababa", 
+                                           "Phone: +251 11 321 1344");
+        site5.addVaccine("VAC001");
+        site5.addVaccine("VAC002");
+        site5.addVaccine("VAC003");
+        site5.addVaccine("VAC004");
+        site5.addVaccine("VAC010");
     }
     
     /**
@@ -161,6 +178,16 @@ public class VaccinationSiteService {
         return false;
     }
     
+    /**
+     * Remove a vaccination site by its site ID.
+     * 
+     * @param siteId The site ID to remove
+     * @return true if site was found and removed, false otherwise
+     */
+    public boolean deleteSite(String siteId) {
+        return vaccinationSites.removeIf(site -> site.getSiteId().equals(siteId));
+    }
+
     /**
      * Get the total number of vaccination sites.
      * 

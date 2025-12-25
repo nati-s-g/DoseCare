@@ -144,6 +144,7 @@ public class AdminController {
                 controller.setAlertService(alertService);
                 controller.setVaccinationService(vaccinationService);
                 controller.setVaccineService(vaccineService);
+                controller.setVaccinationSiteService(vaccinationSiteService);
             }
             
             // Replace main content
@@ -193,13 +194,37 @@ public class AdminController {
      */
     @FXML
     private void handleManageSites() {
-        // Show site count
-        int siteCount = vaccinationSiteService.getSiteCount();
-        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
-        alert.setTitle("Manage Vaccination Sites");
-        alert.setHeaderText("Site Management");
-        alert.setContentText("There are " + siteCount + " vaccination sites in the system.\n\nSite management interface coming soon.");
-        alert.showAndWait();
+        System.out.println("Sites menu clicked");
+        try {
+            if (mainContent == null) {
+                System.err.println("ERROR: mainContent is null!");
+                return;
+            }
+            
+            System.out.println("Loading VaccinationSitesView.fxml...");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/VaccinationSitesView.fxml"));
+            Node sitesView = loader.load();
+            System.out.println("VaccinationSitesView loaded successfully");
+            
+            VaccinationSitesController controller = loader.getController();
+            if (controller == null) {
+                System.err.println("ERROR: VaccinationSitesController is null!");
+            } else {
+                System.out.println("Initializing VaccinationSitesController...");
+                controller.setVaccinationSiteService(vaccinationSiteService);
+            }
+            
+            // Replace main content
+            mainContent.getChildren().setAll(sitesView);
+            System.out.println("Main content updated");
+            
+            // Update active state of buttons
+            updateActiveMenuButton(sitesMenuButton);
+            
+        } catch (Exception e) {
+            System.err.println("Error loading sites view: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
     
     /**
