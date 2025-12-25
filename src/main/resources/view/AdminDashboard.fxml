@@ -42,7 +42,7 @@
          <!-- Menu Items -->
          <VBox styleClass="menu-container">
             <Button text="Dashboard" styleClass="menu-button, active" />
-            <Button text="Children" styleClass="menu-button" fx:id="childrenMenuButton" onAction="#handleRegisterChild"/>
+            <Button text="Children" styleClass="menu-button" fx:id="childrenMenuButton" onAction="#handleChildrenMenu"/>
             <Button text="Vaccination Sites" styleClass="menu-button" fx:id="sitesMenuButton" onAction="#handleManageSites"/>
             <Button text="Inventory" styleClass="menu-button" fx:id="inventoryMenuButton" onAction="#handleManageVaccines"/>
             <Button text="Human Resources" styleClass="menu-button" />
@@ -53,7 +53,7 @@
    
    <!-- Center Content -->
    <center>
-      <VBox styleClass="content-area">
+      <VBox fx:id="contentArea" styleClass="content-area">
          <!-- Top Bar -->
          <VBox spacing="15">
              <HBox styleClass="top-bar">
@@ -64,7 +64,7 @@
          </VBox>
          
          <!-- Dashboard Content -->
-         <VBox spacing="20" VBox.vgrow="ALWAYS">
+         <VBox fx:id="mainContent" spacing="20" VBox.vgrow="ALWAYS">
             
             <!-- Stats Cards -->
             <HBox spacing="20" alignment="CENTER_LEFT">

@@ -53,8 +53,21 @@ public class AlertService {
      * @return The created HealthAlert object
      */
     public HealthAlert createAlert(String title, String message, HealthAlert.SeverityLevel severityLevel) {
+        return createTargetedAlert(title, message, severityLevel, null);
+    }
+
+    /**
+     * Create a new targeted health alert.
+     * 
+     * @param title Alert title
+     * @param message Detailed message
+     * @param severityLevel Severity level
+     * @param targetChildId ID of the child this alert is for
+     * @return The created HealthAlert object
+     */
+    public HealthAlert createTargetedAlert(String title, String message, HealthAlert.SeverityLevel severityLevel, String targetChildId) {
         String alertId = "ALT" + String.format("%04d", nextAlertId++);
-        HealthAlert alert = new HealthAlert(alertId, title, message, severityLevel);
+        HealthAlert alert = new HealthAlert(alertId, title, message, severityLevel, targetChildId);
         healthAlerts.add(alert);
         return alert;
     }
@@ -85,11 +98,33 @@ public class AlertService {
     public List<HealthAlert> getActiveAlerts() {
         List<HealthAlert> activeAlerts = new ArrayList<>();
         for (HealthAlert alert : healthAlerts) {
-            if (alert.isActive()) {
+            if (alert.isActive() && !alert.isTargeted()) {
                 activeAlerts.add(alert);
             }
         }
         return activeAlerts;
+    }
+
+    /**
+     * Get active alerts relevant to a parent (general + targeted).
+     * 
+     * @param childIds List of child IDs belonging to the parent
+     * @return List of relevant alerts
+     */
+    public List<HealthAlert> getAlertsForParent(List<String> childIds) {
+        List<HealthAlert> relevantAlerts = new ArrayList<>();
+        for (HealthAlert alert : healthAlerts) {
+            if (alert.isActive()) {
+                if (!alert.isTargeted()) {
+                    // Add general alerts
+                    relevantAlerts.add(alert);
+                } else if (childIds != null && childIds.contains(alert.getTargetChildId())) {
+                    // Add targeted alerts for this parent's children
+                    relevantAlerts.add(alert);
+                }
+            }
+        }
+        return relevantAlerts;
     }
     
     /**

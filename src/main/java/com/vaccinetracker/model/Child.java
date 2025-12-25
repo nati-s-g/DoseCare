@@ -18,6 +18,9 @@ public class Child {
     private LocalDate dateOfBirth;  // Date of birth (using Java 8 LocalDate)
     private String parentId;        // ID of the parent/guardian
     private String hospitalId;      // Hospital where registered
+    private String gender;          // Gender of the child
+    private String guardianName;    // Name of the guardian
+    private String guardianContact; // Contact number of the guardian
     
     /**
      * Constructor to create a new Child.
@@ -27,13 +30,19 @@ public class Child {
      * @param dateOfBirth Date of birth
      * @param parentId Parent's user ID
      * @param hospitalId Hospital identifier
+     * @param gender Gender of the child
+     * @param guardianName Name of the guardian
+     * @param guardianContact Contact number of the guardian
      */
-    public Child(String childId, String name, LocalDate dateOfBirth, String parentId, String hospitalId) {
+    public Child(String childId, String name, LocalDate dateOfBirth, String parentId, String hospitalId, String gender, String guardianName, String guardianContact) {
         this.childId = childId;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.parentId = parentId;
         this.hospitalId = hospitalId;
+        this.gender = gender;
+        this.guardianName = guardianName;
+        this.guardianContact = guardianContact;
     }
     
     // Getter methods
@@ -56,6 +65,18 @@ public class Child {
     public String getHospitalId() {
         return hospitalId;
     }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public String getGuardianName() {
+        return guardianName;
+    }
+
+    public String getGuardianContact() {
+        return guardianContact;
+    }
     
     // Setter methods
     public void setName(String name) {
@@ -65,15 +86,42 @@ public class Child {
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setGuardianName(String guardianName) {
+        this.guardianName = guardianName;
+    }
+
+    public void setGuardianContact(String guardianContact) {
+        this.guardianContact = guardianContact;
+    }
     
     /**
-     * Calculate the child's age in days.
-     * Useful for determining which vaccines are due.
+     * Calculate the child's age in years (or months/days logic can be added).
+     * For display purposes, we might want a string representation.
      * 
      * @return Age in days
      */
     public long getAgeInDays() {
         return java.time.temporal.ChronoUnit.DAYS.between(dateOfBirth, LocalDate.now());
+    }
+
+    /**
+     * Get a friendly age string (e.g., "2 years", "5 months").
+     * @return Age string
+     */
+    public String getAgeString() {
+        long days = getAgeInDays();
+        if (days < 30) {
+            return days + " days";
+        } else if (days < 365) {
+            return (days / 30) + " months";
+        } else {
+            return (days / 365) + " years";
+        }
     }
     
     /**

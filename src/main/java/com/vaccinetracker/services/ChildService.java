@@ -24,6 +24,31 @@ public class ChildService {
      */
     public ChildService() {
         this.children = new ArrayList<>();
+        initializeDummyData();
+    }
+
+    private void initializeDummyData() {
+        // Ethiopian names: Child Name = First Name + Father's Name
+        // Guardian Name usually Father (Father's Name + Grandfather's Name) or Mother
+        
+        registerChild("Abebe Kebede", LocalDate.of(2023, 5, 15), "P001", "H001", "Male", "Kebede Tadesse", generateRandomContact());
+        registerChild("Sara Tesfaye", LocalDate.of(2024, 1, 10), "P002", "H001", "Female", "Tesfaye Alemu", generateRandomContact());
+        registerChild("Tigist Haile", LocalDate.of(2022, 11, 20), "P003", "H002", "Female", "Almaz Bekele", generateRandomContact()); // Mother as guardian
+        registerChild("Dawit Solomon", LocalDate.of(2023, 8, 5), "P004", "H001", "Male", "Solomon Girma", generateRandomContact());
+        registerChild("Bethlehem Assefa", LocalDate.of(2024, 3, 12), "P005", "H003", "Female", "Assefa Worku", generateRandomContact());
+        registerChild("Yared Mulugeta", LocalDate.of(2023, 12, 1), "P006", "H002", "Male", "Mulugeta Abebe", generateRandomContact());
+        registerChild("Hana Daniel", LocalDate.of(2022, 9, 25), "P007", "H001", "Female", "Daniel Yosef", generateRandomContact());
+        registerChild("Kirubel Getachew", LocalDate.of(2024, 2, 18), "P008", "H003", "Male", "Aster Mengistu", generateRandomContact()); // Mother as guardian
+        registerChild("Mahlet Tekle", LocalDate.of(2023, 6, 30), "P009", "H002", "Female", "Tekle Yosef", generateRandomContact());
+        registerChild("Eyob Fikru", LocalDate.of(2022, 10, 8), "P010", "H001", "Male", "Fikru Demeke", generateRandomContact());
+        registerChild("Kalkidan Zelalem", LocalDate.of(2024, 4, 5), "P011", "H003", "Female", "Zelalem Tadesse", generateRandomContact());
+        registerChild("Nahom Berhanu", LocalDate.of(2023, 1, 22), "P012", "H002", "Male", "Berhanu Kebede", generateRandomContact());
+    }
+
+    private String generateRandomContact() {
+        // Generate 8 random digits
+        int randomNum = 10000000 + (int)(Math.random() * 90000000);
+        return "+2519" + randomNum;
     }
     
     /**
@@ -33,14 +58,17 @@ public class ChildService {
      * @param dateOfBirth Date of birth
      * @param parentId Parent's user ID
      * @param hospitalId Hospital identifier
+     * @param gender Gender of the child
+     * @param guardianName Name of the guardian
+     * @param guardianContact Contact number of the guardian
      * @return The created Child object
      */
-    public Child registerChild(String name, LocalDate dateOfBirth, String parentId, String hospitalId) {
+    public Child registerChild(String name, LocalDate dateOfBirth, String parentId, String hospitalId, String gender, String guardianName, String guardianContact) {
         // Generate a unique child ID
         String childId = "CHILD" + String.format("%04d", nextChildId++);
         
         // Create new child object
-        Child child = new Child(childId, name, dateOfBirth, parentId, hospitalId);
+        Child child = new Child(childId, name, dateOfBirth, parentId, hospitalId, gender, guardianName, guardianContact);
         
         // Add to the list
         children.add(child);

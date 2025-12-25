@@ -120,7 +120,7 @@ public class RegisterChildController {
             String parentId = (currentUser != null) ? currentUser.getUserId() : "PAR001";
             
             // Register the child
-            Child child = childService.registerChild(childName, dateOfBirth, parentId, hospitalId);
+            Child child = childService.registerChild(childName, dateOfBirth, parentId, hospitalId, "Unknown", parentName, parentContact);
             
             // Create vaccination schedule for the child
             var schedule = vaccinationService.createScheduleForChild(child.getChildId());

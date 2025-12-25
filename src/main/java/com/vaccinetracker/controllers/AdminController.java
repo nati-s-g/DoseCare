@@ -16,6 +16,9 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import java.io.IOException;
 
+import javafx.scene.layout.VBox;
+import javafx.scene.Node;
+
 /**
  * Controller for the Admin Dashboard.
  * Handles admin-specific operations and navigation.
@@ -36,6 +39,9 @@ public class AdminController {
 
     @FXML
     private Button alertsMenuButton;
+
+    @FXML
+    private VBox mainContent;
 
     @FXML
     private LineChart<String, Number> vaccinationChart;
@@ -113,23 +119,55 @@ public class AdminController {
     }
     
     /**
-     * Handle register child button click.
+     * Handle children menu button click.
      */
     @FXML
-    private void handleRegisterChild() {
+    private void handleChildrenMenu() {
+        System.out.println("Children menu clicked");
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/RegisterChild.fxml"));
-            Parent root = loader.load();
+            if (mainContent == null) {
+                System.err.println("ERROR: mainContent is null!");
+                return;
+            }
             
-            RegisterChildController controller = loader.getController();
-            controller.setChildService(childService);
-            controller.setVaccinationService(vaccinationService);
-            controller.setCurrentUser(currentUser);
+            System.out.println("Loading ChildrenView.fxml...");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ChildrenView.fxml"));
+            Node childrenView = loader.load();
+            System.out.println("ChildrenView loaded successfully");
             
-            App.setRoot(root, "Register New Child - Vaccine Tracker");
-        } catch (IOException e) {
-            System.err.println("Error loading register child view: " + e.getMessage());
+            ChildrenController controller = loader.getController();
+            if (controller == null) {
+                System.err.println("ERROR: ChildrenController is null!");
+            } else {
+                System.out.println("Initializing ChildrenController...");
+                controller.setChildService(childService);
+                controller.setAlertService(alertService);
+            }
+            
+            // Replace main content
+            mainContent.getChildren().setAll(childrenView);
+            System.out.println("Main content updated");
+            
+            // Update active state of buttons (optional, but good for UX)
+            updateActiveMenuButton(childrenMenuButton);
+            
+        } catch (Exception e) {
+            System.err.println("Error loading children view: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    private void updateActiveMenuButton(Button activeButton) {
+        // Reset all buttons (simplified)
+        // In a real app, you'd have a list of buttons or a toggle group
+        childrenMenuButton.getStyleClass().remove("active");
+        sitesMenuButton.getStyleClass().remove("active");
+        inventoryMenuButton.getStyleClass().remove("active");
+        alertsMenuButton.getStyleClass().remove("active");
+        
+        // Set active
+        if (!activeButton.getStyleClass().contains("active")) {
+            activeButton.getStyleClass().add("active");
         }
     }
     

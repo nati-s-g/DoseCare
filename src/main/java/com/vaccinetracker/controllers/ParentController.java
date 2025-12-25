@@ -196,7 +196,16 @@ public class ParentController {
     private void loadHealthAlerts() {
         alertsBox.getChildren().clear();
         
-        List<HealthAlert> alerts = alertService.getActiveAlerts();
+        // Get children IDs for this parent
+        List<String> childIds = new java.util.ArrayList<>();
+        if (currentUser != null) {
+            List<Child> children = childService.getChildrenByParent(currentUser.getUserId());
+            for (Child child : children) {
+                childIds.add(child.getChildId());
+            }
+        }
+        
+        List<HealthAlert> alerts = alertService.getAlertsForParent(childIds);
         
         if (alerts.isEmpty()) {
             noAlertsLabel.setVisible(true);
@@ -228,10 +237,17 @@ public class ParentController {
                     break;
             }
             
-            alertBox.getStyleClass().add(severityClass);
-            
-            Label titleLabel = new Label(alert.getTitle());
-            titleLabel.getStyleClass().addAll("label-header", severityStyle);
+            // Add targeted indicator if applicable
+            String titleText = alert.getTitle();
+            if (alert.isTargeted()) {
+                titleText = "🔔 " + titleText;
+                alertBox.setStyle("-fx-background-color: #fff3cd; -fx-border-color: #ffeeba; -fx-border-radius: 5px;");
+            } else {
+                alertBox.getStyleClass().add(severityClass);
+            }
+
+            Label titleLabel = new Label(titleText);
+            titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
             
             Label messageLabel = new Label(alert.getMessage());
             messageLabel.setWrapText(true);

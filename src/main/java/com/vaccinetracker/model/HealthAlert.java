@@ -18,6 +18,7 @@ public class HealthAlert {
     private SeverityLevel severityLevel; // How serious the alert is
     private LocalDate dateCreated;       // When the alert was created
     private boolean isActive;            // Whether alert is still active
+    private String targetChildId;        // Optional: ID of the child this alert is for
     
     /**
      * Enum to represent alert severity levels.
@@ -40,12 +41,34 @@ public class HealthAlert {
      * @param severityLevel Severity level
      */
     public HealthAlert(String alertId, String title, String message, SeverityLevel severityLevel) {
+        this(alertId, title, message, severityLevel, null);
+    }
+
+    /**
+     * Constructor to create a targeted health alert.
+     * 
+     * @param alertId Unique identifier
+     * @param title Alert title
+     * @param message Detailed message
+     * @param severityLevel Severity level
+     * @param targetChildId ID of the child this alert is for
+     */
+    public HealthAlert(String alertId, String title, String message, SeverityLevel severityLevel, String targetChildId) {
         this.alertId = alertId;
         this.title = title;
         this.message = message;
         this.severityLevel = severityLevel;
         this.dateCreated = LocalDate.now();  // Automatically set to today
         this.isActive = true;                // New alerts are active by default
+        this.targetChildId = targetChildId;
+    }
+    
+    public String getTargetChildId() {
+        return targetChildId;
+    }
+
+    public boolean isTargeted() {
+        return targetChildId != null && !targetChildId.isEmpty();
     }
     
     // Getter methods
