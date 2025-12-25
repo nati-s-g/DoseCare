@@ -8,7 +8,7 @@ import com.vaccinetracker.services.UserService;
 import com.vaccinetracker.services.VaccinationService;
 import com.vaccinetracker.services.VaccinationSiteService;
 import com.vaccinetracker.services.VaccineService;
-import javafx.scene.chart.BarChart;
+import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -38,7 +38,7 @@ public class AdminController {
     private Button alertsMenuButton;
 
     @FXML
-    private BarChart<String, Number> vaccinationChart;
+    private LineChart<String, Number> vaccinationChart;
     
     // Current user and services
     private User currentUser;
@@ -76,15 +76,27 @@ public class AdminController {
         
         // Populate Chart
         if (vaccinationChart != null) {
-            XYChart.Series<String, Number> series = new XYChart.Series<>();
-            series.setName("Children Vaccinated");
-            series.getData().add(new XYChart.Data<>("Jan", 15));
-            series.getData().add(new XYChart.Data<>("Feb", 25));
-            series.getData().add(new XYChart.Data<>("Mar", 35));
-            series.getData().add(new XYChart.Data<>("Apr", 25));
-            series.getData().add(new XYChart.Data<>("May", 45));
-            series.getData().add(new XYChart.Data<>("Jun", 55));
-            vaccinationChart.getData().add(series);
+            vaccinationChart.getData().clear(); // Clear existing data to prevent duplicates
+            
+            XYChart.Series<String, Number> maleSeries = new XYChart.Series<>();
+            maleSeries.setName("Male");
+            maleSeries.getData().add(new XYChart.Data<>("Jan", 12));
+            maleSeries.getData().add(new XYChart.Data<>("Feb", 18));
+            maleSeries.getData().add(new XYChart.Data<>("Mar", 22));
+            maleSeries.getData().add(new XYChart.Data<>("Apr", 15));
+            maleSeries.getData().add(new XYChart.Data<>("May", 28));
+            maleSeries.getData().add(new XYChart.Data<>("Jun", 32));
+
+            XYChart.Series<String, Number> femaleSeries = new XYChart.Series<>();
+            femaleSeries.setName("Female");
+            femaleSeries.getData().add(new XYChart.Data<>("Jan", 10));
+            femaleSeries.getData().add(new XYChart.Data<>("Feb", 20));
+            femaleSeries.getData().add(new XYChart.Data<>("Mar", 18));
+            femaleSeries.getData().add(new XYChart.Data<>("Apr", 18));
+            femaleSeries.getData().add(new XYChart.Data<>("May", 25));
+            femaleSeries.getData().add(new XYChart.Data<>("Jun", 30));
+
+            vaccinationChart.getData().addAll(maleSeries, femaleSeries);
         }
     }
     

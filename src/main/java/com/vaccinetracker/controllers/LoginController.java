@@ -116,7 +116,7 @@ public class LoginController {
                 System.out.println("Initializing controller...");
                 controller.setUserService(userService);
                 controller.setCurrentUser(admin);
-                controller.initialize();
+                // controller.initialize(); // Removed manual call as FXMLLoader calls it automatically
                 
                 // Show admin dashboard
                 System.out.println("Setting root...");
