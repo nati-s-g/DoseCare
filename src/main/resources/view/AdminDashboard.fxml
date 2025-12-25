@@ -68,17 +68,21 @@
             
             <!-- Stats Cards -->
             <HBox spacing="20" alignment="CENTER_LEFT">
-               <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
-                  <Label text="14 Doctors" styleClass="stat-count" />
+               <VBox styleClass="stat-card, card-blue" HBox.hgrow="ALWAYS">
+                  <Label text="14" styleClass="stat-count" />
+                  <Label text="Doctors" styleClass="stat-label" />
                </VBox>
-               <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
-                  <Label text="29 Nurses" styleClass="stat-count" />
+               <VBox styleClass="stat-card, card-green" HBox.hgrow="ALWAYS">
+                  <Label text="29" styleClass="stat-count" />
+                  <Label text="Nurses" styleClass="stat-label" />
                </VBox>
-               <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
-                  <Label text="1310 Children" styleClass="stat-count" />
+               <VBox styleClass="stat-card, card-orange" HBox.hgrow="ALWAYS">
+                  <Label text="1310" styleClass="stat-count" />
+                  <Label text="Children" styleClass="stat-label" />
                </VBox>
-               <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
-                  <Label text="6 Vaccination Sites" styleClass="stat-count" />
+               <VBox styleClass="stat-card, card-purple" HBox.hgrow="ALWAYS">
+                  <Label text="6" styleClass="stat-count" />
+                  <Label text="Vaccination Sites" styleClass="stat-label" />
                </VBox>
             </HBox>
             

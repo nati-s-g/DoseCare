@@ -79,22 +79,34 @@ public class AdminController {
             vaccinationChart.getData().clear(); // Clear existing data to prevent duplicates
             
             XYChart.Series<String, Number> maleSeries = new XYChart.Series<>();
-            maleSeries.setName("Male");
+            maleSeries.setName("Boys");
             maleSeries.getData().add(new XYChart.Data<>("Jan", 12));
             maleSeries.getData().add(new XYChart.Data<>("Feb", 18));
             maleSeries.getData().add(new XYChart.Data<>("Mar", 22));
             maleSeries.getData().add(new XYChart.Data<>("Apr", 15));
             maleSeries.getData().add(new XYChart.Data<>("May", 28));
             maleSeries.getData().add(new XYChart.Data<>("Jun", 32));
+            maleSeries.getData().add(new XYChart.Data<>("Jul", 35));
+            maleSeries.getData().add(new XYChart.Data<>("Aug", 30));
+            maleSeries.getData().add(new XYChart.Data<>("Sep", 25));
+            maleSeries.getData().add(new XYChart.Data<>("Oct", 28));
+            maleSeries.getData().add(new XYChart.Data<>("Nov", 20));
+            maleSeries.getData().add(new XYChart.Data<>("Dec", 15));
 
             XYChart.Series<String, Number> femaleSeries = new XYChart.Series<>();
-            femaleSeries.setName("Female");
+            femaleSeries.setName("Girls");
             femaleSeries.getData().add(new XYChart.Data<>("Jan", 10));
             femaleSeries.getData().add(new XYChart.Data<>("Feb", 20));
             femaleSeries.getData().add(new XYChart.Data<>("Mar", 18));
             femaleSeries.getData().add(new XYChart.Data<>("Apr", 18));
             femaleSeries.getData().add(new XYChart.Data<>("May", 25));
             femaleSeries.getData().add(new XYChart.Data<>("Jun", 30));
+            femaleSeries.getData().add(new XYChart.Data<>("Jul", 32));
+            femaleSeries.getData().add(new XYChart.Data<>("Aug", 28));
+            femaleSeries.getData().add(new XYChart.Data<>("Sep", 22));
+            femaleSeries.getData().add(new XYChart.Data<>("Oct", 26));
+            femaleSeries.getData().add(new XYChart.Data<>("Nov", 18));
+            femaleSeries.getData().add(new XYChart.Data<>("Dec", 12));
 
             vaccinationChart.getData().addAll(maleSeries, femaleSeries);
         }
