@@ -77,6 +77,16 @@ public class ChildService {
     }
     
     /**
+     * Remove a child from the system.
+     * 
+     * @param childId The ID of the child to remove
+     * @return true if removed successfully, false otherwise
+     */
+    public boolean deleteChild(String childId) {
+        return children.removeIf(child -> child.getChildId().equals(childId));
+    }
+
+    /**
      * Find a child by their child ID.
      * 
      * @param childId The child ID to search for

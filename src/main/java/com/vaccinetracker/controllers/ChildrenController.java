@@ -2,19 +2,26 @@ package com.vaccinetracker.controllers;
 
 import com.vaccinetracker.model.Child;
 import com.vaccinetracker.model.HealthAlert;
+import com.vaccinetracker.model.VaccinationRecord;
+import com.vaccinetracker.model.Vaccine;
 import com.vaccinetracker.services.AlertService;
 import com.vaccinetracker.services.ChildService;
+import com.vaccinetracker.services.VaccinationService;
+import com.vaccinetracker.services.VaccineService;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.StringConverter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ChildrenController {
 
@@ -26,6 +33,8 @@ public class ChildrenController {
     private Tab registerChildTab;
     @FXML
     private Tab notifyTab;
+    @FXML
+    private Tab vaccinationRecordsTab;
 
     @FXML
     private TableView<Child> childrenTable;
@@ -66,14 +75,45 @@ public class ChildrenController {
     private TableColumn<ChildSelectionWrapper, String> notifyIdColumn;
     
     @FXML
-    private TextField vaccineNameField;
+    private ComboBox<Vaccine> notifyVaccineComboBox;
     @FXML
     private TextArea explanationArea;
 
+    // Vaccination Records Tab Controls
+    @FXML
+    private TableView<ChildSelectionWrapper> vaccinationChildTable;
+    @FXML
+    private TableColumn<ChildSelectionWrapper, Boolean> vcSelectColumn;
+    @FXML
+    private TableColumn<ChildSelectionWrapper, String> vcChildIdColumn;
+    @FXML
+    private TableColumn<ChildSelectionWrapper, String> vcChildNameColumn;
+    
+    @FXML
+    private TableView<VaccinationRecord> vaccinationRecordTable;
+    @FXML
+    private TableColumn<VaccinationRecord, String> vrVaccineColumn;
+    @FXML
+    private TableColumn<VaccinationRecord, String> vrDueDateColumn;
+    @FXML
+    private TableColumn<VaccinationRecord, String> vrStatusColumn;
+    @FXML
+    private TableColumn<VaccinationRecord, String> vrAdminDateColumn;
+    
+    @FXML
+    private ComboBox<Vaccine> vaccineComboBox;
+    @FXML
+    private DatePicker vaccineDueDatePicker;
+
     private ChildService childService;
     private AlertService alertService;
+    private VaccinationService vaccinationService;
+    private VaccineService vaccineService;
+    
     private ObservableList<Child> childrenList = FXCollections.observableArrayList();
     private ObservableList<ChildSelectionWrapper> notifyList = FXCollections.observableArrayList();
+    private ObservableList<ChildSelectionWrapper> vaccinationChildList = FXCollections.observableArrayList();
+    private ObservableList<VaccinationRecord> vaccinationRecordsList = FXCollections.observableArrayList();
 
     public void setChildService(ChildService childService) {
         this.childService = childService;
@@ -82,6 +122,15 @@ public class ChildrenController {
 
     public void setAlertService(AlertService alertService) {
         this.alertService = alertService;
+    }
+
+    public void setVaccinationService(VaccinationService vaccinationService) {
+        this.vaccinationService = vaccinationService;
+    }
+
+    public void setVaccineService(VaccineService vaccineService) {
+        this.vaccineService = vaccineService;
+        loadVaccines();
     }
 
     @FXML
@@ -109,6 +158,133 @@ public class ChildrenController {
         
         notifyTable.setItems(notifyList);
         notifyTable.setEditable(true);
+
+        // Initialize Vaccination Records Tab
+        vcSelectColumn.setCellValueFactory(cellData -> cellData.getValue().selectedProperty());
+        vcSelectColumn.setCellFactory(CheckBoxTableCell.forTableColumn(vcSelectColumn));
+        vcChildIdColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getChild().getChildId()));
+        vcChildNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getChild().getName()));
+        vaccinationChildTable.setItems(vaccinationChildList);
+        vaccinationChildTable.setEditable(true);
+        
+        // Listener for child selection in Vaccination Tab
+        vaccinationChildTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                loadVaccinationRecords(newSelection.getChild().getChildId());
+            } else {
+                vaccinationRecordsList.clear();
+            }
+        });
+
+        vrVaccineColumn.setCellValueFactory(cellData -> {
+            if (vaccineService != null) {
+                Vaccine v = vaccineService.getVaccineById(cellData.getValue().getVaccineId());
+                return new SimpleStringProperty(v != null ? v.getName() : cellData.getValue().getVaccineId());
+            }
+            return new SimpleStringProperty(cellData.getValue().getVaccineId());
+        });
+        vrDueDateColumn.setCellValueFactory(new PropertyValueFactory<>("nextDueDate"));
+        vrStatusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+        vrAdminDateColumn.setCellValueFactory(new PropertyValueFactory<>("dateAdministered"));
+        
+        vaccinationRecordTable.setItems(vaccinationRecordsList);
+        
+        // Configure Vaccine ComboBox
+        StringConverter<Vaccine> vaccineConverter = new StringConverter<Vaccine>() {
+            @Override
+            public String toString(Vaccine object) {
+                return object != null ? object.getName() : "";
+            }
+
+            @Override
+            public Vaccine fromString(String string) {
+                return null; // Not needed for this use case
+            }
+        };
+        vaccineComboBox.setConverter(vaccineConverter);
+        notifyVaccineComboBox.setConverter(vaccineConverter);
+    }
+
+    private void loadVaccines() {
+        if (vaccineService != null) {
+            ObservableList<Vaccine> vaccines = FXCollections.observableArrayList(vaccineService.getAllVaccines());
+            vaccineComboBox.setItems(vaccines);
+            notifyVaccineComboBox.setItems(vaccines);
+        }
+    }
+
+    private void loadVaccinationRecords(String childId) {
+        if (vaccinationService != null) {
+            List<VaccinationRecord> records = vaccinationService.getRecordsByChild(childId);
+            vaccinationRecordsList.setAll(records);
+        }
+    }
+
+    @FXML
+    private void handleAddVaccinationRecord() {
+        ChildSelectionWrapper selectedWrapper = vaccinationChildTable.getSelectionModel().getSelectedItem();
+        Vaccine selectedVaccine = vaccineComboBox.getValue();
+        LocalDate dueDate = vaccineDueDatePicker.getValue();
+        
+        // Check if any children are selected via checkboxes
+        List<Child> selectedChildren = new ArrayList<>();
+        for (ChildSelectionWrapper wrapper : vaccinationChildList) {
+            if (wrapper.isSelected()) {
+                selectedChildren.add(wrapper.getChild());
+            }
+        }
+        
+        // If no checkboxes checked, try to use the currently selected row
+        if (selectedChildren.isEmpty() && selectedWrapper != null) {
+            selectedChildren.add(selectedWrapper.getChild());
+        }
+        
+        if (selectedChildren.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "No Child Selected", "Please select at least one child (checkbox or row selection).");
+            return;
+        }
+        
+        if (selectedVaccine == null) {
+            showAlert(Alert.AlertType.WARNING, "No Vaccine Selected", "Please select a vaccine.");
+            return;
+        }
+        
+        if (dueDate == null) {
+            showAlert(Alert.AlertType.WARNING, "No Date Selected", "Please select a due date.");
+            return;
+        }
+        
+        if (vaccinationService != null) {
+            int count = 0;
+            for (Child child : selectedChildren) {
+                vaccinationService.addVaccinationRecord(child.getChildId(), selectedVaccine.getVaccineId(), dueDate);
+                count++;
+            }
+            
+            // Refresh records if a single child is selected in the table
+            if (selectedWrapper != null) {
+                loadVaccinationRecords(selectedWrapper.getChild().getChildId());
+            }
+            
+            // Clear form
+            vaccineComboBox.getSelectionModel().clearSelection();
+            vaccineDueDatePicker.setValue(null);
+            
+            // Uncheck all
+            for (ChildSelectionWrapper wrapper : vaccinationChildList) {
+                wrapper.setSelected(false);
+            }
+            
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Vaccination record added for " + count + " child(ren).");
+        }
+    }
+
+    @FXML
+    private void handleSelectAllVaccinationChildren() {
+        boolean allSelected = vaccinationChildList.stream().allMatch(ChildSelectionWrapper::isSelected);
+        for (ChildSelectionWrapper wrapper : vaccinationChildList) {
+            wrapper.setSelected(!allSelected);
+        }
     }
 
     private void loadChildren() {
@@ -118,8 +294,10 @@ public class ChildrenController {
             
             // Populate notify list
             notifyList.clear();
+            vaccinationChildList.clear();
             for (Child child : allChildren) {
                 notifyList.add(new ChildSelectionWrapper(child));
+                vaccinationChildList.add(new ChildSelectionWrapper(child));
             }
         }
     }
@@ -153,6 +331,31 @@ public class ChildrenController {
     }
 
     @FXML
+    private void handleRemoveChild() {
+        Child selectedChild = childrenTable.getSelectionModel().getSelectedItem();
+        if (selectedChild == null) {
+            showAlert(Alert.AlertType.WARNING, "No Selection", "Please select a child to remove.");
+            return;
+        }
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Removal");
+        alert.setHeaderText("Remove Child");
+        alert.setContentText("Are you sure you want to remove " + selectedChild.getName() + "?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            boolean removed = childService.deleteChild(selectedChild.getChildId());
+            if (removed) {
+                loadChildren();
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Child removed successfully.");
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Error", "Could not remove child.");
+            }
+        }
+    }
+
+    @FXML
     private void handleClear() {
         nameField.clear();
         dobPicker.setValue(null);
@@ -176,13 +379,15 @@ public class ChildrenController {
             alertService = new AlertService(); 
         }
 
-        String vaccineName = vaccineNameField.getText();
+        Vaccine selectedVaccine = notifyVaccineComboBox.getValue();
         String explanation = explanationArea.getText();
 
-        if (vaccineName.isEmpty() || explanation.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Validation Error", "Please enter vaccine name and explanation.");
+        if (selectedVaccine == null || explanation.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Validation Error", "Please select a vaccine and enter an explanation.");
             return;
         }
+        
+        String vaccineName = selectedVaccine.getName();
 
         List<Child> selectedChildren = new ArrayList<>();
         for (ChildSelectionWrapper wrapper : notifyList) {
@@ -208,7 +413,7 @@ public class ChildrenController {
         showAlert(Alert.AlertType.INFORMATION, "Success", "Sent " + count + " notifications successfully.");
         
         // Clear form
-        vaccineNameField.clear();
+        notifyVaccineComboBox.getSelectionModel().clearSelection();
         explanationArea.clear();
         for (ChildSelectionWrapper wrapper : notifyList) {
             wrapper.setSelected(false);

@@ -142,6 +142,8 @@ public class AdminController {
                 System.out.println("Initializing ChildrenController...");
                 controller.setChildService(childService);
                 controller.setAlertService(alertService);
+                controller.setVaccinationService(vaccinationService);
+                controller.setVaccineService(vaccineService);
             }
             
             // Replace main content

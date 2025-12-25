@@ -56,6 +56,15 @@ public class VaccineService {
     }
     
     /**
+     * Get all available vaccines.
+     * 
+     * @return List of all vaccines
+     */
+    public List<Vaccine> getAllVaccines() {
+        return new ArrayList<>(vaccines);
+    }
+
+    /**
      * Add a new vaccine to the system.
      * 
      * @param vaccineId Unique identifier

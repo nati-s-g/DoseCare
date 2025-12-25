@@ -39,6 +39,21 @@ public class VaccinationService {
     }
     
     /**
+     * Manually add a vaccination record for a child.
+     * 
+     * @param childId The child's ID
+     * @param vaccineId The vaccine ID
+     * @param nextDueDate The due date for the vaccine
+     * @return The created VaccinationRecord
+     */
+    public VaccinationRecord addVaccinationRecord(String childId, String vaccineId, LocalDate nextDueDate) {
+        String recordId = "REC" + String.format("%06d", nextRecordId++);
+        VaccinationRecord record = new VaccinationRecord(recordId, childId, vaccineId, nextDueDate);
+        vaccinationRecords.add(record);
+        return record;
+    }
+
+    /**
      * Create a vaccination schedule for a child based on their age.
      * This is called when a child is registered.
      * 
