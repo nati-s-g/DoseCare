@@ -30,6 +30,9 @@ public class AdminController {
     private Button logoutButton;
 
     @FXML
+    private Button dashboardMenuButton;
+
+    @FXML
     private Button childrenMenuButton;
 
     @FXML
@@ -50,6 +53,15 @@ public class AdminController {
     @FXML
     private LineChart<String, Number> vaccinationChart;
     
+    @FXML private javafx.scene.control.Label doctorCountLabel;
+    @FXML private javafx.scene.control.Label nurseCountLabel;
+    @FXML private javafx.scene.control.Label staffCountLabel;
+    @FXML private javafx.scene.control.Label childCountLabel;
+    @FXML private javafx.scene.control.Label siteCountLabel;
+    @FXML private javafx.scene.control.Label vaccineCountLabel;
+
+    private java.util.List<Node> dashboardContent;
+
     // Current user and services
     private User currentUser;
     private UserService userService;
@@ -86,6 +98,13 @@ public class AdminController {
         alertService = new AlertService();
         hrService = new HumanResourceService(vaccinationSiteService);
         
+        updateDashboardStats();
+
+        // Save initial dashboard content
+        if (mainContent != null) {
+            dashboardContent = new java.util.ArrayList<>(mainContent.getChildren());
+        }
+
         // Populate Chart
         if (vaccinationChart != null) {
             vaccinationChart.getData().clear(); // Clear existing data to prevent duplicates
@@ -124,6 +143,40 @@ public class AdminController {
         }
     }
     
+    /**
+     * Handle dashboard menu button click.
+     */
+    @FXML
+    private void handleDashboardMenu() {
+        System.out.println("Dashboard menu clicked");
+        if (mainContent != null && dashboardContent != null) {
+            mainContent.getChildren().setAll(dashboardContent);
+            updateDashboardStats();
+            updateActiveMenuButton(dashboardMenuButton);
+        }
+    }
+
+    private void updateDashboardStats() {
+        if (doctorCountLabel != null && hrService != null) {
+            doctorCountLabel.setText(String.valueOf(hrService.getStaffByRole("Doctor").size()));
+        }
+        if (nurseCountLabel != null && hrService != null) {
+            nurseCountLabel.setText(String.valueOf(hrService.getStaffByRole("Nurse").size()));
+        }
+        if (staffCountLabel != null && hrService != null) {
+            staffCountLabel.setText(String.valueOf(hrService.getStaffByRole("Other").size()));
+        }
+        if (childCountLabel != null && childService != null) {
+            childCountLabel.setText(String.valueOf(childService.getAllChildren().size()));
+        }
+        if (siteCountLabel != null && vaccinationSiteService != null) {
+            siteCountLabel.setText(String.valueOf(vaccinationSiteService.getAllSites().size()));
+        }
+        if (vaccineCountLabel != null && vaccineService != null) {
+            vaccineCountLabel.setText(String.valueOf(vaccineService.getVaccineCount()));
+        }
+    }
+
     /**
      * Handle children menu button click.
      */
@@ -169,9 +222,11 @@ public class AdminController {
     private void updateActiveMenuButton(Button activeButton) {
         // Reset all buttons (simplified)
         // In a real app, you'd have a list of buttons or a toggle group
+        if (dashboardMenuButton != null) dashboardMenuButton.getStyleClass().remove("active");
         childrenMenuButton.getStyleClass().remove("active");
         sitesMenuButton.getStyleClass().remove("active");
         inventoryMenuButton.getStyleClass().remove("active");
+        hrMenuButton.getStyleClass().remove("active");
         alertsMenuButton.getStyleClass().remove("active");
         
         // Set active
@@ -327,6 +382,15 @@ public class AdminController {
         }
     }
     
+    /**
+     * Handle back button click.
+     * Navigates back to the main dashboard view.
+     */
+    @FXML
+    private void handleBack() {
+        handleDashboardMenu();
+    }
+
     /**
      * Handle logout button click.
      */
