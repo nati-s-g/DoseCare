@@ -78,6 +78,23 @@ public class VaccineService {
         vaccines.add(vaccine);
         return vaccine;
     }
+
+    /**
+     * Create a new vaccine with an auto-generated ID.
+     * 
+     * @param name Vaccine name
+     * @return The created Vaccine object
+     */
+    public Vaccine createVaccine(String name) {
+        int nextId = vaccines.size() + 1;
+        String vaccineId = String.format("VAC%03d", nextId);
+        // Ensure uniqueness
+        while (getVaccineById(vaccineId) != null) {
+            nextId++;
+            vaccineId = String.format("VAC%03d", nextId);
+        }
+        return addVaccine(vaccineId, name, "Custom added vaccine", 0);
+    }
     
     /**
      * Find a vaccine by its vaccine ID.

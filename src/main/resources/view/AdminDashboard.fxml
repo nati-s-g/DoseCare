@@ -45,8 +45,8 @@
             <Button text="Children" styleClass="menu-button" fx:id="childrenMenuButton" onAction="#handleChildrenMenu"/>
             <Button text="Vaccination Sites" styleClass="menu-button" fx:id="sitesMenuButton" onAction="#handleManageSites"/>
             <Button text="Inventory" styleClass="menu-button" fx:id="inventoryMenuButton" onAction="#handleManageVaccines"/>
-            <Button text="Human Resources" styleClass="menu-button" />
-            <Button text="Alerts Health" styleClass="menu-button" fx:id="alertsMenuButton" onAction="#handleViewHealthAlerts"/>
+            <Button text="Human Resources" styleClass="menu-button" fx:id="hrMenuButton" onAction="#handleHumanResources"/>
+            <Button text="Health Alerts" styleClass="menu-button" fx:id="alertsMenuButton" onAction="#handleViewHealthAlerts"/>
          </VBox>
       </VBox>
    </left>

@@ -4,6 +4,7 @@ import com.vaccinetracker.model.Child;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * ChildService class manages child-related operations.
@@ -17,7 +18,6 @@ public class ChildService {
     
     // Store children in a List (simulating database storage)
     private List<Child> children;
-    private int nextChildId = 1;  // Auto-increment ID generator
     
     /**
      * Constructor - initializes the children list.
@@ -64,8 +64,8 @@ public class ChildService {
      * @return The created Child object
      */
     public Child registerChild(String name, LocalDate dateOfBirth, String parentId, String hospitalId, String gender, String guardianName, String guardianContact) {
-        // Generate a unique child ID
-        String childId = "CHILD" + String.format("%04d", nextChildId++);
+        // Generate a unique and complex child ID
+        String childId = "CHD-" + UUID.randomUUID().toString().substring(0, 13).toUpperCase();
         
         // Create new child object
         Child child = new Child(childId, name, dateOfBirth, parentId, hospitalId, gender, guardianName, guardianContact);

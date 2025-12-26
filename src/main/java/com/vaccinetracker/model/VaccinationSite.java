@@ -1,14 +1,15 @@
 package com.vaccinetracker.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * VaccinationSite class representing a location where vaccinations are administered.
  * 
  * CONCEPT: Composition & Collections
- * - Contains a List of vaccines (composition)
- * - Demonstrates ArrayList usage
+ * - Contains a Map of vaccines and their stock (composition)
+ * - Demonstrates HashMap usage
  * - Represents a real-world location with multiple vaccines available
  */
 public class VaccinationSite {
@@ -17,7 +18,8 @@ public class VaccinationSite {
     private String name;                        // Site name (e.g., "City Hospital", "Community Center")
     private String location;                    // Physical address
     private String contactInfo;                 // Phone number or email
-    private List<String> availableVaccineIds;   // List of vaccine IDs available at this site
+    private Map<String, Integer> vaccineStock;  // Map of vaccine IDs to stock quantity
+    private Map<String, LocalDate> vaccineExpiry; // Map of vaccine IDs to expiry date
     
     /**
      * Constructor to create a vaccination site.
@@ -32,7 +34,8 @@ public class VaccinationSite {
         this.name = name;
         this.location = location;
         this.contactInfo = contactInfo;
-        this.availableVaccineIds = new ArrayList<>();  // Initialize empty list
+        this.vaccineStock = new HashMap<>();  // Initialize empty map
+        this.vaccineExpiry = new HashMap<>();
     }
     
     // Getter methods
@@ -52,80 +55,141 @@ public class VaccinationSite {
         return contactInfo;
     }
     
-    public List<String> getAvailableVaccineIds() {
-        return availableVaccineIds;  // Returns reference to the list
+    public Map<String, Integer> getVaccineStock() {
+        return vaccineStock;
     }
-    
-    // Setter methods
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    public void setLocation(String location) {
-        this.location = location;
-    }
-    
-    public void setContactInfo(String contactInfo) {
-        this.contactInfo = contactInfo;
-    }
-    
+
     /**
-     * Add a vaccine to the list of available vaccines at this site.
+     * Get the stock level for a specific vaccine.
      * 
-     * CONCEPT: List Operations
-     * - ArrayList.add() adds an element to the list
-     * 
-     * @param vaccineId The vaccine ID to add
+     * @param vaccineId The vaccine ID
+     * @return The stock quantity, or 0 if not found
      */
-    public void addVaccine(String vaccineId) {
-        if (!availableVaccineIds.contains(vaccineId)) {
-            availableVaccineIds.add(vaccineId);
+    public int getStock(String vaccineId) {
+        return vaccineStock.getOrDefault(vaccineId, 0);
+    }
+
+    /**
+     * Get the expiry date for a specific vaccine.
+     * 
+     * @param vaccineId The vaccine ID
+     * @return The expiry date, or null if not found
+     */
+    public LocalDate getExpiryDate(String vaccineId) {
+        return vaccineExpiry.get(vaccineId);
+    }
+
+    /**
+     * Update the stock level for a specific vaccine.
+     * 
+     * @param vaccineId The vaccine ID
+     * @param quantity The new quantity
+     */
+    public void updateStock(String vaccineId, int quantity) {
+        vaccineStock.put(vaccineId, quantity);
+    }
+
+    /**
+     * Update the stock level and expiry date for a specific vaccine.
+     * 
+     * @param vaccineId The vaccine ID
+     * @param quantity The new quantity
+     * @param expiryDate The expiry date
+     */
+    public void updateStock(String vaccineId, int quantity, LocalDate expiryDate) {
+        vaccineStock.put(vaccineId, quantity);
+        if (expiryDate != null) {
+            vaccineExpiry.put(vaccineId, expiryDate);
         }
     }
-    
+
     /**
-     * Remove a vaccine from the list of available vaccines.
+     * Add stock for a specific vaccine.
      * 
-     * @param vaccineId The vaccine ID to remove
-     * @return true if vaccine was removed, false if it wasn't in the list
+     * @param vaccineId The vaccine ID
+     * @param quantity The quantity to add
      */
-    public boolean removeVaccine(String vaccineId) {
-        return availableVaccineIds.remove(vaccineId);
+    public void addStock(String vaccineId, int quantity) {
+        int currentStock = getStock(vaccineId);
+        vaccineStock.put(vaccineId, currentStock + quantity);
     }
-    
+
     /**
-     * Check if a specific vaccine is available at this site.
+     * Add stock for a specific vaccine with expiry date.
+     * 
+     * @param vaccineId The vaccine ID
+     * @param quantity The quantity to add
+     * @param expiryDate The expiry date
+     */
+    public void addStock(String vaccineId, int quantity, LocalDate expiryDate) {
+        int currentStock = getStock(vaccineId);
+        vaccineStock.put(vaccineId, currentStock + quantity);
+        if (expiryDate != null) {
+            vaccineExpiry.put(vaccineId, expiryDate);
+        }
+    }
+
+    /**
+     * Remove stock for a specific vaccine.
+     * 
+     * @param vaccineId The vaccine ID
+     * @param quantity The quantity to remove
+     * @return true if successful, false if insufficient stock
+     */
+    public boolean removeStock(String vaccineId, int quantity) {
+        int currentStock = getStock(vaccineId);
+        if (currentStock >= quantity) {
+            vaccineStock.put(vaccineId, currentStock - quantity);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if the site has a specific vaccine available (stock > 0).
      * 
      * @param vaccineId The vaccine ID to check
      * @return true if available, false otherwise
      */
     public boolean hasVaccine(String vaccineId) {
-        return availableVaccineIds.contains(vaccineId);
+        return getStock(vaccineId) > 0;
     }
-    
+
     /**
-     * Get the number of vaccines available at this site.
+     * Add a vaccine to the site (initialize with 0 stock if not present).
+     * Kept for backward compatibility, but now uses stock map.
      * 
-     * @return Number of available vaccines
+     * @param vaccineId The vaccine ID to add
+     */
+    public void addVaccine(String vaccineId) {
+        if (!vaccineStock.containsKey(vaccineId)) {
+            vaccineStock.put(vaccineId, 0);
+        }
+    }
+
+    /**
+     * Remove a vaccine from the site completely.
+     * 
+     * @param vaccineId The vaccine ID to remove
+     * @return true if removed, false otherwise
+     */
+    public boolean removeVaccine(String vaccineId) {
+        vaccineExpiry.remove(vaccineId);
+        return vaccineStock.remove(vaccineId) != null;
+    }
+
+    /**
+     * Get the number of vaccines tracked at this site.
+     * 
+     * @return Number of vaccines in inventory
      */
     public int getVaccineCount() {
-        return availableVaccineIds.size();
+        return vaccineStock.size();
     }
     
-    /**
-     * Override toString to display site information.
-     * 
-     * @return Formatted string with site details
-     */
     @Override
     public String toString() {
-        return "VaccinationSite{" +
-                "siteId='" + siteId + '\'' +
-                ", name='" + name + '\'' +
-                ", location='" + location + '\'' +
-                ", contactInfo='" + contactInfo + '\'' +
-                ", availableVaccines=" + availableVaccineIds.size() +
-                '}';
+        return name + " (" + location + ")";
     }
 }
 

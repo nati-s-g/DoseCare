@@ -19,6 +19,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.util.StringConverter;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -151,6 +153,37 @@ public class ChildrenController {
     public void initialize() {
         // Initialize Table Columns
         childIdColumn.setCellValueFactory(new PropertyValueFactory<>("childId"));
+        
+        // Make Child ID copyable via Context Menu
+        childIdColumn.setCellFactory(col -> {
+            TableCell<Child, String> cell = new TableCell<Child, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                        setGraphic(null);
+                    } else {
+                        setText(item);
+                    }
+                }
+            };
+            
+            ContextMenu menu = new ContextMenu();
+            MenuItem copyItem = new MenuItem("Copy ID");
+            copyItem.setOnAction(event -> {
+                String item = cell.getItem();
+                if (item != null) {
+                    ClipboardContent content = new ClipboardContent();
+                    content.putString(item);
+                    Clipboard.getSystemClipboard().setContent(content);
+                }
+            });
+            menu.getItems().add(copyItem);
+            cell.setContextMenu(menu);
+            return cell;
+        });
+
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         dobColumn.setCellValueFactory(new PropertyValueFactory<>("dateOfBirthString")); 
         ageColumn.setCellValueFactory(new PropertyValueFactory<>("ageString")); 
@@ -301,11 +334,28 @@ public class ChildrenController {
         
         String siteId = selectedSite != null ? selectedSite.getSiteId() : null;
 
+        // Check inventory availability
+        if (selectedSite != null) {
+            int currentStock = selectedSite.getStock(selectedVaccine.getVaccineId());
+            if (currentStock < selectedChildren.size()) {
+                showAlert(Alert.AlertType.ERROR, "Unavailable Vaccine", 
+                    "The selected vaccine is not available at " + selectedSite.getName() + ".\n" +
+                    "Available stock: " + currentStock + "\n" +
+                    "Required: " + selectedChildren.size());
+                return;
+            }
+        }
+
         if (vaccinationService != null) {
             int count = 0;
             for (Child child : selectedChildren) {
                 vaccinationService.addVaccinationRecord(child.getChildId(), selectedVaccine.getVaccineId(), dueDate, siteId);
                 count++;
+            }
+            
+            // Decrement stock
+            if (selectedSite != null) {
+                selectedSite.removeStock(selectedVaccine.getVaccineId(), count);
             }
             
             // Refresh records if a single child is selected in the table
@@ -438,6 +488,17 @@ public class ChildrenController {
         
         String vaccineName = selectedVaccine.getName();
         String siteName = selectedSite != null ? selectedSite.getName() : "Unknown Site";
+
+        // Check inventory availability
+        if (selectedSite != null) {
+            int currentStock = selectedSite.getStock(selectedVaccine.getVaccineId());
+            if (currentStock <= 0) {
+                showAlert(Alert.AlertType.ERROR, "Unavailable Vaccine", 
+                    "The selected vaccine is not available at " + selectedSite.getName() + ".\n" +
+                    "Please check inventory or select a different site.");
+                return;
+            }
+        }
 
         List<Child> selectedChildren = new ArrayList<>();
         for (ChildSelectionWrapper wrapper : notifyList) {

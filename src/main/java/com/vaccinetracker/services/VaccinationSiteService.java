@@ -3,6 +3,7 @@ package com.vaccinetracker.services;
 import com.vaccinetracker.model.VaccinationSite;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
 
 /**
  * VaccinationSiteService class manages vaccination site operations.
@@ -34,43 +35,38 @@ public class VaccinationSiteService {
         VaccinationSite site1 = createSite("Black Lion Hospital (Tikur Anbessa)", 
                                            "Churchill Ave, Addis Ababa", 
                                            "Phone: +251 11 551 1211");
-        site1.addVaccine("VAC001");  // BCG
-        site1.addVaccine("VAC002");  // Hepatitis B
-        site1.addVaccine("VAC003");  // DPT
-        site1.addVaccine("VAC004");  // Polio
-        site1.addVaccine("VAC010");  // Measles
+        initializeStock(site1);
         
         VaccinationSite site2 = createSite("St. Paul's Hospital Millennium Medical College", 
                                            "Swaziland St, Addis Ababa", 
                                            "Phone: +251 11 275 0125");
-        site2.addVaccine("VAC001");
-        site2.addVaccine("VAC003");
-        site2.addVaccine("VAC004");
-        site2.addVaccine("VAC010");
+        initializeStock(site2);
         
         VaccinationSite site3 = createSite("Zewditu Memorial Hospital", 
                                            "Churchill Ave, Addis Ababa", 
                                            "Phone: +251 11 551 8085");
-        site3.addVaccine("VAC002");
-        site3.addVaccine("VAC003");
-        site3.addVaccine("VAC010");
+        initializeStock(site3);
 
         VaccinationSite site4 = createSite("Yekatit 12 Hospital", 
                                            "6 Kilo, Addis Ababa", 
                                            "Phone: +251 11 155 3065");
-        site4.addVaccine("VAC001");
-        site4.addVaccine("VAC002");
-        site4.addVaccine("VAC003");
-        site4.addVaccine("VAC004");
+        initializeStock(site4);
 
         VaccinationSite site5 = createSite("Alert Hospital", 
                                            "Jimma Road, Addis Ababa", 
                                            "Phone: +251 11 321 1344");
-        site5.addVaccine("VAC001");
-        site5.addVaccine("VAC002");
-        site5.addVaccine("VAC003");
-        site5.addVaccine("VAC004");
-        site5.addVaccine("VAC010");
+        initializeStock(site5);
+    }
+
+    private void initializeStock(VaccinationSite site) {
+        // Initialize with random stock for all 12 vaccines
+        for (int i = 1; i <= 12; i++) {
+            String vaccineId = String.format("VAC%03d", i);
+            int stock = 50 + (int)(Math.random() * 100); // Random stock between 50 and 150
+            // Random expiry date between 6 months and 2 years from now
+            LocalDate expiry = LocalDate.now().plusDays(180 + (int)(Math.random() * 550));
+            site.updateStock(vaccineId, stock, expiry);
+        }
     }
     
     /**
@@ -147,6 +143,23 @@ public class VaccinationSiteService {
         return sitesWithVaccine;
     }
     
+    /**
+     * Update stock for a vaccine at a site.
+     * 
+     * @param siteId The site ID
+     * @param vaccineId The vaccine ID
+     * @param quantity The new quantity
+     * @return true if site found, false otherwise
+     */
+    public boolean updateSiteStock(String siteId, String vaccineId, int quantity) {
+        VaccinationSite site = getSiteById(siteId);
+        if (site != null) {
+            site.updateStock(vaccineId, quantity);
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Add a vaccine to a site's available vaccines list.
      * 

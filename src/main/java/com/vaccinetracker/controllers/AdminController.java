@@ -4,6 +4,7 @@ import com.vaccinetracker.App;
 import com.vaccinetracker.model.User;
 import com.vaccinetracker.services.AlertService;
 import com.vaccinetracker.services.ChildService;
+import com.vaccinetracker.services.HumanResourceService;
 import com.vaccinetracker.services.UserService;
 import com.vaccinetracker.services.VaccinationService;
 import com.vaccinetracker.services.VaccinationSiteService;
@@ -38,6 +39,9 @@ public class AdminController {
     private Button inventoryMenuButton;
 
     @FXML
+    private Button hrMenuButton;
+
+    @FXML
     private Button alertsMenuButton;
 
     @FXML
@@ -54,6 +58,7 @@ public class AdminController {
     private VaccinationService vaccinationService;
     private VaccinationSiteService vaccinationSiteService;
     private AlertService alertService;
+    private HumanResourceService hrService;
     
     /**
      * Set the current user.
@@ -79,6 +84,7 @@ public class AdminController {
         vaccinationService = new VaccinationService(childService, vaccineService);
         vaccinationSiteService = new VaccinationSiteService();
         alertService = new AlertService();
+        hrService = new HumanResourceService(vaccinationSiteService);
         
         // Populate Chart
         if (vaccinationChart != null) {
@@ -175,18 +181,41 @@ public class AdminController {
     }
     
     /**
-     * Handle manage vaccines button click.
+     * Handle manage vaccines/inventory button click.
      */
     @FXML
     private void handleManageVaccines() {
-        // For now, show an alert with vaccine count
-        // In a full implementation, this would open a vaccine management window
-        int vaccineCount = vaccineService.getVaccineCount();
-        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
-        alert.setTitle("Manage Vaccines");
-        alert.setHeaderText("Vaccine Management");
-        alert.setContentText("There are " + vaccineCount + " vaccines in the system.\n\nVaccine management interface coming soon.");
-        alert.showAndWait();
+        System.out.println("Inventory menu clicked");
+        try {
+            if (mainContent == null) {
+                System.err.println("ERROR: mainContent is null!");
+                return;
+            }
+            
+            System.out.println("Loading InventoryView.fxml...");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/InventoryView.fxml"));
+            Node inventoryView = loader.load();
+            System.out.println("InventoryView loaded successfully");
+            
+            InventoryController controller = loader.getController();
+            if (controller == null) {
+                System.err.println("ERROR: InventoryController is null!");
+            } else {
+                System.out.println("Initializing InventoryController...");
+                controller.setServices(vaccinationSiteService, vaccineService);
+            }
+            
+            // Replace main content
+            mainContent.getChildren().setAll(inventoryView);
+            System.out.println("Main content updated");
+            
+            // Update active state of buttons
+            updateActiveMenuButton(inventoryMenuButton);
+            
+        } catch (Exception e) {
+            System.err.println("Error loading inventory view: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
     
     /**
@@ -251,29 +280,51 @@ public class AdminController {
     }
     
     /**
+     * Handle human resources button click.
+     */
+    @FXML
+    private void handleHumanResources() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/HumanResourceView.fxml"));
+            Node view = loader.load();
+            
+            HumanResourceController controller = loader.getController();
+            controller.setServices(hrService, vaccinationSiteService);
+            
+            mainContent.getChildren().clear();
+            mainContent.getChildren().add(view);
+            
+            // Update active state of buttons
+            updateActiveMenuButton(hrMenuButton);
+            
+        } catch (Exception e) {
+            System.err.println("Error loading HR view: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Handle view health alerts button click.
      */
     @FXML
     private void handleViewHealthAlerts() {
-        StringBuilder alertsText = new StringBuilder();
-        alertsText.append("Active Health Alerts:\n\n");
-        
-        var activeAlerts = alertService.getActiveAlerts();
-        if (activeAlerts.isEmpty()) {
-            alertsText.append("No active alerts at this time.");
-        } else {
-            for (var alert : activeAlerts) {
-                alertsText.append(String.format("• [%s] %s\n%s\n\n", 
-                    alert.getSeverityLevel(), alert.getTitle(), alert.getMessage()));
-            }
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/HealthAlertsView.fxml"));
+            Node view = loader.load();
+            
+            HealthAlertsController controller = loader.getController();
+            controller.setAlertService(alertService);
+            
+            mainContent.getChildren().clear();
+            mainContent.getChildren().add(view);
+            
+            // Update active state of buttons
+            updateActiveMenuButton(alertsMenuButton);
+            
+        } catch (Exception e) {
+            System.err.println("Error loading Health Alerts view: " + e.getMessage());
+            e.printStackTrace();
         }
-        
-        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
-        alert.setTitle("Community Health Alerts");
-        alert.setHeaderText("Health Alerts & Recommendations");
-        alert.setContentText(alertsText.toString());
-        alert.getDialogPane().setPrefWidth(500);
-        alert.showAndWait();
     }
     
     /**
