@@ -167,12 +167,36 @@
 
 .chart-legend {
     -fx-background-color: transparent;
-    -fx-padding: 0 0 10 0;
+    -fx-padding: 10px;
 }
 
 .chart-legend-item {
-    -fx-text-fill: -text-muted;
+    -fx-text-fill: -text-dark;
     -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.chart-legend-item-symbol {
+   -fx-background-radius: 50%;
+}
+
+/* Custom Legend Styles */
+.custom-legend {
+    -fx-padding: 0 0 0 20;
+}
+
+.legend-symbol-boys {
+    -fx-fill: -brand-blue;
+}
+
+.legend-symbol-girls {
+    -fx-fill: -brand-green;
+}
+
+.legend-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: -text-muted;
+    -fx-font-weight: bold;
 }
 
 .chart-plot-background {

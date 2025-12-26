@@ -31,18 +31,62 @@ public class ChildService {
         // Ethiopian names: Child Name = First Name + Father's Name
         // Guardian Name usually Father (Father's Name + Grandfather's Name) or Mother
         
-        registerChild("Abebe Kebede", LocalDate.of(2023, 5, 15), "P001", "H001", "Male", "Kebede Tadesse", generateRandomContact());
-        registerChild("Sara Tesfaye", LocalDate.of(2024, 1, 10), "P002", "H001", "Female", "Tesfaye Alemu", generateRandomContact());
-        registerChild("Tigist Haile", LocalDate.of(2022, 11, 20), "P003", "H002", "Female", "Almaz Bekele", generateRandomContact()); // Mother as guardian
-        registerChild("Dawit Solomon", LocalDate.of(2023, 8, 5), "P004", "H001", "Male", "Solomon Girma", generateRandomContact());
-        registerChild("Bethlehem Assefa", LocalDate.of(2024, 3, 12), "P005", "H003", "Female", "Assefa Worku", generateRandomContact());
-        registerChild("Yared Mulugeta", LocalDate.of(2023, 12, 1), "P006", "H002", "Male", "Mulugeta Abebe", generateRandomContact());
-        registerChild("Hana Daniel", LocalDate.of(2022, 9, 25), "P007", "H001", "Female", "Daniel Yosef", generateRandomContact());
-        registerChild("Kirubel Getachew", LocalDate.of(2024, 2, 18), "P008", "H003", "Male", "Aster Mengistu", generateRandomContact()); // Mother as guardian
-        registerChild("Mahlet Tekle", LocalDate.of(2023, 6, 30), "P009", "H002", "Female", "Tekle Yosef", generateRandomContact());
-        registerChild("Eyob Fikru", LocalDate.of(2022, 10, 8), "P010", "H001", "Male", "Fikru Demeke", generateRandomContact());
-        registerChild("Kalkidan Zelalem", LocalDate.of(2024, 4, 5), "P011", "H003", "Female", "Zelalem Tadesse", generateRandomContact());
-        registerChild("Nahom Berhanu", LocalDate.of(2023, 1, 22), "P012", "H002", "Male", "Berhanu Kebede", generateRandomContact());
+        String[] maleFirstNames = {
+            "Abebe", "Kebede", "Dawit", "Yared", "Kirubel", "Mohammed", "Ahmed", "Eyob", "Nahom", "Solomon", 
+            "Girma", "Tesfaye", "Worku", "Daniel", "Yosef", "Bilal", "Kedir", "Jemal", "Hassen", "Abel",
+            "Elias", "Fikru", "Zelalem", "Mulugeta", "Getachew", "Abraham", "Samuel", "Robel", "Natnael"
+        };
+
+        String[] femaleFirstNames = {
+            "Almaz", "Tigist", "Sara", "Hana", "Mahlet", "Fatima", "Aisha", "Kalkidan", "Aster", "Zeyneba", 
+            "Medina", "Bethlehem", "Rahel", "Marta", "Helen", "Genet", "Meskerem", "Zewditu", "Lydia", "Hiwot",
+            "Frehiwot", "Selam", "Meron", "Saron", "Yordanos", "Birtukan", "Tsedey", "Lemlem"
+        };
+        
+        String[] lastNames = {
+            "Tadesse", "Alemu", "Bekele", "Girma", "Assefa", "Worku", "Yosef", "Mengistu", "Demeke", "Berhanu",
+            "Ali", "Hussein", "Mohammed", "Ibrahim", "Ousman", "Abdullah", "Yasin", "Omar", "Said", "Hassan",
+            "Haile", "Solomon", "Tekle", "Fikru", "Zelalem", "Mulugeta", "Getachew", "Abraham"
+        };
+
+        // Generate 20 random children
+        for (int i = 0; i < 20; i++) {
+            // Random gender
+            String gender = Math.random() < 0.5 ? "Male" : "Female";
+            
+            String firstName;
+            if (gender.equals("Male")) {
+                firstName = maleFirstNames[(int)(Math.random() * maleFirstNames.length)];
+            } else {
+                firstName = femaleFirstNames[(int)(Math.random() * femaleFirstNames.length)];
+            }
+
+            String fatherName = lastNames[(int)(Math.random() * lastNames.length)];
+            String grandFatherName = lastNames[(int)(Math.random() * lastNames.length)];
+            
+            String childName = firstName + " " + fatherName;
+            
+            String guardianName;
+            // 30% chance guardian is mother
+            if (Math.random() < 0.3) {
+                String motherFirstName = femaleFirstNames[(int)(Math.random() * femaleFirstNames.length)];
+                String motherFatherName = lastNames[(int)(Math.random() * lastNames.length)];
+                guardianName = motherFirstName + " " + motherFatherName;
+            } else {
+                // Guardian is father
+                guardianName = fatherName + " " + grandFatherName;
+            }
+            
+            // Random age between 0 days and 5 years (approx 1825 days)
+            int ageInDays = (int)(Math.random() * 1825);
+            LocalDate dob = LocalDate.now().minusDays(ageInDays);
+            
+            // Random parent ID and Hospital ID
+            String parentId = "P" + String.format("%03d", (int)(Math.random() * 100));
+            String hospitalId = "H" + String.format("%03d", (int)(Math.random() * 5) + 1);
+            
+            registerChild(childName, dob, parentId, hospitalId, gender, guardianName, generateRandomContact());
+        }
     }
 
     private String generateRandomContact() {
