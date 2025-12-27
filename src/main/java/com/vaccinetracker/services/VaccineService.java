@@ -96,6 +96,15 @@ public class VaccineService {
         }
         return addVaccine(vaccineId, name, "Custom added vaccine", 0);
     }
+
+    // Static access for StorageService
+    public static List<Vaccine> getAllData() {
+        return vaccines;
+    }
+
+    public static void setAllData(List<Vaccine> data) {
+        vaccines = data;
+    }
     
     /**
      * Find a vaccine by its vaccine ID.

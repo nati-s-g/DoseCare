@@ -22,6 +22,8 @@ public class StorageService {
     private static final String CHILDREN_FILE = DATA_DIR + "/children.json";
     private static final String ALERTS_FILE = DATA_DIR + "/alerts.json";
     private static final String SITES_FILE = DATA_DIR + "/sites.json";
+    private static final String VACCINES_FILE = DATA_DIR + "/vaccines.json";
+    private static final String RECORDS_FILE = DATA_DIR + "/records.json";
     
     private static Gson gson;
     
@@ -51,6 +53,8 @@ public class StorageService {
         saveData(CHILDREN_FILE, ChildService.getAllData());
         saveData(ALERTS_FILE, AlertService.getAllData());
         saveData(SITES_FILE, VaccinationSiteService.getAllData());
+        saveData(VACCINES_FILE, VaccineService.getAllData());
+        saveData(RECORDS_FILE, VaccinationService.getAllData());
         
         System.out.println("All data saved successfully to " + new File(DATA_DIR).getAbsolutePath());
     }
@@ -77,6 +81,12 @@ public class StorageService {
         
         List<VaccinationSite> sites = loadData(SITES_FILE, new TypeToken<List<VaccinationSite>>(){}.getType());
         if (sites != null && !sites.isEmpty()) VaccinationSiteService.setAllData(sites);
+        
+        List<Vaccine> vaccines = loadData(VACCINES_FILE, new TypeToken<List<Vaccine>>(){}.getType());
+        if (vaccines != null && !vaccines.isEmpty()) VaccineService.setAllData(vaccines);
+        
+        List<VaccinationRecord> records = loadData(RECORDS_FILE, new TypeToken<List<VaccinationRecord>>(){}.getType());
+        if (records != null && !records.isEmpty()) VaccinationService.setAllData(records);
         
         System.out.println("All data loaded successfully.");
     }

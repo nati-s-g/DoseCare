@@ -54,6 +54,15 @@ public class VaccinationService {
         return record;
     }
 
+    // Static access for StorageService
+    public static List<VaccinationRecord> getAllData() {
+        return vaccinationRecords;
+    }
+
+    public static void setAllData(List<VaccinationRecord> data) {
+        vaccinationRecords = data;
+    }
+
     /**
      * Create a vaccination schedule for a child based on their age.
      * This is called when a child is registered.
