@@ -190,5 +190,14 @@ public class AlertService {
     public int getActiveAlertCount() {
         return getActiveAlerts().size();
     }
+
+    // Static access for StorageService
+    public static List<HealthAlert> getAllData() {
+        return healthAlerts;
+    }
+
+    public static void setAllData(List<HealthAlert> data) {
+        healthAlerts = data;
+    }
 }
 

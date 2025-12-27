@@ -1,5 +1,6 @@
 package com.vaccinetracker;
 
+import com.vaccinetracker.services.StorageService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,6 +20,9 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         try {
+            // Load data from disk
+            StorageService.loadAll();
+            
             primaryStage = stage;
             
             System.out.println("App.start() called");
@@ -112,6 +116,11 @@ public class App extends Application {
      */
     public static Stage getPrimaryStage() {
         return primaryStage;
+    }
+    
+    @Override
+    public void stop() {
+        StorageService.saveAll();
     }
 
     public static void main(String[] args) {

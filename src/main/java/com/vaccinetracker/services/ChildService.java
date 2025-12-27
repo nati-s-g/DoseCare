@@ -252,5 +252,14 @@ public class ChildService {
             }
         }
     }
+
+    // Static access for StorageService
+    public static List<Child> getAllData() {
+        return children;
+    }
+
+    public static void setAllData(List<Child> data) {
+        children = data;
+    }
 }
 

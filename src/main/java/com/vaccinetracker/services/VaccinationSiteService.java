@@ -210,5 +210,14 @@ public class VaccinationSiteService {
     public int getSiteCount() {
         return vaccinationSites.size();
     }
+
+    // Static access for StorageService
+    public static List<VaccinationSite> getAllData() {
+        return vaccinationSites;
+    }
+
+    public static void setAllData(List<VaccinationSite> data) {
+        vaccinationSites = data;
+    }
 }
 

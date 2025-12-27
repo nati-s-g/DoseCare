@@ -1,0 +1,10 @@
+[
+  {
+    "address": "123 Main St, City",
+    "numberOfChildren": 1,
+    "userId": "PAR001",
+    "name": "Parent1",
+    "contactInfo": "Parent.one@email.com",
+    "role": "PARENT"
+  }
+]

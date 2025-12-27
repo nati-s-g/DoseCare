@@ -1,0 +1,202 @@
+[
+  {
+    "childId": "CHD-BD1742C8-8283",
+    "name": "Bethlehem Tekle",
+    "dateOfBirth": "2025-07-29",
+    "parentId": "P026",
+    "hospitalId": "H003",
+    "gender": "Female",
+    "guardianName": "Meskerem Abdullah",
+    "guardianContact": "+251927783290"
+  },
+  {
+    "childId": "CHD-2FA9A0E1-EDA9",
+    "name": "Almaz Solomon",
+    "dateOfBirth": "2022-10-26",
+    "parentId": "P053",
+    "hospitalId": "H003",
+    "gender": "Female",
+    "guardianName": "Lydia Bekele",
+    "guardianContact": "+251923745696"
+  },
+  {
+    "childId": "CHD-8A779A14-0841",
+    "name": "Mohammed Abdullah",
+    "dateOfBirth": "2021-10-12",
+    "parentId": "P017",
+    "hospitalId": "H005",
+    "gender": "Male",
+    "guardianName": "Abdullah Ali",
+    "guardianContact": "+251926007806"
+  },
+  {
+    "childId": "CHD-88AE1C13-02CF",
+    "name": "Meron Ibrahim",
+    "dateOfBirth": "2025-03-09",
+    "parentId": "P087",
+    "hospitalId": "H003",
+    "gender": "Female",
+    "guardianName": "Ibrahim Worku",
+    "guardianContact": "+251971676424"
+  },
+  {
+    "childId": "CHD-5EB3B4E9-1BDA",
+    "name": "Genet Mulugeta",
+    "dateOfBirth": "2025-11-13",
+    "parentId": "P033",
+    "hospitalId": "H005",
+    "gender": "Female",
+    "guardianName": "Mulugeta Berhanu",
+    "guardianContact": "+251967982245"
+  },
+  {
+    "childId": "CHD-F074D8A3-807C",
+    "name": "Elias Abdullah",
+    "dateOfBirth": "2025-05-13",
+    "parentId": "P092",
+    "hospitalId": "H005",
+    "gender": "Male",
+    "guardianName": "Abdullah Yasin",
+    "guardianContact": "+251940101515"
+  },
+  {
+    "childId": "CHD-9952587C-3756",
+    "name": "Aisha Mulugeta",
+    "dateOfBirth": "2023-12-25",
+    "parentId": "P096",
+    "hospitalId": "H001",
+    "gender": "Female",
+    "guardianName": "Yordanos Fikru",
+    "guardianContact": "+251923858438"
+  },
+  {
+    "childId": "CHD-B2C654E9-990B",
+    "name": "Almaz Said",
+    "dateOfBirth": "2021-04-23",
+    "parentId": "P024",
+    "hospitalId": "H005",
+    "gender": "Female",
+    "guardianName": "Hiwot Demeke",
+    "guardianContact": "+251981355316"
+  },
+  {
+    "childId": "CHD-F59987EC-9212",
+    "name": "Dawit Ibrahim",
+    "dateOfBirth": "2022-08-09",
+    "parentId": "P009",
+    "hospitalId": "H005",
+    "gender": "Male",
+    "guardianName": "Mahlet Demeke",
+    "guardianContact": "+251970617908"
+  },
+  {
+    "childId": "CHD-8FA702A5-653B",
+    "name": "Helen Said",
+    "dateOfBirth": "2023-11-12",
+    "parentId": "P085",
+    "hospitalId": "H002",
+    "gender": "Female",
+    "guardianName": "Said Hussein",
+    "guardianContact": "+251914832210"
+  },
+  {
+    "childId": "CHD-07E93EEF-2C4D",
+    "name": "Nahom Alemu",
+    "dateOfBirth": "2021-05-26",
+    "parentId": "P073",
+    "hospitalId": "H002",
+    "gender": "Male",
+    "guardianName": "Alemu Yasin",
+    "guardianContact": "+251966133186"
+  },
+  {
+    "childId": "CHD-69C311DE-41B1",
+    "name": "Yordanos Hussein",
+    "dateOfBirth": "2022-03-13",
+    "parentId": "P001",
+    "hospitalId": "H005",
+    "gender": "Female",
+    "guardianName": "Hussein Tekle",
+    "guardianContact": "+251990734110"
+  },
+  {
+    "childId": "CHD-9B8AE184-072E",
+    "name": "Yordanos Hassan",
+    "dateOfBirth": "2022-01-16",
+    "parentId": "P019",
+    "hospitalId": "H002",
+    "gender": "Female",
+    "guardianName": "Birtukan Said",
+    "guardianContact": "+251938855266"
+  },
+  {
+    "childId": "CHD-8AFE0427-E854",
+    "name": "Eyob Tekle",
+    "dateOfBirth": "2021-03-13",
+    "parentId": "P000",
+    "hospitalId": "H001",
+    "gender": "Male",
+    "guardianName": "Tekle Tadesse",
+    "guardianContact": "+251943169841"
+  },
+  {
+    "childId": "CHD-4890C932-342D",
+    "name": "Bethlehem Mengistu",
+    "dateOfBirth": "2025-10-11",
+    "parentId": "P073",
+    "hospitalId": "H002",
+    "gender": "Female",
+    "guardianName": "Mengistu Zelalem",
+    "guardianContact": "+251957217968"
+  },
+  {
+    "childId": "CHD-458E50F3-F706",
+    "name": "Sara Mohammed",
+    "dateOfBirth": "2025-10-18",
+    "parentId": "P084",
+    "hospitalId": "H004",
+    "gender": "Female",
+    "guardianName": "Bethlehem Mengistu",
+    "guardianContact": "+251981395308"
+  },
+  {
+    "childId": "CHD-F31E0BC8-DAC8",
+    "name": "Kedir Abdullah",
+    "dateOfBirth": "2023-05-30",
+    "parentId": "P030",
+    "hospitalId": "H002",
+    "gender": "Male",
+    "guardianName": "Rahel Zelalem",
+    "guardianContact": "+251943413005"
+  },
+  {
+    "childId": "CHD-C8A99022-AB37",
+    "name": "Meron Ali",
+    "dateOfBirth": "2025-06-26",
+    "parentId": "P023",
+    "hospitalId": "H003",
+    "gender": "Female",
+    "guardianName": "Ali Hassan",
+    "guardianContact": "+251964334511"
+  },
+  {
+    "childId": "CHD-3DBAD851-F081",
+    "name": "Lemlem Zelalem",
+    "dateOfBirth": "2022-06-28",
+    "parentId": "P098",
+    "hospitalId": "H001",
+    "gender": "Female",
+    "guardianName": "Aster Said",
+    "guardianContact": "+251974964649"
+  },
+  {
+    "childId": "CHD-32605B23-110A",
+    "name": "Solomon Bekele",
+    "dateOfBirth": "2023-10-17",
+    "parentId": "P031",
+    "hospitalId": "H005",
+    "gender": "Male",
+    "guardianName": "Bekele Bekele",
+    "guardianContact": "+251955676292"
+  }
+]

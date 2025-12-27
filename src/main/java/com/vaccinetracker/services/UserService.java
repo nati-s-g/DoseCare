@@ -17,14 +17,15 @@ import java.util.List;
 public class UserService {
     
     // Store users in a List (simulating database storage)
-    private List<User> users;
+    private static List<User> users = new ArrayList<>();
     
     /**
      * Constructor - initializes the user list and creates some sample users.
      */
     public UserService() {
-        this.users = new ArrayList<>();
-        initializeSampleUsers();  // Add some sample data for testing
+        if (users.isEmpty()) {
+            initializeSampleUsers();  // Add some sample data for testing
+        }
     }
     
     /**
@@ -160,6 +161,15 @@ public class UserService {
      */
     public int getUserCount() {
         return users.size();
+    }
+
+    // Static access for StorageService
+    public static List<User> getAllData() {
+        return users;
+    }
+
+    public static void setAllData(List<User> data) {
+        users = data;
     }
 }
 

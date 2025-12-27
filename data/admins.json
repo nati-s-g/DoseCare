@@ -1,0 +1,10 @@
+[
+  {
+    "hospitalId": "HOSP001",
+    "department": "Pediatrics",
+    "userId": "ADM001",
+    "name": "Dr. Sarah Johnson",
+    "contactInfo": "sarah.johnson@hospital.com",
+    "role": "ADMIN"
+  }
+]
