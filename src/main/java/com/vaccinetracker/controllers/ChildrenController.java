@@ -83,6 +83,8 @@ public class ChildrenController {
     @FXML
     private ComboBox<VaccinationSite> notifySiteComboBox;
     @FXML
+    private DatePicker notifyDueDatePicker;
+    @FXML
     private TextArea explanationArea;
 
     // Vaccination Records Tab Controls
@@ -479,6 +481,7 @@ public class ChildrenController {
 
         Vaccine selectedVaccine = notifyVaccineComboBox.getValue();
         VaccinationSite selectedSite = notifySiteComboBox.getValue();
+        LocalDate dueDate = notifyDueDatePicker.getValue();
         String explanation = explanationArea.getText();
 
         if (selectedVaccine == null || explanation.isEmpty()) {
@@ -488,6 +491,7 @@ public class ChildrenController {
         
         String vaccineName = selectedVaccine.getName();
         String siteName = selectedSite != null ? selectedSite.getName() : "Unknown Site";
+        String dueDateStr = dueDate != null ? dueDate.toString() : "Not specified";
 
         // Check inventory availability
         if (selectedSite != null) {
@@ -516,7 +520,7 @@ public class ChildrenController {
         int count = 0;
         for (Child child : selectedChildren) {
             String title = "Vaccine Alert: " + vaccineName;
-            String message = explanation + "\n\nLocation: " + siteName + "\nChild: " + child.getName() + " (" + child.getChildId() + ")";
+            String message = explanation + "\n\nDue Date: " + dueDateStr + "\nLocation: " + siteName + "\nChild: " + child.getName() + " (" + child.getChildId() + ")";
             alertService.createTargetedAlert(title, message, HealthAlert.SeverityLevel.MEDIUM, child.getChildId());
             count++;
         }
@@ -526,6 +530,7 @@ public class ChildrenController {
         // Clear form
         notifyVaccineComboBox.getSelectionModel().clearSelection();
         notifySiteComboBox.getSelectionModel().clearSelection();
+        notifyDueDatePicker.setValue(null);
         explanationArea.clear();
         for (ChildSelectionWrapper wrapper : notifyList) {
             wrapper.setSelected(false);

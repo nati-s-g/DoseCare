@@ -64,15 +64,16 @@ public class LoginController {
     private void handleLogin() {
         String username = usernameField.getText();
         String password = passwordField.getText();
-        boolean isAdmin = adminToggle.isSelected();
-
-        // TODO: Implement actual authentication logic here
-        // For now, just simulate navigation based on role
         
-        if (isAdmin) {
+        // Authenticate using the service
+        AuthService.UserRole role = authService.login(username, password);
+        
+        if (role == AuthService.UserRole.ADMIN) {
             handleAdminLogin();
-        } else {
+        } else if (role == AuthService.UserRole.PARENT) {
             handleParentLogin();
+        } else {
+            showError("Login Failed", "Invalid username or password.");
         }
     }
 

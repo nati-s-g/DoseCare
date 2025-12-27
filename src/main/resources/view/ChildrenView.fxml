@@ -124,6 +124,11 @@
                             </VBox>
                             
                             <VBox spacing="5">
+                                <Label text="Due Date" styleClass="form-label"/>
+                                <DatePicker fx:id="notifyDueDatePicker" promptText="Select Due Date" maxWidth="Infinity"/>
+                            </VBox>
+                            
+                            <VBox spacing="5">
                                 <Label text="Explanation / Message" styleClass="form-label"/>
                                 <TextArea fx:id="explanationArea" promptText="Enter detailed message for parents..." prefRowCount="10" wrapText="true" styleClass="text-area"/>
                             </VBox>

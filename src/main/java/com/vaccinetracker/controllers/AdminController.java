@@ -219,6 +219,32 @@ public class AdminController {
 
         dialog.getDialogPane().setContent(grid);
 
+        // Disable Add button until valid inputs are provided
+        javafx.scene.Node addButton = dialog.getDialogPane().lookupButton(addButtonType);
+        addButton.setDisable(true);
+
+        java.util.function.Predicate<String> isNonNegativeInteger = s -> {
+            if (s == null || s.isEmpty()) return false;
+            for (int i = 0; i < s.length(); i++) {
+                if (!Character.isDigit(s.charAt(i))) return false;
+            }
+            return true;
+        };
+
+        Runnable validateInputs = () -> {
+            boolean valid = isNonNegativeInteger.test(boysField.getText()) &&
+                            isNonNegativeInteger.test(girlsField.getText()) &&
+                            monthCombo.getValue() != null &&
+                            yearComboDialog.getValue() != null;
+            addButton.setDisable(!valid);
+        };
+
+        boysField.textProperty().addListener((obs, o, n) -> validateInputs.run());
+        girlsField.textProperty().addListener((obs, o, n) -> validateInputs.run());
+        monthCombo.valueProperty().addListener((obs, o, n) -> validateInputs.run());
+        yearComboDialog.valueProperty().addListener((obs, o, n) -> validateInputs.run());
+        validateInputs.run();
+
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == addButtonType) {
                 try {
@@ -226,7 +252,7 @@ public class AdminController {
                     int boys = Integer.parseInt(boysField.getText());
                     int girls = Integer.parseInt(girlsField.getText());
                     return new Pair<>(year, new Pair<>(monthCombo.getValue(), new Pair<>(boys, girls)));
-                } catch (NumberFormatException e) {
+                } catch (Exception e) {
                     return null;
                 }
             }
@@ -262,6 +288,13 @@ public class AdminController {
                 } else {
                     yearComboBox.setValue(selectedYear);
                 }
+            } else {
+                // Fallback alert if month resolution failed
+                javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Month");
+                alert.setHeaderText(null);
+                alert.setContentText("Could not determine selected month. Please try again.");
+                alert.showAndWait();
             }
         });
     }
