@@ -16,15 +16,16 @@ import java.time.LocalDate;
 public class VaccinationSiteService {
     
     // Store vaccination sites in a List
-    private List<VaccinationSite> vaccinationSites;
-    private int nextSiteId = 1;  // Auto-increment ID generator
+    private static List<VaccinationSite> vaccinationSites = new ArrayList<>();
+    private static int nextSiteId = 1;  // Auto-increment ID generator
     
     /**
      * Constructor - initializes the sites list and creates some sample sites.
      */
     public VaccinationSiteService() {
-        this.vaccinationSites = new ArrayList<>();
-        initializeSampleSites();  // Add some sample data
+        if (vaccinationSites.isEmpty()) {
+            initializeSampleSites();  // Add some sample data
+        }
     }
     
     /**

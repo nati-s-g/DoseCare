@@ -17,14 +17,15 @@ import java.util.UUID;
 public class ChildService {
     
     // Store children in a List (simulating database storage)
-    private List<Child> children;
+    private static List<Child> children = new ArrayList<>();
     
     /**
      * Constructor - initializes the children list.
      */
     public ChildService() {
-        this.children = new ArrayList<>();
-        initializeDummyData();
+        if (children.isEmpty()) {
+            initializeDummyData();
+        }
     }
 
     private void initializeDummyData() {
@@ -215,6 +216,22 @@ public class ChildService {
             if (newDateOfBirth != null) {
                 child.setDateOfBirth(newDateOfBirth);
             }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Link a child to a parent account.
+     * 
+     * @param childId The child ID
+     * @param parentId The parent ID
+     * @return true if successful, false if child not found
+     */
+    public boolean linkChildToParent(String childId, String parentId) {
+        Child child = getChildById(childId);
+        if (child != null) {
+            child.setParentId(parentId);
             return true;
         }
         return false;

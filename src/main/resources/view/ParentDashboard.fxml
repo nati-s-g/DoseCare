@@ -54,6 +54,7 @@
          <VBox spacing="15">
              <HBox styleClass="top-bar">
                 <Region HBox.hgrow="ALWAYS" />
+                <Button text="Back to Dashboard" styleClass="top-button" onAction="#handleDashboardMenu" style="-fx-margin-right: 10px;"/>
                 <Button text="Logout" fx:id="logoutButton" styleClass="top-button" onAction="#handleLogout" />
              </HBox>
              <Separator styleClass="header-separator" />

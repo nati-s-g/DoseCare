@@ -15,14 +15,15 @@ import java.util.List;
 public class VaccineService {
     
     // Store vaccines in a List
-    private List<Vaccine> vaccines;
+    private static List<Vaccine> vaccines = new ArrayList<>();
     
     /**
      * Constructor - initializes the vaccines list and preloads common vaccines.
      */
     public VaccineService() {
-        this.vaccines = new ArrayList<>();
-        preloadVaccines();  // Add standard vaccines
+        if (vaccines.isEmpty()) {
+            preloadVaccines();  // Add standard vaccines
+        }
     }
     
     /**

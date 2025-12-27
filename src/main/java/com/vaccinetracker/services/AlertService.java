@@ -15,15 +15,16 @@ import java.util.List;
 public class AlertService {
     
     // Store health alerts in a List
-    private List<HealthAlert> healthAlerts;
-    private int nextAlertId = 1;  // Auto-increment ID generator
+    private static List<HealthAlert> healthAlerts = new ArrayList<>();
+    private static int nextAlertId = 1;  // Auto-increment ID generator
     
     /**
      * Constructor - initializes the alerts list and creates some sample alerts.
      */
     public AlertService() {
-        this.healthAlerts = new ArrayList<>();
-        initializeSampleAlerts();  // Add some sample data
+        if (healthAlerts.isEmpty()) {
+            initializeSampleAlerts();  // Add some sample data
+        }
     }
     
     /**

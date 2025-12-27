@@ -281,50 +281,97 @@ public class ParentController {
         VBox childrenView = new VBox(20);
         childrenView.setPadding(new Insets(20));
         
+        HBox header = new HBox(20);
+        header.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        
         Label title = new Label("My Children");
         title.getStyleClass().add("chart-title");
+        
+        Region headerSpacer = new Region();
+        HBox.setHgrow(headerSpacer, Priority.ALWAYS);
+        
+        Button addChildBtn = new Button("Add Child");
+        addChildBtn.getStyleClass().add("button-primary");
+        addChildBtn.setOnAction(e -> handleAddChild());
+        
+        header.getChildren().addAll(title, headerSpacer, addChildBtn);
         
         VBox list = new VBox(10);
         List<Child> children = childService.getChildrenByParent(currentUser.getUserId());
         
-        for (Child child : children) {
-            HBox card = new HBox(15);
-            card.setPadding(new Insets(15));
-            card.setStyle("-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2); -fx-background-radius: 10;");
-            card.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-            
-            VBox info = new VBox(5);
-            Label name = new Label(child.getName());
-            name.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
-            Label details = new Label("Born: " + child.getDateOfBirth() + " | Gender: " + child.getGender());
-            details.setStyle("-fx-text-fill: -text-muted;");
-            
-            info.getChildren().addAll(name, details);
-            
-            Region spacer = new Region();
-            HBox.setHgrow(spacer, Priority.ALWAYS);
-            
-            Button viewRecordBtn = new Button("View Record");
-            viewRecordBtn.getStyleClass().add("button-secondary");
-            viewRecordBtn.setOnAction(e -> openVaccinationRecord(child));
-            
-            card.getChildren().addAll(info, spacer, viewRecordBtn);
-            list.getChildren().add(card);
+        if (children.isEmpty()) {
+            Label noChildren = new Label("No children linked to your account yet.");
+            noChildren.setStyle("-fx-text-fill: -text-muted; -fx-font-size: 14px;");
+            list.getChildren().add(noChildren);
+        } else {
+            for (Child child : children) {
+                HBox card = new HBox(15);
+                card.setPadding(new Insets(15));
+                card.setStyle("-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2); -fx-background-radius: 10;");
+                card.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+                
+                VBox info = new VBox(5);
+                Label name = new Label(child.getName());
+                name.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+                Label details = new Label("ID: " + child.getChildId() + " | Born: " + child.getDateOfBirth() + " | Gender: " + child.getGender());
+                details.setStyle("-fx-text-fill: -text-muted;");
+                
+                info.getChildren().addAll(name, details);
+                
+                Region spacer = new Region();
+                HBox.setHgrow(spacer, Priority.ALWAYS);
+                
+                Button viewRecordBtn = new Button("View Record");
+                viewRecordBtn.getStyleClass().add("button-secondary");
+                viewRecordBtn.setOnAction(e -> openVaccinationRecord(child));
+                
+                card.getChildren().addAll(info, spacer, viewRecordBtn);
+                list.getChildren().add(card);
+            }
         }
         
-        childrenView.getChildren().addAll(title, list);
+        childrenView.getChildren().addAll(header, list);
         
         ScrollPane scroll = new ScrollPane(childrenView);
         scroll.setFitToWidth(true);
         scroll.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
         
         // Add top bar back
-        VBox container = new VBox();
-        container.getChildren().add(contentArea.getChildren().get(0)); // Keep top bar
-        container.getChildren().add(scroll);
+        if (dashboardViewCache != null && !dashboardViewCache.isEmpty()) {
+            contentArea.getChildren().setAll(dashboardViewCache.get(0), scroll);
+        } else {
+            contentArea.getChildren().setAll(scroll);
+        }
         VBox.setVgrow(scroll, Priority.ALWAYS);
-        
-        contentArea.getChildren().setAll(container);
+    }
+    
+    private void handleAddChild() {
+        javafx.scene.control.TextInputDialog dialog = new javafx.scene.control.TextInputDialog();
+        dialog.setTitle("Add Child");
+        dialog.setHeaderText("Link Existing Child Record");
+        dialog.setContentText("Please enter the Child ID provided by the admin:");
+
+        java.util.Optional<String> result = dialog.showAndWait();
+        result.ifPresent(childId -> {
+            if (childId.trim().isEmpty()) return;
+            
+            boolean success = childService.linkChildToParent(childId.trim(), currentUser.getUserId());
+            if (success) {
+                javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+                alert.setTitle("Success");
+                alert.setHeaderText(null);
+                alert.setContentText("Child linked successfully!");
+                alert.showAndWait();
+                handleChildrenMenu(); // Refresh view
+                updateDashboardStats(); // Update stats
+            } else {
+                javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Child ID not found. Please check and try again.");
+                alert.showAndWait();
+            }
+        });
     }
     
     private void openVaccinationRecord(Child child) {
@@ -352,12 +399,12 @@ public class ParentController {
         scroll.setFitToWidth(true);
         scroll.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
         
-        VBox container = new VBox();
-        container.getChildren().add(contentArea.getChildren().get(0));
-        container.getChildren().add(scroll);
+        if (dashboardViewCache != null && !dashboardViewCache.isEmpty()) {
+            contentArea.getChildren().setAll(dashboardViewCache.get(0), scroll);
+        } else {
+            contentArea.getChildren().setAll(scroll);
+        }
         VBox.setVgrow(scroll, Priority.ALWAYS);
-        
-        contentArea.getChildren().setAll(container);
     }
 
     @FXML
@@ -374,12 +421,12 @@ public class ParentController {
         scroll.setFitToWidth(true);
         scroll.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
         
-        VBox container = new VBox();
-        container.getChildren().add(contentArea.getChildren().get(0));
-        container.getChildren().add(scroll);
+        if (dashboardViewCache != null && !dashboardViewCache.isEmpty()) {
+            contentArea.getChildren().setAll(dashboardViewCache.get(0), scroll);
+        } else {
+            contentArea.getChildren().setAll(scroll);
+        }
         VBox.setVgrow(scroll, Priority.ALWAYS);
-        
-        contentArea.getChildren().setAll(container);
     }
 
     @FXML
@@ -415,12 +462,12 @@ public class ParentController {
         scroll.setFitToWidth(true);
         scroll.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
         
-        VBox container = new VBox();
-        container.getChildren().add(contentArea.getChildren().get(0));
-        container.getChildren().add(scroll);
+        if (dashboardViewCache != null && !dashboardViewCache.isEmpty()) {
+            contentArea.getChildren().setAll(dashboardViewCache.get(0), scroll);
+        } else {
+            contentArea.getChildren().setAll(scroll);
+        }
         VBox.setVgrow(scroll, Priority.ALWAYS);
-        
-        contentArea.getChildren().setAll(container);
     }
     
     @FXML

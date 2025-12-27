@@ -19,8 +19,8 @@ import java.util.List;
 public class VaccinationService {
     
     // Store vaccination records in a List
-    private List<VaccinationRecord> vaccinationRecords;
-    private int nextRecordId = 1;  // Auto-increment ID generator
+    private static List<VaccinationRecord> vaccinationRecords = new ArrayList<>();
+    private static int nextRecordId = 1;  // Auto-increment ID generator
     
     // Reference to other services (composition/dependency)
     private ChildService childService;
@@ -33,7 +33,7 @@ public class VaccinationService {
      * @param vaccineService Reference to VaccineService
      */
     public VaccinationService(ChildService childService, VaccineService vaccineService) {
-        this.vaccinationRecords = new ArrayList<>();
+        // vaccinationRecords is static, so no need to initialize here if already done
         this.childService = childService;
         this.vaccineService = vaccineService;
     }

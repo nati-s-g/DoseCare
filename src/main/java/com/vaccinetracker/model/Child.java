@@ -98,6 +98,10 @@ public class Child {
     public void setGuardianContact(String guardianContact) {
         this.guardianContact = guardianContact;
     }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
     
     /**
      * Calculate the child's age in years (or months/days logic can be added).
