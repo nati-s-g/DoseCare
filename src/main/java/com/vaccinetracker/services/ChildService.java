@@ -236,5 +236,21 @@ public class ChildService {
         }
         return false;
     }
+
+    /**
+     * Update guardian information for all children of a specific parent.
+     * 
+     * @param parentId The parent ID
+     * @param newGuardianName New guardian name
+     * @param newGuardianContact New guardian contact
+     */
+    public void updateGuardianInfo(String parentId, String newGuardianName, String newGuardianContact) {
+        for (Child child : children) {
+            if (child.getParentId().equals(parentId)) {
+                child.setGuardianName(newGuardianName);
+                child.setGuardianContact(newGuardianContact);
+            }
+        }
+    }
 }
 

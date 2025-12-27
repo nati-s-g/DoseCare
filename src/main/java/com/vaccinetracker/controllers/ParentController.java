@@ -24,6 +24,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.layout.GridPane;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -468,6 +473,72 @@ public class ParentController {
             contentArea.getChildren().setAll(scroll);
         }
         VBox.setVgrow(scroll, Priority.ALWAYS);
+    }
+    
+    @FXML
+    private void handleEditProfile() {
+        if (!(currentUser instanceof com.vaccinetracker.model.Parent)) return;
+        
+        com.vaccinetracker.model.Parent parentUser = (com.vaccinetracker.model.Parent) currentUser;
+        
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Edit Profile");
+        dialog.setHeaderText("Update your profile information");
+        
+        ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+        
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+        
+        TextField nameField = new TextField();
+        nameField.setText(parentUser.getName());
+        
+        TextField contactField = new TextField();
+        contactField.setText(parentUser.getContactInfo());
+        
+        TextField addressField = new TextField();
+        addressField.setText(parentUser.getAddress());
+        
+        grid.add(new Label("Name:"), 0, 0);
+        grid.add(nameField, 1, 0);
+        grid.add(new Label("Contact Info:"), 0, 1);
+        grid.add(contactField, 1, 1);
+        grid.add(new Label("Address:"), 0, 2);
+        grid.add(addressField, 1, 2);
+        
+        dialog.getDialogPane().setContent(grid);
+        
+        dialog.showAndWait().ifPresent(response -> {
+            if (response == saveButtonType) {
+                String newName = nameField.getText();
+                String newContact = contactField.getText();
+                String newAddress = addressField.getText();
+                
+                if (!newName.isEmpty()) {
+                    parentUser.setName(newName);
+                    welcomeLabel.setText(newName);
+                }
+                
+                if (!newContact.isEmpty()) {
+                    parentUser.setContactInfo(newContact);
+                }
+                
+                if (!newAddress.isEmpty()) {
+                    parentUser.setAddress(newAddress);
+                }
+                
+                // Update guardian info for all children
+                childService.updateGuardianInfo(parentUser.getUserId(), parentUser.getName(), parentUser.getContactInfo());
+                
+                // Refresh view if needed
+                if (childrenMenuButton.getStyleClass().contains("active")) {
+                    handleChildrenMenu();
+                }
+            }
+        });
     }
     
     @FXML
