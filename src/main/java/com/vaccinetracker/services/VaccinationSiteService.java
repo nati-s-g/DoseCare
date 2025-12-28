@@ -20,18 +20,19 @@ public class VaccinationSiteService {
     private static int nextSiteId = 1;  // Auto-increment ID generator
     
     /**
-     * Constructor - initializes the sites list and creates some sample sites.
+     * Constructor - initializes the sites list.
      */
     public VaccinationSiteService() {
-        if (vaccinationSites.isEmpty()) {
-            initializeSampleSites();  // Add some sample data
-        }
+        // No longer automatically initializing sample sites here
+        // This is now handled by StorageService on first run
     }
     
     /**
      * Initialize with some sample vaccination sites for demonstration.
      */
-    private void initializeSampleSites() {
+    public static void initializeSampleSites() {
+        if (!vaccinationSites.isEmpty()) return;
+
         // Addis Ababa Hospitals
         VaccinationSite site1 = createSite("Black Lion Hospital (Tikur Anbessa)", 
                                            "Churchill Ave, Addis Ababa", 
@@ -59,7 +60,7 @@ public class VaccinationSiteService {
         initializeStock(site5);
     }
 
-    private void initializeStock(VaccinationSite site) {
+    private static void initializeStock(VaccinationSite site) {
         // Initialize with random stock for all 12 vaccines
         for (int i = 1; i <= 12; i++) {
             String vaccineId = String.format("VAC%03d", i);
@@ -78,7 +79,7 @@ public class VaccinationSiteService {
      * @param contactInfo Contact information
      * @return The created VaccinationSite object
      */
-    public VaccinationSite createSite(String name, String location, String contactInfo) {
+    public static VaccinationSite createSite(String name, String location, String contactInfo) {
         String siteId = "SITE" + String.format("%04d", nextSiteId++);
         VaccinationSite site = new VaccinationSite(siteId, name, location, contactInfo);
         vaccinationSites.add(site);

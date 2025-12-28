@@ -62,8 +62,8 @@ public class AuthService {
      * @param role The role to authenticate as (ADMIN or PARENT)
      * @return User object of that role, or null if none found
      */
-    public User authenticateByRole(String role) {
-        return userService.authenticateByRole(role);
+    public User authenticate(String username, String password) {
+        return userService.authenticate(username, password);
     }
     
     /**
@@ -82,17 +82,14 @@ public class AuthService {
      * @return UserRole enum value: ADMIN, PARENT, or INVALID
      */
     public UserRole login(String username, String password) {
-        // Check if the credentials match the admin account
-        // Using equals() method to compare strings (important for string comparison in Java)
-        if (username.equals("admin") && password.equals("admin")) {
-            // Admin credentials are correct, return ADMIN role
-            return UserRole.ADMIN;
-        }
+        User user = userService.authenticate(username, password);
         
-        // Check if the credentials match the parent account
-        if (username.equals("user1234") && password.equals("12345678")) {
-            // Parent credentials are correct, return PARENT role
-            return UserRole.PARENT;
+        if (user != null) {
+            if (user.getRole().equals("ADMIN")) {
+                return UserRole.ADMIN;
+            } else if (user.getRole().equals("PARENT")) {
+                return UserRole.PARENT;
+            }
         }
         
         // If we reach here, the credentials don't match any valid account
@@ -109,10 +106,6 @@ public class AuthService {
      * @return User object if credentials are valid, null otherwise
      */
     public User loginAndGetUser(String username, String password) {
-        UserRole role = login(username, password);
-        if (role != UserRole.INVALID) {
-            return authenticateByRole(role.toString());
-        }
-        return null;
+        return authenticate(username, password);
     }
 }

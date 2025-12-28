@@ -1,0 +1,74 @@
+[
+  {
+    "vaccineId": "VAC001",
+    "name": "BCG",
+    "description": "Bacillus Calmette-Guérin - protects against tuberculosis",
+    "recommendedAgeInDays": 0
+  },
+  {
+    "vaccineId": "VAC002",
+    "name": "Hepatitis B (Birth)",
+    "description": "First dose of Hepatitis B vaccine",
+    "recommendedAgeInDays": 0
+  },
+  {
+    "vaccineId": "VAC003",
+    "name": "DPT",
+    "description": "Diphtheria, Pertussis, Tetanus - first dose",
+    "recommendedAgeInDays": 42
+  },
+  {
+    "vaccineId": "VAC004",
+    "name": "Polio (Oral)",
+    "description": "Oral Polio Vaccine - first dose",
+    "recommendedAgeInDays": 42
+  },
+  {
+    "vaccineId": "VAC005",
+    "name": "Hepatitis B (6 weeks)",
+    "description": "Second dose of Hepatitis B",
+    "recommendedAgeInDays": 42
+  },
+  {
+    "vaccineId": "VAC006",
+    "name": "DPT (2nd)",
+    "description": "Diphtheria, Pertussis, Tetanus - second dose",
+    "recommendedAgeInDays": 70
+  },
+  {
+    "vaccineId": "VAC007",
+    "name": "Polio (Oral 2nd)",
+    "description": "Oral Polio Vaccine - second dose",
+    "recommendedAgeInDays": 70
+  },
+  {
+    "vaccineId": "VAC008",
+    "name": "DPT (3rd)",
+    "description": "Diphtheria, Pertussis, Tetanus - third dose",
+    "recommendedAgeInDays": 98
+  },
+  {
+    "vaccineId": "VAC009",
+    "name": "Polio (Oral 3rd)",
+    "description": "Oral Polio Vaccine - third dose",
+    "recommendedAgeInDays": 98
+  },
+  {
+    "vaccineId": "VAC010",
+    "name": "Measles",
+    "description": "Measles vaccine",
+    "recommendedAgeInDays": 270
+  },
+  {
+    "vaccineId": "VAC011",
+    "name": "DPT Booster",
+    "description": "Diphtheria, Pertussis, Tetanus booster",
+    "recommendedAgeInDays": 540
+  },
+  {
+    "vaccineId": "VAC012",
+    "name": "Polio Booster",
+    "description": "Oral Polio Vaccine booster",
+    "recommendedAgeInDays": 540
+  }
+]

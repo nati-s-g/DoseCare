@@ -48,7 +48,7 @@
                 <PasswordField fx:id="passwordField" promptText="Password" maxWidth="300"/>
 
                 <Button fx:id="loginButton" text="Login" styleClass="primary" onAction="#handleLogin" maxWidth="300"/>
-                <Button fx:id="signUpButton" text="Sign Up" styleClass="primary" maxWidth="300"/>
+                <Button fx:id="signUpButton" text="Sign Up as a Parent" styleClass="secondary" onAction="#handleSignUp" maxWidth="300"/>
                 <Hyperlink fx:id="forgotLink" text="Forgot Password?"/>
               </children>
             </VBox>

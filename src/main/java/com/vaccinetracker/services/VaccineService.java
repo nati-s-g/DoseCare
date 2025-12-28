@@ -18,19 +18,20 @@ public class VaccineService {
     private static List<Vaccine> vaccines = new ArrayList<>();
     
     /**
-     * Constructor - initializes the vaccines list and preloads common vaccines.
+     * Constructor - initializes the vaccines list.
      */
     public VaccineService() {
-        if (vaccines.isEmpty()) {
-            preloadVaccines();  // Add standard vaccines
-        }
+        // No longer automatically preloading vaccines here
+        // This is now handled by StorageService on first run
     }
     
     /**
      * Preload standard vaccines that are commonly used.
      * In a real application, this would load from a database.
      */
-    private void preloadVaccines() {
+    public static void preloadVaccines() {
+        if (!vaccines.isEmpty()) return;
+
         // Birth vaccines
         addVaccine("VAC001", "BCG", "Bacillus Calmette-Guérin - protects against tuberculosis", 0);
         addVaccine("VAC002", "Hepatitis B (Birth)", "First dose of Hepatitis B vaccine", 0);
@@ -74,7 +75,7 @@ public class VaccineService {
      * @param recommendedAgeInDays Recommended age in days
      * @return The created Vaccine object
      */
-    public Vaccine addVaccine(String vaccineId, String name, String description, int recommendedAgeInDays) {
+    public static Vaccine addVaccine(String vaccineId, String name, String description, int recommendedAgeInDays) {
         Vaccine vaccine = new Vaccine(vaccineId, name, description, recommendedAgeInDays);
         vaccines.add(vaccine);
         return vaccine;

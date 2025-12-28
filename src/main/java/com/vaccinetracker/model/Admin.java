@@ -19,14 +19,16 @@ public class Admin extends User {
      * Calls parent class constructor using super()
      * 
      * @param userId Unique identifier
+     * @param username Username
+     * @param password Password
      * @param name Full name
      * @param contactInfo Contact information
      * @param hospitalId Hospital identifier
      * @param department Department name
      */
-    public Admin(String userId, String name, String contactInfo, String hospitalId, String department) {
+    public Admin(String userId, String username, String password, String name, String contactInfo, String hospitalId, String department) {
         // Call parent class constructor - this sets userId, name, contactInfo, role
-        super(userId, name, contactInfo, "ADMIN");
+        super(userId, username, password, name, contactInfo, "ADMIN");
         this.hospitalId = hospitalId;
         this.department = department;
     }

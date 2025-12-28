@@ -23,6 +23,12 @@ public class App extends Application {
             // Load data from disk
             StorageService.loadAll();
             
+            // Add shutdown hook to ensure data is saved even if terminated via terminal
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                System.out.println("Shutdown hook triggered. Saving data...");
+                StorageService.saveAll();
+            }));
+            
             primaryStage = stage;
             
             System.out.println("App.start() called");

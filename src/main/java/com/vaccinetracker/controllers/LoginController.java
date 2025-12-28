@@ -13,6 +13,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import javafx.geometry.Insets;
+import java.util.Optional;
 
 /**
  * Controller for the Login View.
@@ -37,6 +44,9 @@ public class LoginController {
 
     @FXML
     private Button loginButton;
+
+    @FXML
+    private Button signUpButton;
 
     @FXML
     private Hyperlink forgotLink;
@@ -66,27 +76,36 @@ public class LoginController {
         String password = passwordField.getText();
         
         // Authenticate using the service
-        AuthService.UserRole role = authService.login(username, password);
+        User user = authService.authenticate(username, password);
         
-        if (role == AuthService.UserRole.ADMIN) {
-            handleAdminLogin();
-        } else if (role == AuthService.UserRole.PARENT) {
-            handleParentLogin();
-        } else {
+        if (user == null) {
             showError("Login Failed", "Invalid username or password.");
+            return;
+        }
+        
+        // Check if the selected role matches the user's role
+        ToggleButton selectedToggle = (ToggleButton) roleToggle.getSelectedToggle();
+        String selectedRole = selectedToggle.getText().toUpperCase(); // "Admin" -> "ADMIN", "Parent" -> "PARENT"
+        
+        if (!user.getRole().equals(selectedRole)) {
+            showError("Login Failed", "Invalid credentials for selected role.\nPlease check if you selected the correct role (Admin/Parent).");
+            return;
+        }
+        
+        if (user.getRole().equals("ADMIN")) {
+            handleAdminLogin(user);
+        } else if (user.getRole().equals("PARENT")) {
+            handleParentLogin(user);
         }
     }
 
-    private void handleAdminLogin() {
+    private void handleAdminLogin(User admin) {
         // Disable button to prevent multiple clicks
         loginButton.setDisable(true);
         
         try {
             System.out.println("Starting admin login...");
-            
-            // Authenticate as admin
-            User admin = authService.authenticateByRole("ADMIN");
-            System.out.println("Admin authenticated: " + (admin != null));
+            System.out.println("Admin authenticated: " + admin.getName());
             
             if (admin != null) {
                 // Load admin dashboard
@@ -123,9 +142,6 @@ public class LoginController {
                 System.out.println("Setting root...");
                 App.setRoot(root, "Admin Dashboard - Vaccine Tracker");
                 System.out.println("Admin dashboard loaded successfully!");
-            } else {
-                showError("Authentication Error", "Failed to authenticate as Admin.\nPlease check UserService.");
-                loginButton.setDisable(false);
             }
         } catch (Exception e) {
             System.err.println("EXCEPTION in handleAdminLogin:");
@@ -141,16 +157,13 @@ public class LoginController {
      * Handle parent login button click.
      * Authenticates as parent and navigates to parent dashboard.
      */
-    private void handleParentLogin() {
+    private void handleParentLogin(User parent) {
         // Disable button to prevent multiple clicks
         loginButton.setDisable(true);
         
         try {
             System.out.println("Starting parent login...");
-            
-            // Authenticate as parent
-            User parent = authService.authenticateByRole("PARENT");
-            System.out.println("Parent authenticated: " + (parent != null));
+            System.out.println("Parent authenticated: " + parent.getName());
             
             if (parent != null) {
                 // Load parent dashboard
@@ -187,9 +200,6 @@ public class LoginController {
                 System.out.println("Setting root...");
                 App.setRoot(root, "Parent Dashboard - Vaccine Tracker");
                 System.out.println("Parent dashboard loaded successfully!");
-            } else {
-                showError("Authentication Error", "Failed to authenticate as Parent.\nPlease check UserService.");
-                loginButton.setDisable(false);
             }
         } catch (Exception e) {
             System.err.println("EXCEPTION in handleParentLogin:");
@@ -199,6 +209,95 @@ public class LoginController {
                      "\n\nCheck the NetBeans Output window for details.");
             loginButton.setDisable(false);
         }
+    }
+    
+    @FXML
+    private void handleSignUp() {
+        // Create a custom dialog for sign up
+        Dialog<com.vaccinetracker.model.Parent> dialog = new Dialog<>();
+        dialog.setTitle("Parent Sign Up");
+        dialog.setHeaderText("Create a new Parent Account");
+
+        // Set the button types
+        ButtonType signUpButtonType = new ButtonType("Sign Up", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(signUpButtonType, ButtonType.CANCEL);
+
+        // Create the username, password, and other labels and fields
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField nameField = new TextField();
+        nameField.setPromptText("Full Name");
+        TextField usernameField = new TextField();
+        usernameField.setPromptText("Username");
+        PasswordField passwordField = new PasswordField();
+        passwordField.setPromptText("Password");
+        TextField contactField = new TextField();
+        contactField.setPromptText("Email or Phone");
+        TextField addressField = new TextField();
+        addressField.setPromptText("Address");
+
+        grid.add(new Label("Full Name:"), 0, 0);
+        grid.add(nameField, 1, 0);
+        grid.add(new Label("Username:"), 0, 1);
+        grid.add(usernameField, 1, 1);
+        grid.add(new Label("Password:"), 0, 2);
+        grid.add(passwordField, 1, 2);
+        grid.add(new Label("Contact Info:"), 0, 3);
+        grid.add(contactField, 1, 3);
+        grid.add(new Label("Address:"), 0, 4);
+        grid.add(addressField, 1, 4);
+
+        dialog.getDialogPane().setContent(grid);
+
+        // Convert the result to a parent object when the sign up button is clicked
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == signUpButtonType) {
+                // Basic validation
+                if (nameField.getText().isEmpty() || usernameField.getText().isEmpty() || 
+                    passwordField.getText().isEmpty()) {
+                    return null;
+                }
+                
+                // Generate a unique ID
+                String userId = "PAR" + String.format("%03d", userService.getUserCount() + 1);
+                
+                // Create the parent using the service (which adds it to the list)
+                com.vaccinetracker.model.Parent newParent = userService.createParent(
+                    userId, 
+                    nameField.getText(), 
+                    contactField.getText(), 
+                    addressField.getText()
+                );
+                
+                // Set the username and password manually since createParent uses defaults
+                newParent.setUsername(usernameField.getText());
+                newParent.setPassword(passwordField.getText());
+                
+                return newParent;
+            }
+            return null;
+        });
+
+        Optional<com.vaccinetracker.model.Parent> result = dialog.showAndWait();
+
+        result.ifPresent(parent -> {
+            // Save data immediately to ensure persistence
+            com.vaccinetracker.services.StorageService.saveAll();
+            
+            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+            alert.setTitle("Sign Up Successful");
+            alert.setHeaderText(null);
+            alert.setContentText("Account created successfully! You can now login with your credentials.");
+            alert.showAndWait();
+            
+            // Pre-fill the login fields
+            this.usernameField.setText(parent.getUsername());
+            this.passwordField.setText("");
+            parentToggle.setSelected(true);
+        });
     }
     
     /**

@@ -60,6 +60,22 @@ public class StorageService {
     }
     
     public static void loadAll() {
+        File adminsFile = new File(ADMINS_FILE);
+        File parentsFile = new File(PARENTS_FILE);
+        
+        // Check if main user files exist. If not, assume first run.
+        if (!adminsFile.exists() && !parentsFile.exists()) {
+            System.out.println("No data files found. Initializing sample data...");
+            UserService.initializeSampleUsers();
+            ChildService.initializeDummyData();
+            VaccineService.preloadVaccines();
+            VaccinationSiteService.initializeSampleSites();
+            AlertService.initializeSampleAlerts();
+            
+            saveAll();
+            return;
+        }
+
         // Load Admins and Parents separately
         List<Admin> admins = loadData(ADMINS_FILE, new TypeToken<List<Admin>>(){}.getType());
         List<Parent> parents = loadData(PARENTS_FILE, new TypeToken<List<Parent>>(){}.getType());

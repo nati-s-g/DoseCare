@@ -13,6 +13,8 @@ public abstract class User {
     
     // Fields common to all users
     private String userId;          // Unique identifier for the user
+    private String username;        // Username for login
+    private String password;        // Password for login
     private String name;            // Full name of the user
     private String contactInfo;     // Email or phone number
     private String role;            // Role type (ADMIN or PARENT)
@@ -21,12 +23,16 @@ public abstract class User {
      * Constructor to initialize user fields.
      * 
      * @param userId Unique identifier
+     * @param username Username
+     * @param password Password
      * @param name Full name
      * @param contactInfo Contact information
      * @param role User role (ADMIN or PARENT)
      */
-    public User(String userId, String name, String contactInfo, String role) {
+    public User(String userId, String username, String password, String name, String contactInfo, String role) {
         this.userId = userId;
+        this.username = username;
+        this.password = password;
         this.name = name;
         this.contactInfo = contactInfo;
         this.role = role;
@@ -35,6 +41,14 @@ public abstract class User {
     // Getter methods (allows reading private fields)
     public String getUserId() {
         return userId;
+    }
+    
+    public String getUsername() {
+        return username;
+    }
+    
+    public String getPassword() {
+        return password;
     }
     
     public String getName() {
@@ -50,6 +64,14 @@ public abstract class User {
     }
     
     // Setter methods (allows modifying private fields)
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

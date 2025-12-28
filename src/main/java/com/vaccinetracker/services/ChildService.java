@@ -23,12 +23,13 @@ public class ChildService {
      * Constructor - initializes the children list.
      */
     public ChildService() {
-        if (children.isEmpty()) {
-            initializeDummyData();
-        }
+        // No longer automatically initializing dummy data here
+        // This is now handled by StorageService on first run
     }
 
-    private void initializeDummyData() {
+    public static void initializeDummyData() {
+        if (!children.isEmpty()) return;
+
         // Ethiopian names: Child Name = First Name + Father's Name
         // Guardian Name usually Father (Father's Name + Grandfather's Name) or Mother
         
@@ -90,7 +91,7 @@ public class ChildService {
         }
     }
 
-    private String generateRandomContact() {
+    private static String generateRandomContact() {
         // Generate 8 random digits
         int randomNum = 10000000 + (int)(Math.random() * 90000000);
         return "+2519" + randomNum;
@@ -108,7 +109,7 @@ public class ChildService {
      * @param guardianContact Contact number of the guardian
      * @return The created Child object
      */
-    public Child registerChild(String name, LocalDate dateOfBirth, String parentId, String hospitalId, String gender, String guardianName, String guardianContact) {
+    public static Child registerChild(String name, LocalDate dateOfBirth, String parentId, String hospitalId, String gender, String guardianName, String guardianContact) {
         // Generate a unique and complex child ID
         String childId = "CHD-" + UUID.randomUUID().toString().substring(0, 13).toUpperCase();
         

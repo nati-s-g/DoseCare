@@ -19,13 +19,15 @@ public class Parent extends User {
      * Calls parent class constructor using super()
      * 
      * @param userId Unique identifier
+     * @param username Username
+     * @param password Password
      * @param name Full name
      * @param contactInfo Contact information (email/phone)
      * @param address Home address
      */
-    public Parent(String userId, String name, String contactInfo, String address) {
+    public Parent(String userId, String username, String password, String name, String contactInfo, String address) {
         // Call parent class constructor - sets userId, name, contactInfo, role
-        super(userId, name, contactInfo, "PARENT");
+        super(userId, username, password, name, contactInfo, "PARENT");
         this.address = address;
         this.numberOfChildren = 0;  // Initially no children registered
     }

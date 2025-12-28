@@ -19,18 +19,19 @@ public class AlertService {
     private static int nextAlertId = 1;  // Auto-increment ID generator
     
     /**
-     * Constructor - initializes the alerts list and creates some sample alerts.
+     * Constructor - initializes the alerts list.
      */
     public AlertService() {
-        if (healthAlerts.isEmpty()) {
-            initializeSampleAlerts();  // Add some sample data
-        }
+        // No longer automatically initializing sample alerts here
+        // This is now handled by StorageService on first run
     }
     
     /**
      * Initialize with some sample health alerts for demonstration.
      */
-    private void initializeSampleAlerts() {
+    public static void initializeSampleAlerts() {
+        if (!healthAlerts.isEmpty()) return;
+
         // Create some sample alerts
         createAlert("Free Vaccination Week", 
                    "This week, all vaccination sites are offering free vaccinations for children under 5 years.",
@@ -53,7 +54,7 @@ public class AlertService {
      * @param severityLevel Severity level
      * @return The created HealthAlert object
      */
-    public HealthAlert createAlert(String title, String message, HealthAlert.SeverityLevel severityLevel) {
+    public static HealthAlert createAlert(String title, String message, HealthAlert.SeverityLevel severityLevel) {
         return createTargetedAlert(title, message, severityLevel, null);
     }
 
@@ -66,7 +67,7 @@ public class AlertService {
      * @param targetChildId ID of the child this alert is for
      * @return The created HealthAlert object
      */
-    public HealthAlert createTargetedAlert(String title, String message, HealthAlert.SeverityLevel severityLevel, String targetChildId) {
+    public static HealthAlert createTargetedAlert(String title, String message, HealthAlert.SeverityLevel severityLevel, String targetChildId) {
         String alertId = "ALT" + String.format("%04d", nextAlertId++);
         HealthAlert alert = new HealthAlert(alertId, title, message, severityLevel, targetChildId);
         healthAlerts.add(alert);

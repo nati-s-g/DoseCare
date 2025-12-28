@@ -20,29 +20,47 @@ public class UserService {
     private static List<User> users = new ArrayList<>();
     
     /**
-     * Constructor - initializes the user list and creates some sample users.
+     * Constructor - initializes the user list.
      */
     public UserService() {
-        if (users.isEmpty()) {
-            initializeSampleUsers();  // Add some sample data for testing
-        }
+        // No longer automatically initializing sample data here
+        // This is now handled by StorageService on first run
     }
     
     /**
      * Initialize with some sample users for demonstration.
      * In a real application, this would load from a database.
      */
-    private void initializeSampleUsers() {
+    public static void initializeSampleUsers() {
+        if (!users.isEmpty()) return;
+        
         // Create a sample admin
-        Admin admin = new Admin("ADM001", "Dr. Sarah Johnson", "sarah.johnson@hospital.com", 
+        Admin admin = new Admin("ADM001", "admin", "admin", "Dr. Sarah Johnson", "sarah.johnson@hospital.com", 
                                "HOSP001", "Pediatrics");
         users.add(admin);
         
         // Create a sample parent
-        Parent parent = new Parent("PAR001", "John Smith", "john.smith@email.com", 
+        Parent parent = new Parent("PAR001", "user1234", "12345678", "John Smith", "john.smith@email.com", 
                                   "123 Main St, City");
         parent.setNumberOfChildren(1);
         users.add(parent);
+    }
+    
+    /**
+     * Authenticate a user by username and password.
+     * 
+     * @param username The username
+     * @param password The password
+     * @return The authenticated User object, or null if authentication fails
+     */
+    public User authenticate(String username, String password) {
+        for (User user : users) {
+            if (user.getUsername() != null && user.getUsername().equals(username) && 
+                user.getPassword() != null && user.getPassword().equals(password)) {
+                return user;
+            }
+        }
+        return null;
     }
     
     /**
@@ -57,7 +75,8 @@ public class UserService {
      */
     public Admin createAdmin(String userId, String name, String contactInfo, 
                             String hospitalId, String department) {
-        Admin admin = new Admin(userId, name, contactInfo, hospitalId, department);
+        // Default username/password for now
+        Admin admin = new Admin(userId, userId, "password", name, contactInfo, hospitalId, department);
         users.add(admin);
         return admin;
     }
@@ -72,7 +91,8 @@ public class UserService {
      * @return The created Parent object
      */
     public Parent createParent(String userId, String name, String contactInfo, String address) {
-        Parent parent = new Parent(userId, name, contactInfo, address);
+        // Default username/password will be set by the caller
+        Parent parent = new Parent(userId, "", "", name, contactInfo, address);
         users.add(parent);
         return parent;
     }
