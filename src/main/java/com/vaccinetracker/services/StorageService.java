@@ -117,6 +117,9 @@ public class StorageService {
         List<VaccinationRecord> records = loadData(RECORDS_FILE, new TypeToken<List<VaccinationRecord>>(){}.getType());
         if (records != null && !records.isEmpty()) VaccinationService.setAllData(records);
         
+        // Ensure dummy data exists if missing (e.g. for Vaccinator demo)
+        VaccinationService.initializeDummyData();
+        
         System.out.println("All data loaded successfully.");
     }
     

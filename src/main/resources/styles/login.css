@@ -16,6 +16,7 @@
 /* Login form container (no card shadow needed on white bg) */
 .login-form {
   -fx-padding: 24 28 28 28;
+  -fx-max-width: 450;
 }
 
 /* Brand header */

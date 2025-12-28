@@ -80,7 +80,8 @@ public class VaccinationSiteService {
      * @return The created VaccinationSite object
      */
     public static VaccinationSite createSite(String name, String location, String contactInfo) {
-        String siteId = "SITE" + String.format("%04d", nextSiteId++);
+        // Use SITE-001 format to match default vaccinator assignment
+        String siteId = "SITE-" + String.format("%03d", nextSiteId++);
         VaccinationSite site = new VaccinationSite(siteId, name, location, contactInfo);
         vaccinationSites.add(site);
         return site;

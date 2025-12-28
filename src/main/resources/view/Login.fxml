@@ -15,7 +15,7 @@
         <!-- Left: White login container (60%) -->
         <StackPane style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
           <children>
-            <VBox maxWidth="300" spacing="16" alignment="CENTER" styleClass="login-form">
+            <VBox maxWidth="450" spacing="16" alignment="CENTER" styleClass="login-form">
               <children>
                 <VBox spacing="6" alignment="CENTER_LEFT">
                   <HBox spacing="4" alignment="CENTER_LEFT" styleClass="brand-title">
@@ -28,7 +28,7 @@
                 </VBox>
 
                 <!-- Visual separator -->
-                <Region prefHeight="1" maxWidth="300" style="-fx-background-color: #E0E0E0;" />
+                <Region prefHeight="1" maxWidth="450" style="-fx-background-color: #E0E0E0;" />
 
                 <Label text="Login" styleClass="title" maxWidth="Infinity" alignment="CENTER"/>
 
@@ -45,11 +45,11 @@
                   </children>
                 </HBox>
 
-                <TextField fx:id="usernameField" promptText="Username" maxWidth="300"/>
-                <PasswordField fx:id="passwordField" promptText="Password" maxWidth="300"/>
+                <TextField fx:id="usernameField" promptText="Username" maxWidth="450"/>
+                <PasswordField fx:id="passwordField" promptText="Password" maxWidth="450"/>
 
-                <Button fx:id="loginButton" text="Login" styleClass="primary" onAction="#handleLogin" maxWidth="300"/>
-                <Button fx:id="signUpButton" text="Sign Up as a Parent" styleClass="secondary" onAction="#handleSignUp" maxWidth="300"/>
+                <Button fx:id="loginButton" text="Login" styleClass="primary" onAction="#handleLogin" maxWidth="450"/>
+                <Button fx:id="signUpButton" text="Sign Up as a Parent" styleClass="secondary" onAction="#handleSignUp" maxWidth="450"/>
                 <Hyperlink fx:id="forgotLink" text="Forgot Password?"/>
               </children>
             </VBox>

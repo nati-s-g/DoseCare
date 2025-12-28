@@ -116,6 +116,8 @@ public class ChildrenController {
     private ComboBox<VaccinationSite> siteComboBox;
     @FXML
     private DatePicker vaccineDueDatePicker;
+    @FXML
+    private javafx.scene.layout.VBox addRecordSection;
 
     private ChildService childService;
     private AlertService alertService;
@@ -165,6 +167,13 @@ public class ChildrenController {
 
     public void setAlertService(AlertService alertService) {
         this.alertService = alertService;
+    }
+
+    public void setReadOnlyMode(boolean readOnly) {
+        if (addRecordSection != null) {
+            addRecordSection.setVisible(!readOnly);
+            addRecordSection.setManaged(!readOnly);
+        }
     }
 
     public void setVaccinationService(VaccinationService vaccinationService) {

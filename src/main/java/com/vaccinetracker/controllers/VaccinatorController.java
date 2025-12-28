@@ -85,6 +85,12 @@ public class VaccinatorController {
             
             // Get site name
             VaccinationSite site = vaccinationSiteService.getSiteById(vaccinator.getSiteId());
+            
+            // Fallback for legacy data mismatch (SITE-001 vs SITE0001)
+            if (site == null && "SITE-001".equals(vaccinator.getSiteId())) {
+                site = vaccinationSiteService.getSiteById("SITE0001");
+            }
+            
             String siteName = (site != null) ? site.getName() : vaccinator.getSiteId();
             siteLabel.setText(siteName);
             
@@ -109,6 +115,9 @@ public class VaccinatorController {
             
         statusCol.setCellValueFactory(cellData -> 
             new SimpleStringProperty(cellData.getValue().getStatus().toString()));
+        
+        // Remove default blue selection style
+        pendingTable.setSelectionModel(null);
             
         addButtonToTable();
     }
@@ -164,6 +173,9 @@ public class VaccinatorController {
         List<VaccinationRecord> allRecords = vaccinationService.getAllRecords();
         List<VaccinationRecord> pending = allRecords.stream()
             .filter(r -> r.getStatus() == VaccinationRecord.VaccinationStatus.PENDING)
+            // Filter by site: Only show records assigned to this vaccinator's site
+            .filter(r -> r.getVaccinationSiteId() != null && 
+                         r.getVaccinationSiteId().equals(currentVaccinator.getSiteId()))
             .collect(Collectors.toList());
             
         pendingTable.setItems(FXCollections.observableArrayList(pending));
@@ -220,11 +232,23 @@ public class VaccinatorController {
             controller.setVaccinationSiteService(vaccinationSiteService);
             controller.setAlertService(new AlertService()); // Dummy alert service to prevent NPE
             
-            // Select the Vaccination Records tab by default
+            // Customize view for Vaccinator
             TabPane tabPane = (TabPane) childrenView.lookup("#childrenTabPane");
             if (tabPane != null) {
-                tabPane.getSelectionModel().select(1); // Select 2nd tab (index 1)
+                // Remove Notify Tab
+                tabPane.getTabs().removeIf(tab -> "notifyTab".equals(tab.getId()));
+                
+                // Select Vaccination Records tab
+                for (Tab tab : tabPane.getTabs()) {
+                    if ("vaccinationRecordsTab".equals(tab.getId())) {
+                        tabPane.getSelectionModel().select(tab);
+                        break;
+                    }
+                }
             }
+            
+            // Hide Add Record Section (Read-only mode)
+            controller.setReadOnlyMode(true);
             
             mainContent.getChildren().setAll(childrenView);
             updateActiveMenuButton(recordsMenuButton);

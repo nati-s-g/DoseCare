@@ -64,7 +64,16 @@ public class VaccinationService {
     }
 
     public static void initializeDummyData() {
-        if (!vaccinationRecords.isEmpty()) return;
+        // Check if we already have the demo pending records
+        boolean hasPendingRecords = false;
+        for (VaccinationRecord r : vaccinationRecords) {
+            if (r.getStatus() == VaccinationRecord.VaccinationStatus.PENDING && "SITE-001".equals(r.getVaccinationSiteId())) {
+                hasPendingRecords = true;
+                break;
+            }
+        }
+        
+        if (hasPendingRecords) return;
         
         // Ensure children exist first
         if (ChildService.getAllData().isEmpty()) {

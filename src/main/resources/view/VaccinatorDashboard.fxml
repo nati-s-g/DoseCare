@@ -84,6 +84,9 @@
                         <TableColumn fx:id="statusCol" text="Status" prefWidth="150"/>
                         <TableColumn fx:id="actionCol" text="Action" prefWidth="150"/>
                     </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    </columnResizePolicy>
                 </TableView>
             </VBox>
          </VBox>

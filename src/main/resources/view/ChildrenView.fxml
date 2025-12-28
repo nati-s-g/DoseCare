@@ -177,13 +177,15 @@
                                     </columnResizePolicy>
                                 </TableView>
                                 
-                                <Label text="Add Vaccination Record" styleClass="section-header"/>
-                                <HBox spacing="10" alignment="CENTER_LEFT">
-                                    <ComboBox fx:id="vaccineComboBox" promptText="Select Vaccine" prefWidth="200"/>
-                                    <ComboBox fx:id="siteComboBox" promptText="Select Site" prefWidth="200"/>
-                                    <DatePicker fx:id="vaccineDueDatePicker" promptText="Due Date" prefWidth="150"/>
-                                    <Button text="Add Record" onAction="#handleAddVaccinationRecord" styleClass="button-primary"/>
-                                </HBox>
+                                <VBox fx:id="addRecordSection" spacing="10">
+                                    <Label text="Add Vaccination Record" styleClass="section-header"/>
+                                    <HBox spacing="10" alignment="CENTER_LEFT">
+                                        <ComboBox fx:id="vaccineComboBox" promptText="Select Vaccine" prefWidth="200"/>
+                                        <ComboBox fx:id="siteComboBox" promptText="Select Site" prefWidth="200"/>
+                                        <DatePicker fx:id="vaccineDueDatePicker" promptText="Due Date" prefWidth="150"/>
+                                        <Button text="Add Record" onAction="#handleAddVaccinationRecord" styleClass="button-primary"/>
+                                    </HBox>
+                                </VBox>
                             </VBox>
                         </items>
                     </SplitPane>
