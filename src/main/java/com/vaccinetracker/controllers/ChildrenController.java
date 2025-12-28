@@ -128,9 +128,39 @@ public class ChildrenController {
     private ObservableList<ChildSelectionWrapper> vaccinationChildList = FXCollections.observableArrayList();
     private ObservableList<VaccinationRecord> vaccinationRecordsList = FXCollections.observableArrayList();
 
+    @FXML
+    private TextField searchField;
+
     public void setChildService(ChildService childService) {
         this.childService = childService;
         loadChildren();
+        
+        // Add search listener if searchField exists (it might not be in FXML yet, but good to have logic ready)
+        if (searchField != null) {
+            searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+                filterChildren(newValue);
+            });
+        }
+    }
+    
+    private void filterChildren(String query) {
+        if (query == null || query.isEmpty()) {
+            vaccinationChildTable.setItems(vaccinationChildList);
+            return;
+        }
+        
+        String lowerQuery = query.toLowerCase();
+        ObservableList<ChildSelectionWrapper> filteredList = FXCollections.observableArrayList();
+        
+        for (ChildSelectionWrapper wrapper : vaccinationChildList) {
+            Child child = wrapper.getChild();
+            if (child.getChildId().toLowerCase().contains(lowerQuery) || 
+                child.getName().toLowerCase().contains(lowerQuery)) {
+                filteredList.add(wrapper);
+            }
+        }
+        
+        vaccinationChildTable.setItems(filteredList);
     }
 
     public void setAlertService(AlertService alertService) {

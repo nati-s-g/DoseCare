@@ -18,5 +18,15 @@
     "name": "fgh",
     "contactInfo": "vcbn",
     "role": "PARENT"
+  },
+  {
+    "address": "try",
+    "numberOfChildren": 0,
+    "userId": "PAR004",
+    "username": "user12345",
+    "password": "12345678",
+    "name": "user12345",
+    "contactInfo": "retyu",
+    "role": "PARENT"
   }
 ]

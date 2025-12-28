@@ -40,6 +40,7 @@
                 <HBox spacing="8" styleClass="segmented" alignment="CENTER">
                   <children>
                     <ToggleButton text="Admin" fx:id="adminToggle" toggleGroup="$roleToggle"/>
+                    <ToggleButton text="Vaccinator" fx:id="vaccinatorToggle" toggleGroup="$roleToggle"/>
                     <ToggleButton text="Parent" fx:id="parentToggle" selected="true" toggleGroup="$roleToggle"/>
                   </children>
                 </HBox>

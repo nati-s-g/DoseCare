@@ -133,6 +133,17 @@ public class VaccinationRecordsController {
         this.isAdminView = isAdminView;
     }
     
+    public void setVaccinatorMode() {
+        this.isAdminView = true; // Reuse admin logic for data loading
+        if (backButton != null) {
+            backButton.setVisible(false);
+            backButton.setManaged(false);
+        }
+        if (titleLabel != null) {
+            titleLabel.setText("All Vaccination Records");
+        }
+    }
+    
     /**
      * Set the parent ID for filtering (parent view only).
      */

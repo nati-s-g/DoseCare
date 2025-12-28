@@ -2,6 +2,7 @@ package com.vaccinetracker.services;
 
 import com.vaccinetracker.model.Admin;
 import com.vaccinetracker.model.Parent;
+import com.vaccinetracker.model.Vaccinator;
 import com.vaccinetracker.model.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,14 @@ public class UserService {
                                   "123 Main St, City");
         parent.setNumberOfChildren(1);
         users.add(parent);
+
+        // Create a sample vaccinator
+        // Username is now the Vaccinator ID (e.g., NUR001)
+        Vaccinator vaccinator = new Vaccinator("VAC001", "NUR001", "password", "Nurse Joy", "joy@center.com", "NUR001", "SITE-001", "456 Health St");
+        users.add(vaccinator);
+        
+        Vaccinator doctor = new Vaccinator("VAC002", "DOC001", "password", "Dr. Oak", "oak@center.com", "DOC001", "SITE-001", "789 Lab St");
+        users.add(doctor);
     }
     
     /**

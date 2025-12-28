@@ -31,6 +31,9 @@ public class LoginController {
     private ToggleButton adminToggle;
     
     @FXML
+    private ToggleButton vaccinatorToggle;
+
+    @FXML
     private ToggleButton parentToggle;
 
     @FXML
@@ -64,6 +67,18 @@ public class LoginController {
         // Initialize services
         userService = new UserService();
         authService = new AuthService(userService);
+        
+        // Add listener to toggle group
+        roleToggle.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                ToggleButton selected = (ToggleButton) newValue;
+                if ("Vaccinator".equals(selected.getText())) {
+                    usernameField.setPromptText("Vaccinator ID");
+                } else {
+                    usernameField.setPromptText("Username");
+                }
+            }
+        });
     }
     
     /**
@@ -75,20 +90,28 @@ public class LoginController {
         String username = usernameField.getText();
         String password = passwordField.getText();
         
-        // Authenticate using the service
-        User user = authService.authenticate(username, password);
-        
-        if (user == null) {
-            showError("Login Failed", "Invalid username or password.");
-            return;
-        }
-        
         // Check if the selected role matches the user's role
         ToggleButton selectedToggle = (ToggleButton) roleToggle.getSelectedToggle();
         String selectedRole = selectedToggle.getText().toUpperCase(); // "Admin" -> "ADMIN", "Parent" -> "PARENT"
         
+        // Special validation for Vaccinator
+        if ("VACCINATOR".equals(selectedRole)) {
+            if (!username.startsWith("NUR") && !username.startsWith("DOC")) {
+                showError("Login Failed", "Invalid Vaccinator ID.\nOnly Nurse (NUR...) and Doctor (DOC...) IDs are allowed.");
+                return;
+            }
+        }
+        
+        // Authenticate using the service
+        User user = authService.authenticate(username, password);
+        
+        if (user == null) {
+            showError("Login Failed", "Invalid credentials.");
+            return;
+        }
+        
         if (!user.getRole().equals(selectedRole)) {
-            showError("Login Failed", "Invalid credentials for selected role.\nPlease check if you selected the correct role (Admin/Parent).");
+            showError("Login Failed", "Invalid credentials for selected role.\nPlease check if you selected the correct role (Admin/Vaccinator/Parent).");
             return;
         }
         
@@ -96,6 +119,30 @@ public class LoginController {
             handleAdminLogin(user);
         } else if (user.getRole().equals("PARENT")) {
             handleParentLogin(user);
+        } else if (user.getRole().equals("VACCINATOR")) {
+            handleVaccinatorLogin(user);
+        }
+    }
+
+    private void handleVaccinatorLogin(User user) {
+        try {
+            java.net.URL fxmlUrl = getClass().getResource("/view/VaccinatorDashboard.fxml");
+            if (fxmlUrl == null) {
+                showError("Error", "Vaccinator Dashboard FXML not found!");
+                return;
+            }
+            FXMLLoader loader = new FXMLLoader(fxmlUrl);
+            Parent root = loader.load();
+            
+            VaccinatorController controller = loader.getController();
+            if (controller != null) {
+                controller.setVaccinator((com.vaccinetracker.model.Vaccinator) user);
+            }
+            
+            App.setRoot(root, "Vaccinator Dashboard - DoseCare");
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Error", "Could not load Vaccinator Dashboard: " + e.getMessage());
         }
     }
 

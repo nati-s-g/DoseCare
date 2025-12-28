@@ -147,6 +147,7 @@
                             <!-- Left: Child List -->
                             <VBox spacing="10">
                                 <Label text="Select Child" styleClass="section-header"/>
+                                <TextField fx:id="searchField" promptText="Search by ID or Name..." />
                                 <Button text="Select All" onAction="#handleSelectAllVaccinationChildren" styleClass="button-secondary"/>
                                 <TableView fx:id="vaccinationChildTable" VBox.vgrow="ALWAYS">
                                     <columns>

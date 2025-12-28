@@ -63,6 +63,29 @@ public class VaccinationService {
         vaccinationRecords = data;
     }
 
+    public static void initializeDummyData() {
+        if (!vaccinationRecords.isEmpty()) return;
+        
+        // Ensure children exist first
+        if (ChildService.getAllData().isEmpty()) {
+            ChildService.initializeDummyData();
+        }
+        
+        List<Child> children = ChildService.getAllData();
+        if (children.size() < 3) return;
+        
+        // Create pending vaccinations for the first 3 children
+        for (int i = 0; i < 3; i++) {
+            Child child = children.get(i);
+            String recordId = "REC" + String.format("%06d", nextRecordId++);
+            // Assign a pending vaccination (e.g., BCG or OPV)
+            // Using "VAC001" (BCG) as a default example
+            VaccinationRecord record = new VaccinationRecord(recordId, child.getChildId(), "VAC001", LocalDate.now().plusDays(7));
+            record.setVaccinationSiteId("SITE-001"); // Assign to default site
+            vaccinationRecords.add(record);
+        }
+    }
+
     /**
      * Create a vaccination schedule for a child based on their age.
      * This is called when a child is registered.
@@ -179,6 +202,26 @@ public class VaccinationService {
             if (record.getRecordId().equals(recordId)) {
                 LocalDate adminDate = (dateAdministered != null) ? dateAdministered : LocalDate.now();
                 record.setDateAdministered(adminDate);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Record a vaccination administration with site information.
+     * 
+     * @param recordId The vaccination record ID
+     * @param dateAdministered The date when vaccine was given
+     * @param siteId The site where it was administered
+     * @return true if successful
+     */
+    public boolean recordVaccination(String recordId, LocalDate dateAdministered, String siteId) {
+        for (VaccinationRecord record : vaccinationRecords) {
+            if (record.getRecordId().equals(recordId)) {
+                LocalDate adminDate = (dateAdministered != null) ? dateAdministered : LocalDate.now();
+                record.setDateAdministered(adminDate);
+                record.setVaccinationSiteId(siteId);
                 return true;
             }
         }

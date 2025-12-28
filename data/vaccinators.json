@@ -1,0 +1,13 @@
+[
+  {
+    "vaccinatorId": "NUR001",
+    "siteId": "SITE-001",
+    "address": "456 Health St",
+    "userId": "VAC001",
+    "username": "NUR001",
+    "password": "12345678",
+    "name": "Nurse Joy",
+    "contactInfo": "joy@center.com",
+    "role": "VACCINATOR"
+  }
+]

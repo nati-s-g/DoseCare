@@ -19,6 +19,7 @@ public class StorageService {
     private static final String DATA_DIR = "data";
     private static final String ADMINS_FILE = DATA_DIR + "/admins.json";
     private static final String PARENTS_FILE = DATA_DIR + "/parents.json";
+    private static final String VACCINATORS_FILE = DATA_DIR + "/vaccinators.json";
     private static final String CHILDREN_FILE = DATA_DIR + "/children.json";
     private static final String ALERTS_FILE = DATA_DIR + "/alerts.json";
     private static final String SITES_FILE = DATA_DIR + "/sites.json";
@@ -42,14 +43,17 @@ public class StorageService {
         List<User> allUsers = UserService.getAllData();
         List<Admin> admins = new ArrayList<>();
         List<Parent> parents = new ArrayList<>();
+        List<Vaccinator> vaccinators = new ArrayList<>();
         
         for (User u : allUsers) {
             if (u instanceof Admin) admins.add((Admin) u);
             else if (u instanceof Parent) parents.add((Parent) u);
+            else if (u instanceof Vaccinator) vaccinators.add((Vaccinator) u);
         }
         
         saveData(ADMINS_FILE, admins);
         saveData(PARENTS_FILE, parents);
+        saveData(VACCINATORS_FILE, vaccinators);
         saveData(CHILDREN_FILE, ChildService.getAllData());
         saveData(ALERTS_FILE, AlertService.getAllData());
         saveData(SITES_FILE, VaccinationSiteService.getAllData());
@@ -71,6 +75,7 @@ public class StorageService {
             VaccineService.preloadVaccines();
             VaccinationSiteService.initializeSampleSites();
             AlertService.initializeSampleAlerts();
+            VaccinationService.initializeDummyData();
             
             saveAll();
             return;
@@ -79,10 +84,18 @@ public class StorageService {
         // Load Admins and Parents separately
         List<Admin> admins = loadData(ADMINS_FILE, new TypeToken<List<Admin>>(){}.getType());
         List<Parent> parents = loadData(PARENTS_FILE, new TypeToken<List<Parent>>(){}.getType());
+        List<Vaccinator> vaccinators = loadData(VACCINATORS_FILE, new TypeToken<List<Vaccinator>>(){}.getType());
+        
+        // Ensure default vaccinator exists if file was missing/empty
+        if (vaccinators == null || vaccinators.isEmpty()) {
+            vaccinators = new ArrayList<>();
+            vaccinators.add(new Vaccinator("VAC001", "NUR001", "password", "Nurse Joy", "joy@center.com", "NUR001", "SITE-001", "456 Health St"));
+        }
         
         List<User> allUsers = new ArrayList<>();
         if (admins != null) allUsers.addAll(admins);
         if (parents != null) allUsers.addAll(parents);
+        if (vaccinators != null) allUsers.addAll(vaccinators);
         
         // Only update if we found data, otherwise keep the default sample data
         if (!allUsers.isEmpty()) {
