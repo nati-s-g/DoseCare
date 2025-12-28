@@ -17,6 +17,8 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.GridPane;
 import javafx.geometry.Insets;
 import java.util.Optional;
@@ -79,6 +81,76 @@ public class LoginController {
                 }
             }
         });
+        
+        // Handle Forgot Password
+        if (forgotLink != null) {
+            forgotLink.setOnAction(e -> handleForgotPassword());
+        }
+    }
+    
+    /**
+     * Handle Forgot Password flow.
+     */
+    private void handleForgotPassword() {
+        // 1. Ask for Username
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Forgot Password");
+        dialog.setHeaderText("Password Recovery");
+        dialog.setContentText("Please enter your Username or ID:");
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            String username = result.get();
+            
+            // Find user
+            User foundUser = null;
+            for (User u : UserService.getAllData()) {
+                if (u.getUsername() != null && u.getUsername().equalsIgnoreCase(username)) {
+                    foundUser = u;
+                    break;
+                }
+            }
+            
+            if (foundUser != null) {
+                // 2. Ask for Contact Info (Security Check)
+                TextInputDialog securityDialog = new TextInputDialog();
+                securityDialog.setTitle("Security Check");
+                securityDialog.setHeaderText("Identity Verification");
+                securityDialog.setContentText("Please enter your registered Email or Phone:");
+                
+                Optional<String> securityResult = securityDialog.showAndWait();
+                if (securityResult.isPresent()) {
+                    String contact = securityResult.get();
+                    
+                    if (foundUser.getContactInfo() != null && contact.equalsIgnoreCase(foundUser.getContactInfo())) {
+                        // 3. Allow Password Reset
+                        TextInputDialog passwordDialog = new TextInputDialog();
+                        passwordDialog.setTitle("Reset Password");
+                        passwordDialog.setHeaderText("Identity Verified");
+                        passwordDialog.setContentText("Enter your new password:");
+                        
+                        Optional<String> newPassResult = passwordDialog.showAndWait();
+                        if (newPassResult.isPresent()) {
+                            String newPass = newPassResult.get();
+                            if (!newPass.isEmpty()) {
+                                foundUser.setPassword(newPass);
+                                com.vaccinetracker.services.StorageService.saveAll();
+                                
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Success");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Password has been reset successfully!");
+                                alert.showAndWait();
+                            }
+                        }
+                    } else {
+                        showError("Verification Failed", "The contact information does not match our records.");
+                    }
+                }
+            } else {
+                showError("User Not Found", "No user found with that username/ID.");
+            }
+        }
     }
     
     /**
