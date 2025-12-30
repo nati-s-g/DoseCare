@@ -69,6 +69,8 @@ public class VaccinationRecordsController {
     // View configuration
     private boolean isAdminView = false;
     private String parentId = null;
+    private String childId = null;
+    private Runnable onBackAction = null;
     
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MMM dd, yyyy");
     
@@ -150,6 +152,20 @@ public class VaccinationRecordsController {
     public void setParentId(String parentId) {
         this.parentId = parentId;
     }
+
+    /**
+     * Set the child ID for filtering (specific child view).
+     */
+    public void setChildId(String childId) {
+        this.childId = childId;
+    }
+
+    /**
+     * Set a custom action for the back button.
+     */
+    public void setOnBackAction(Runnable onBackAction) {
+        this.onBackAction = onBackAction;
+    }
     
     /**
      * Initialize the controller and load data.
@@ -164,6 +180,14 @@ public class VaccinationRecordsController {
         nextDueDateColumn.setCellValueFactory(new PropertyValueFactory<>("nextDueDate"));
         ageColumn.setCellValueFactory(new PropertyValueFactory<>("age"));
         
+        // Align columns
+        childNameColumn.setStyle("-fx-alignment: CENTER-LEFT;");
+        vaccineNameColumn.setStyle("-fx-alignment: CENTER-LEFT;");
+        statusColumn.setStyle("-fx-alignment: CENTER;");
+        dateAdministeredColumn.setStyle("-fx-alignment: CENTER;");
+        nextDueDateColumn.setStyle("-fx-alignment: CENTER;");
+        ageColumn.setStyle("-fx-alignment: CENTER;");
+        
         // Set table data
         recordsTable.setItems(recordsData);
         
@@ -173,6 +197,13 @@ public class VaccinationRecordsController {
         // Update title
         if (isAdminView) {
             titleLabel.setText("All Vaccination Records (Admin View)");
+        } else if (childId != null) {
+            Child child = childService.getChildById(childId);
+            if (child != null) {
+                titleLabel.setText(child.getName() + "'s Vaccination Records");
+            } else {
+                titleLabel.setText("Vaccination Records");
+            }
         } else {
             titleLabel.setText("My Children's Vaccination Records");
         }
@@ -191,16 +222,18 @@ public class VaccinationRecordsController {
             records = vaccinationService.getAllRecords();
         } else {
             // Parent view: show only records for their children
-            if (parentId == null) {
+            if (childId != null) {
+                records = vaccinationService.getRecordsByChild(childId);
+            } else if (parentId != null) {
+                List<Child> children = childService.getChildrenByParent(parentId);
+                records = new java.util.ArrayList<>();
+                
+                for (Child child : children) {
+                    records.addAll(vaccinationService.getRecordsByChild(child.getChildId()));
+                }
+            } else {
                 noRecordsLabel.setVisible(true);
                 return;
-            }
-            
-            List<Child> children = childService.getChildrenByParent(parentId);
-            records = new java.util.ArrayList<>();
-            
-            for (Child child : children) {
-                records.addAll(vaccinationService.getRecordsByChild(child.getChildId()));
             }
         }
         
@@ -261,6 +294,11 @@ public class VaccinationRecordsController {
      */
     @FXML
     private void handleBack() {
+        if (onBackAction != null) {
+            onBackAction.run();
+            return;
+        }
+
         try {
             if (isAdminView) {
                 // Go back to admin dashboard

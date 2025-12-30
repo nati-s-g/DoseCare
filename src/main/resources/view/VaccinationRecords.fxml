@@ -5,21 +5,26 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vaccinetracker.controllers.VaccinationRecordsController">
+<BorderPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vaccinetracker.controllers.VaccinationRecordsController" stylesheets="@../styles/theme.css, @../styles/admin.css">
    <top>
-      <HBox style="-fx-background-color: #2196F3; -fx-padding: 15px;" spacing="20">
-         <Label text="Vaccination Records" styleClass="label-title" style="-fx-text-fill: white;" />
-         <HBox HBox.hgrow="ALWAYS" />
-         <Button text="Back" fx:id="backButton" styleClass="button-secondary" onAction="#handleBack" />
-      </HBox>
+      <VBox spacing="15" style="-fx-padding: 20 30 0 30;">
+          <HBox alignment="CENTER_LEFT" spacing="20">
+             <Label text="Vaccination Records" styleClass="chart-title" />
+             <Region HBox.hgrow="ALWAYS" />
+             <Button text="Back" fx:id="backButton" styleClass="button-secondary" onAction="#handleBack" />
+          </HBox>
+          <Separator />
+      </VBox>
    </top>
    
    <center>
-      <VBox spacing="20" style="-fx-padding: 30px; -fx-background-color: #f5f5f5;" alignment="CENTER">
+      <VBox spacing="20" style="-fx-padding: 30px; -fx-background-color: transparent;" alignment="TOP_CENTER">
          
          <VBox styleClass="card" spacing="15" prefWidth="1000" alignment="CENTER">
             <Label fx:id="titleLabel" text="Vaccination Records" styleClass="label-header" />

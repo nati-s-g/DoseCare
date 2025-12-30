@@ -43,7 +43,6 @@
             <Button text="My Children" styleClass="menu-button" fx:id="childrenMenuButton" onAction="#handleChildrenMenu"/>
             <Button text="Vaccination Schedule" styleClass="menu-button" fx:id="scheduleMenuButton" onAction="#handleScheduleMenu"/>
             <Button text="Records &amp; Certificates" styleClass="menu-button" fx:id="recordsMenuButton" onAction="#handleRecordsMenu"/>
-            <Button text="Resources &amp; Alerts" styleClass="menu-button" fx:id="resourcesMenuButton" onAction="#handleResourcesMenu"/>
          </VBox>
       </VBox>
    </left>
