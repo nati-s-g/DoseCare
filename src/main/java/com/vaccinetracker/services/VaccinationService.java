@@ -51,6 +51,7 @@ public class VaccinationService {
         String recordId = "REC" + String.format("%06d", nextRecordId++);
         VaccinationRecord record = new VaccinationRecord(recordId, childId, vaccineId, nextDueDate, vaccinationSiteId);
         vaccinationRecords.add(record);
+        StorageService.saveAll();
         return record;
     }
 
@@ -135,6 +136,10 @@ public class VaccinationService {
             }
         }
         
+        if (!schedule.isEmpty()) {
+            StorageService.saveAll();
+        }
+        
         return schedule;
     }
     
@@ -211,6 +216,7 @@ public class VaccinationService {
             if (record.getRecordId().equals(recordId)) {
                 LocalDate adminDate = (dateAdministered != null) ? dateAdministered : LocalDate.now();
                 record.setDateAdministered(adminDate);
+                StorageService.saveAll();
                 return true;
             }
         }
@@ -231,6 +237,7 @@ public class VaccinationService {
                 LocalDate adminDate = (dateAdministered != null) ? dateAdministered : LocalDate.now();
                 record.setDateAdministered(adminDate);
                 record.setVaccinationSiteId(siteId);
+                StorageService.saveAll();
                 return true;
             }
         }

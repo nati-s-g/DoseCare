@@ -30,31 +30,64 @@ public class VaccineService {
      * In a real application, this would load from a database.
      */
     public static void preloadVaccines() {
-        if (!vaccines.isEmpty()) return;
-
         // Birth vaccines
-        addVaccine("VAC001", "BCG", "Bacillus Calmette-Guérin - protects against tuberculosis", 0);
-        addVaccine("VAC002", "Hepatitis B (Birth)", "First dose of Hepatitis B vaccine", 0);
+        addVaccineIfMissing("VAC001", "BCG", "Bacillus Calmette-Guérin - protects against tuberculosis", 0);
+        addVaccineIfMissing("VAC002", "Hepatitis B (Birth)", "First dose of Hepatitis B vaccine", 0);
         
         // 6 weeks
-        addVaccine("VAC003", "DPT", "Diphtheria, Pertussis, Tetanus - first dose", 42);
-        addVaccine("VAC004", "Polio (Oral)", "Oral Polio Vaccine - first dose", 42);
-        addVaccine("VAC005", "Hepatitis B (6 weeks)", "Second dose of Hepatitis B", 42);
+        addVaccineIfMissing("VAC003", "DPT", "Diphtheria, Pertussis, Tetanus - first dose", 42);
+        addVaccineIfMissing("VAC004", "Polio (Oral)", "Oral Polio Vaccine - first dose", 42);
+        addVaccineIfMissing("VAC005", "Hepatitis B (6 weeks)", "Second dose of Hepatitis B", 42);
         
+        // 8 weeks (56 days)
+        addVaccineIfMissing("VAC020", "6-in-1 (1st dose)", "Diphtheria, hepatitis B, Hib, polio, tetanus, whooping cough", 56);
+        addVaccineIfMissing("VAC021", "Rotavirus (1st dose)", "Rotavirus vaccine", 56);
+        addVaccineIfMissing("VAC022", "MenB (1st dose)", "Meningococcal group B bacteria", 56);
+
         // 10 weeks
-        addVaccine("VAC006", "DPT (2nd)", "Diphtheria, Pertussis, Tetanus - second dose", 70);
-        addVaccine("VAC007", "Polio (Oral 2nd)", "Oral Polio Vaccine - second dose", 70);
+        addVaccineIfMissing("VAC006", "DPT (2nd)", "Diphtheria, Pertussis, Tetanus - second dose", 70);
+        addVaccineIfMissing("VAC007", "Polio (Oral 2nd)", "Oral Polio Vaccine - second dose", 70);
         
+        // 12 weeks (84 days)
+        addVaccineIfMissing("VAC023", "6-in-1 (2nd dose)", "Diphtheria, hepatitis B, Hib, polio, tetanus, whooping cough", 84);
+        addVaccineIfMissing("VAC024", "MenB (2nd dose)", "Meningococcal group B bacteria", 84);
+        addVaccineIfMissing("VAC025", "Rotavirus (2nd dose)", "Rotavirus vaccine", 84);
+
         // 14 weeks
-        addVaccine("VAC008", "DPT (3rd)", "Diphtheria, Pertussis, Tetanus - third dose", 98);
-        addVaccine("VAC009", "Polio (Oral 3rd)", "Oral Polio Vaccine - third dose", 98);
+        addVaccineIfMissing("VAC008", "DPT (3rd)", "Diphtheria, Pertussis, Tetanus - third dose", 98);
+        addVaccineIfMissing("VAC009", "Polio (Oral 3rd)", "Oral Polio Vaccine - third dose", 98);
         
+        // 16 weeks (112 days)
+        addVaccineIfMissing("VAC026", "6-in-1 (3rd dose)", "Diphtheria, hepatitis B, Hib, polio, tetanus, whooping cough", 112);
+        addVaccineIfMissing("VAC027", "Pneumococcal (1st dose)", "Pneumococcal vaccine (PCV)", 112);
+
         // 9 months
-        addVaccine("VAC010", "Measles", "Measles vaccine", 270);
+        addVaccineIfMissing("VAC010", "Measles", "Measles vaccine", 270);
         
-        // 18 months
-        addVaccine("VAC011", "DPT Booster", "Diphtheria, Pertussis, Tetanus booster", 540);
-        addVaccine("VAC012", "Polio Booster", "Oral Polio Vaccine booster", 540);
+        // 1 year (365 days)
+        addVaccineIfMissing("VAC028", "MMR (1st dose)", "Measles, Mumps and Rubella", 365);
+        addVaccineIfMissing("VAC029", "Pneumococcal (2nd dose)", "Pneumococcal vaccine (PCV)", 365);
+        addVaccineIfMissing("VAC030", "MenB (3rd dose)", "Meningococcal group B bacteria", 365);
+        addVaccineIfMissing("VAC031", "Hib/MenC (1st dose)", "Haemophilus influenzae type b (Hib) and meningitis C", 365);
+
+        // 18 months (540/548 days)
+        addVaccineIfMissing("VAC011", "DPT Booster", "Diphtheria, Pertussis, Tetanus booster", 540);
+        addVaccineIfMissing("VAC012", "Polio Booster", "Oral Polio Vaccine booster", 540);
+        addVaccineIfMissing("VAC032", "6-in-1 (4th dose)", "Diphtheria, hepatitis B, Hib, polio, tetanus, whooping cough", 548);
+        addVaccineIfMissing("VAC033", "MMR (2nd dose)", "Measles, Mumps and Rubella", 548);
+    }
+    
+    private static void addVaccineIfMissing(String id, String name, String desc, int age) {
+        boolean exists = false;
+        for (Vaccine v : vaccines) {
+            if (v.getVaccineId().equals(id)) {
+                exists = true;
+                break;
+            }
+        }
+        if (!exists) {
+            addVaccine(id, name, desc, age);
+        }
     }
     
     /**
@@ -78,6 +111,7 @@ public class VaccineService {
     public static Vaccine addVaccine(String vaccineId, String name, String description, int recommendedAgeInDays) {
         Vaccine vaccine = new Vaccine(vaccineId, name, description, recommendedAgeInDays);
         vaccines.add(vaccine);
+        StorageService.saveAll();
         return vaccine;
     }
 

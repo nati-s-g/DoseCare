@@ -114,6 +114,9 @@ public class StorageService {
         List<Vaccine> vaccines = loadData(VACCINES_FILE, new TypeToken<List<Vaccine>>(){}.getType());
         if (vaccines != null && !vaccines.isEmpty()) VaccineService.setAllData(vaccines);
         
+        // Ensure new vaccines are added even if data was loaded
+        VaccineService.preloadVaccines();
+        
         List<VaccinationRecord> records = loadData(RECORDS_FILE, new TypeToken<List<VaccinationRecord>>(){}.getType());
         if (records != null && !records.isEmpty()) VaccinationService.setAllData(records);
         

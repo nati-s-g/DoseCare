@@ -119,6 +119,9 @@ public class ChildService {
         // Add to the list
         children.add(child);
         
+        // Save changes
+        StorageService.saveAll();
+        
         return child;
     }
     
@@ -129,7 +132,11 @@ public class ChildService {
      * @return true if removed successfully, false otherwise
      */
     public boolean deleteChild(String childId) {
-        return children.removeIf(child -> child.getChildId().equals(childId));
+        boolean removed = children.removeIf(child -> child.getChildId().equals(childId));
+        if (removed) {
+            StorageService.saveAll();
+        }
+        return removed;
     }
 
     /**

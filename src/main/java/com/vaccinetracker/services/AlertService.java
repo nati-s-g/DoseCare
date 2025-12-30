@@ -71,6 +71,7 @@ public class AlertService {
         String alertId = "ALT" + String.format("%04d", nextAlertId++);
         HealthAlert alert = new HealthAlert(alertId, title, message, severityLevel, targetChildId);
         healthAlerts.add(alert);
+        StorageService.saveAll();
         return alert;
     }
     
@@ -163,6 +164,7 @@ public class AlertService {
         HealthAlert alert = getAlertById(alertId);
         if (alert != null) {
             alert.deactivate();
+            StorageService.saveAll();
             return true;
         }
         return false;
@@ -178,6 +180,7 @@ public class AlertService {
         HealthAlert alert = getAlertById(alertId);
         if (alert != null) {
             alert.activate();
+            StorageService.saveAll();
             return true;
         }
         return false;

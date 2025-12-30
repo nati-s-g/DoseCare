@@ -87,6 +87,7 @@ public class UserService {
         // Default username/password for now
         Admin admin = new Admin(userId, userId, "password", name, contactInfo, hospitalId, department);
         users.add(admin);
+        StorageService.saveAll();
         return admin;
     }
     
@@ -103,6 +104,7 @@ public class UserService {
         // Default username/password will be set by the caller
         Parent parent = new Parent(userId, "", "", name, contactInfo, address);
         users.add(parent);
+        StorageService.saveAll();
         return parent;
     }
     

@@ -84,6 +84,7 @@ public class VaccinationSiteService {
         String siteId = "SITE-" + String.format("%03d", nextSiteId++);
         VaccinationSite site = new VaccinationSite(siteId, name, location, contactInfo);
         vaccinationSites.add(site);
+        StorageService.saveAll();
         return site;
     }
     
@@ -158,6 +159,7 @@ public class VaccinationSiteService {
         VaccinationSite site = getSiteById(siteId);
         if (site != null) {
             site.updateStock(vaccineId, quantity);
+            StorageService.saveAll();
             return true;
         }
         return false;
@@ -174,6 +176,7 @@ public class VaccinationSiteService {
         VaccinationSite site = getSiteById(siteId);
         if (site != null) {
             site.addVaccine(vaccineId);
+            StorageService.saveAll();
             return true;
         }
         return false;
@@ -189,7 +192,11 @@ public class VaccinationSiteService {
     public boolean removeVaccineFromSite(String siteId, String vaccineId) {
         VaccinationSite site = getSiteById(siteId);
         if (site != null) {
-            return site.removeVaccine(vaccineId);
+            boolean removed = site.removeVaccine(vaccineId);
+            if (removed) {
+                StorageService.saveAll();
+            }
+            return removed;
         }
         return false;
     }
@@ -201,7 +208,11 @@ public class VaccinationSiteService {
      * @return true if site was found and removed, false otherwise
      */
     public boolean deleteSite(String siteId) {
-        return vaccinationSites.removeIf(site -> site.getSiteId().equals(siteId));
+        boolean removed = vaccinationSites.removeIf(site -> site.getSiteId().equals(siteId));
+        if (removed) {
+            StorageService.saveAll();
+        }
+        return removed;
     }
 
     /**
