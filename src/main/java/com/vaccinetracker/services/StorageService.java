@@ -25,6 +25,7 @@ public class StorageService {
     private static final String SITES_FILE = DATA_DIR + "/sites.json";
     private static final String VACCINES_FILE = DATA_DIR + "/vaccines.json";
     private static final String RECORDS_FILE = DATA_DIR + "/records.json";
+    private static final String STAFF_FILE = DATA_DIR + "/staff.json";
     
     private static Gson gson;
     
@@ -59,6 +60,7 @@ public class StorageService {
         saveData(SITES_FILE, VaccinationSiteService.getAllData());
         saveData(VACCINES_FILE, VaccineService.getAllData());
         saveData(RECORDS_FILE, VaccinationService.getAllData());
+        saveData(STAFF_FILE, HumanResourceService.getAllData());
         
         System.out.println("All data saved successfully to " + new File(DATA_DIR).getAbsolutePath());
     }
@@ -76,6 +78,7 @@ public class StorageService {
             VaccinationSiteService.initializeSampleSites();
             AlertService.initializeSampleAlerts();
             VaccinationService.initializeDummyData();
+            HumanResourceService.initializeDummyData();
             
             saveAll();
             return;
@@ -122,6 +125,13 @@ public class StorageService {
         
         // Ensure dummy data exists if missing (e.g. for Vaccinator demo)
         VaccinationService.initializeDummyData();
+        
+        List<StaffMember> staff = loadData(STAFF_FILE, new TypeToken<List<StaffMember>>(){}.getType());
+        if (staff != null && !staff.isEmpty()) {
+            HumanResourceService.setAllData(staff);
+        } else {
+            HumanResourceService.initializeDummyData();
+        }
         
         System.out.println("All data loaded successfully.");
     }

@@ -9,9 +9,9 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class HumanResourceService {
-    private List<StaffMember> staffList;
+    private static List<StaffMember> staffList = new ArrayList<>();
     private VaccinationSiteService siteService;
-    private Random random = new Random();
+    private static Random random = new Random();
 
     private static final String[] FEMALE_FIRST_NAMES = {
         "Almaz", "Tigist", "Sara", "Hana", "Mahlet", "Kalkidan", "Aster", "Bethel", "Marta", "Rahel",
@@ -33,14 +33,15 @@ public class HumanResourceService {
     };
 
     public HumanResourceService(VaccinationSiteService siteService) {
-        this.staffList = new ArrayList<>();
         this.siteService = siteService;
-        initializeDummyData();
+        // Data is now loaded by StorageService
     }
 
-    private void initializeDummyData() {
-        if (siteService == null) return;
-        List<VaccinationSite> sites = siteService.getAllSites();
+    public static void initializeDummyData() {
+        if (!staffList.isEmpty()) return;
+        
+        // We need sites to assign staff. Since this is static, we might need to fetch sites statically
+        List<VaccinationSite> sites = VaccinationSiteService.getAllData();
         if (sites.isEmpty()) return;
 
         // Ensure at least one Nurse, Doctor, and Site Manager per site
@@ -60,9 +61,11 @@ public class HumanResourceService {
             VaccinationSite randomSite = sites.get(random.nextInt(sites.size()));
             createStaffForSite("Other", null, randomSite);
         }
+        
+        StorageService.saveAll();
     }
 
-    private void createStaffForSite(String role, String specificJobTitle, VaccinationSite site) {
+    private static void createStaffForSite(String role, String specificJobTitle, VaccinationSite site) {
         String firstName;
         if ("Nurse".equals(role)) {
             // 80% chance of female for nurses
@@ -98,7 +101,7 @@ public class HumanResourceService {
         addStaff(name, role, jobTitle, professionalId, contact, site);
     }
 
-    public String generateProfessionalId(String role) {
+    public static String generateProfessionalId(String role) {
         if (role.equals("Nurse")) {
             return "VAC-" + (1000 + random.nextInt(9000));
         } else if (role.equals("Doctor")) {
@@ -108,15 +111,20 @@ public class HumanResourceService {
         }
     }
 
-    public StaffMember addStaff(String name, String role, String jobTitle, String professionalId, String contactInfo, VaccinationSite site) {
+    public static StaffMember addStaff(String name, String role, String jobTitle, String professionalId, String contactInfo, VaccinationSite site) {
         String id = UUID.randomUUID().toString();
         StaffMember staff = new StaffMember(id, name, role, jobTitle, professionalId, contactInfo, site.getSiteId(), site.getName());
         staffList.add(staff);
+        StorageService.saveAll();
         return staff;
     }
 
     public boolean removeStaff(String id) {
-        return staffList.removeIf(s -> s.getId().equals(id));
+        boolean removed = staffList.removeIf(s -> s.getId().equals(id));
+        if (removed) {
+            StorageService.saveAll();
+        }
+        return removed;
     }
 
     public List<StaffMember> getAllStaff() {
@@ -127,5 +135,14 @@ public class HumanResourceService {
         return staffList.stream()
                 .filter(s -> s.getRole().equalsIgnoreCase(role))
                 .collect(Collectors.toList());
+    }
+
+    // Static access for StorageService
+    public static List<StaffMember> getAllData() {
+        return staffList;
+    }
+
+    public static void setAllData(List<StaffMember> data) {
+        staffList = data;
     }
 }

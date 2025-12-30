@@ -194,12 +194,12 @@ public class InventoryController {
             if ("ALL_SITES".equals(selectedSite.getSiteId())) {
                 // Add to all sites
                 for (VaccinationSite site : vaccinationSiteService.getAllSites()) {
-                    site.addStock(selectedVaccine.getVaccineId(), quantity, expiryDate);
+                    vaccinationSiteService.addStockToSite(site.getSiteId(), selectedVaccine.getVaccineId(), quantity, expiryDate);
                 }
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Vaccine stock added to ALL sites successfully.");
             } else {
                 // Add to specific site
-                selectedSite.addStock(selectedVaccine.getVaccineId(), quantity, expiryDate);
+                vaccinationSiteService.addStockToSite(selectedSite.getSiteId(), selectedVaccine.getVaccineId(), quantity, expiryDate);
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Vaccine stock added successfully.");
             }
 
@@ -219,13 +219,14 @@ public class InventoryController {
             return;
         }
 
-        // Logic: Remove the vaccine from the site (or set stock to 0?)
-        // "Remove Vaccine" usually implies removing the record.
-        VaccinationSite site = vaccinationSiteService.getSiteById(selectedItem.getSiteId());
-        if (site != null) {
-            site.removeVaccine(selectedItem.getVaccineId());
+        // Logic: Remove the vaccine from the site
+        boolean removed = vaccinationSiteService.removeVaccineFromSite(selectedItem.getSiteId(), selectedItem.getVaccineId());
+        
+        if (removed) {
             loadInventory();
             showAlert(Alert.AlertType.INFORMATION, "Success", "Vaccine removed from site inventory.");
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Error", "Could not remove vaccine from site.");
         }
     }
 

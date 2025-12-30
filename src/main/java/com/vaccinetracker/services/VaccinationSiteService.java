@@ -166,6 +166,26 @@ public class VaccinationSiteService {
     }
 
     /**
+     * Add stock to a vaccine at a site (increments existing stock).
+     * 
+     * @param siteId The site ID
+     * @param vaccineId The vaccine ID
+     * @param quantity The quantity to add
+     * @param expiryDate The expiry date
+     * @return true if site found, false otherwise
+     */
+    public boolean addStockToSite(String siteId, String vaccineId, int quantity, LocalDate expiryDate) {
+        VaccinationSite site = getSiteById(siteId);
+        if (site != null) {
+            int currentStock = site.getStock(vaccineId);
+            site.updateStock(vaccineId, currentStock + quantity, expiryDate);
+            StorageService.saveAll();
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Add a vaccine to a site's available vaccines list.
      * 
      * @param siteId The site ID
