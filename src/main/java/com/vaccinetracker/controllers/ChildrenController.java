@@ -477,6 +477,29 @@ public class ChildrenController {
     }
 
     @FXML
+    private void handleNotifyFromList() {
+        Child selectedChild = childrenTable.getSelectionModel().getSelectedItem();
+        if (selectedChild == null) {
+            showAlert(Alert.AlertType.WARNING, "No Selection", "Please select a child to notify.");
+            return;
+        }
+        
+        // Switch to Notify Tab
+        childrenTabPane.getSelectionModel().select(notifyTab);
+        
+        // Select the child in the notify table
+        for (ChildSelectionWrapper wrapper : notifyList) {
+            if (wrapper.getChild().getChildId().equals(selectedChild.getChildId())) {
+                wrapper.setSelected(true);
+                notifyTable.getSelectionModel().select(wrapper);
+                notifyTable.scrollTo(wrapper);
+            } else {
+                wrapper.setSelected(false);
+            }
+        }
+    }
+
+    @FXML
     private void handleRemoveChild() {
         Child selectedChild = childrenTable.getSelectionModel().getSelectedItem();
         if (selectedChild == null) {

@@ -46,7 +46,7 @@ public class HumanResourceService {
 
         // Add known staff for testing
         VaccinationSite firstSite = sites.get(0);
-        addStaff("Nurse Joy", "Nurse", null, "VAC-001", "joy@center.com", firstSite);
+        addStaff("Nurse Joy", "Nurse", null, "NUR-001", "joy@center.com", firstSite);
         addStaff("Dr. Oak", "Doctor", null, "DOC-001", "oak@center.com", firstSite);
 
         // Ensure at least one Nurse, Doctor, and Site Manager per site
@@ -108,7 +108,7 @@ public class HumanResourceService {
 
     public static String generateProfessionalId(String role) {
         if (role.equals("Nurse")) {
-            return "VAC-" + (1000 + random.nextInt(9000));
+            return "NUR-" + (1000 + random.nextInt(9000));
         } else if (role.equals("Doctor")) {
             return "DOC-" + (1000 + random.nextInt(9000));
         } else {

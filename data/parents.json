@@ -8,5 +8,15 @@
     "name": "John Smith",
     "contactInfo": "john.smith@email.com",
     "role": "PARENT"
+  },
+  {
+    "address": "aaaaaaa",
+    "numberOfChildren": 0,
+    "userId": "PAR025",
+    "username": "user1",
+    "password": "12345678",
+    "name": "a",
+    "contactInfo": "aaa@aaa",
+    "role": "PARENT"
   }
 ]

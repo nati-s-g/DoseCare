@@ -3,7 +3,7 @@
     "id": "b0c67aa6-1164-42a2-857a-624a3241f4d1",
     "name": "Nurse Joy",
     "role": "Nurse",
-    "professionalId": "VAC-001",
+    "professionalId": "NUR-001",
     "contactInfo": "joy@center.com",
     "siteId": "SITE-001",
     "siteName": "Black Lion Hospital (Tikur Anbessa)"
@@ -22,7 +22,7 @@
     "name": "Bethel Assefa",
     "role": "Nurse",
     "jobTitle": "Nurse",
-    "professionalId": "VAC-5708",
+    "professionalId": "NUR-5708",
     "contactInfo": "+251943988026",
     "siteId": "SITE-001",
     "siteName": "Black Lion Hospital (Tikur Anbessa)"
@@ -52,7 +52,7 @@
     "name": "Mahlet Haile",
     "role": "Nurse",
     "jobTitle": "Nurse",
-    "professionalId": "VAC-1665",
+    "professionalId": "NUR-1665",
     "contactInfo": "+251980524568",
     "siteId": "SITE-002",
     "siteName": "St. Paul\u0027s Hospital Millennium Medical College"
@@ -82,7 +82,7 @@
     "name": "Meskerem Girma",
     "role": "Nurse",
     "jobTitle": "Nurse",
-    "professionalId": "VAC-7354",
+    "professionalId": "NUR-7354",
     "contactInfo": "+251947718451",
     "siteId": "SITE-003",
     "siteName": "Zewditu Memorial Hospital"
@@ -112,7 +112,7 @@
     "name": "Helen Alemu",
     "role": "Nurse",
     "jobTitle": "Nurse",
-    "professionalId": "VAC-8723",
+    "professionalId": "NUR-8723",
     "contactInfo": "+251967243205",
     "siteId": "SITE-004",
     "siteName": "Yekatit 12 Hospital"
@@ -142,7 +142,7 @@
     "name": "Almaz Bekele",
     "role": "Nurse",
     "jobTitle": "Nurse",
-    "professionalId": "VAC-6077",
+    "professionalId": "NUR-6077",
     "contactInfo": "+251949013952",
     "siteId": "SITE-005",
     "siteName": "Alert Hospital"
@@ -172,7 +172,7 @@
     "name": "Helen Tadesse",
     "role": "Nurse",
     "jobTitle": "Nurse",
-    "professionalId": "VAC-3995",
+    "professionalId": "NUR-3995",
     "contactInfo": "+251966497323",
     "siteId": "SITE-002",
     "siteName": "St. Paul\u0027s Hospital Millennium Medical College"
@@ -182,7 +182,7 @@
     "name": "Aster Mengistu",
     "role": "Nurse",
     "jobTitle": "Nurse",
-    "professionalId": "VAC-5758",
+    "professionalId": "NUR-5758",
     "contactInfo": "+251948399348",
     "siteId": "SITE-005",
     "siteName": "Alert Hospital"
@@ -192,7 +192,7 @@
     "name": "Lydia Berhanu",
     "role": "Nurse",
     "jobTitle": "Nurse",
-    "professionalId": "VAC-6885",
+    "professionalId": "NUR-6885",
     "contactInfo": "+251921935868",
     "siteId": "SITE-003",
     "siteName": "Zewditu Memorial Hospital"
@@ -202,7 +202,7 @@
     "name": "Zewditu Alemu",
     "role": "Nurse",
     "jobTitle": "Nurse",
-    "professionalId": "VAC-3073",
+    "professionalId": "NUR-3073",
     "contactInfo": "+251931070460",
     "siteId": "SITE-005",
     "siteName": "Alert Hospital"
@@ -212,7 +212,7 @@
     "name": "Fikru Yosef",
     "role": "Nurse",
     "jobTitle": "Nurse",
-    "professionalId": "VAC-4921",
+    "professionalId": "NUR-4921",
     "contactInfo": "+251913488866",
     "siteId": "SITE-001",
     "siteName": "Black Lion Hospital (Tikur Anbessa)"
@@ -222,7 +222,7 @@
     "name": "Rahel Bekele",
     "role": "Nurse",
     "jobTitle": "Nurse",
-    "professionalId": "VAC-9103",
+    "professionalId": "NUR-9103",
     "contactInfo": "+251924653565",
     "siteId": "SITE-005",
     "siteName": "Alert Hospital"
@@ -232,7 +232,7 @@
     "name": "Tigist Kebede",
     "role": "Nurse",
     "jobTitle": "Nurse",
-    "professionalId": "VAC-9119",
+    "professionalId": "NUR-9119",
     "contactInfo": "+251987687844",
     "siteId": "SITE-004",
     "siteName": "Yekatit 12 Hospital"
@@ -242,7 +242,7 @@
     "name": "Hana Bekele",
     "role": "Nurse",
     "jobTitle": "Nurse",
-    "professionalId": "VAC-2046",
+    "professionalId": "NUR-2046",
     "contactInfo": "+251939980551",
     "siteId": "SITE-001",
     "siteName": "Black Lion Hospital (Tikur Anbessa)"
@@ -252,7 +252,7 @@
     "name": "Genet Yosef",
     "role": "Nurse",
     "jobTitle": "Nurse",
-    "professionalId": "VAC-7707",
+    "professionalId": "NUR-7707",
     "contactInfo": "+251969451149",
     "siteId": "SITE-002",
     "siteName": "St. Paul\u0027s Hospital Millennium Medical College"
@@ -262,7 +262,7 @@
     "name": "Mahlet Solomon",
     "role": "Nurse",
     "jobTitle": "Nurse",
-    "professionalId": "VAC-3932",
+    "professionalId": "NUR-3932",
     "contactInfo": "+251983656929",
     "siteId": "SITE-004",
     "siteName": "Yekatit 12 Hospital"
