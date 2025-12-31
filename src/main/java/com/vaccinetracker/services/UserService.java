@@ -33,26 +33,28 @@ public class UserService {
      * In a real application, this would load from a database.
      */
     public static void initializeSampleUsers() {
-        if (!users.isEmpty()) return;
+        // Check if we have an admin
+        boolean hasAdmin = users.stream().anyMatch(u -> u instanceof Admin);
+        if (!hasAdmin) {
+            // Create a sample admin
+            Admin admin = new Admin("ADM001", "admin", "admin", "Dr. Sarah Johnson", "sarah.johnson@hospital.com", 
+                                   "HOSP001", "Pediatrics");
+            users.add(admin);
+        }
         
-        // Create a sample admin
-        Admin admin = new Admin("ADM001", "admin", "admin", "Dr. Sarah Johnson", "sarah.johnson@hospital.com", 
-                               "HOSP001", "Pediatrics");
-        users.add(admin);
-        
-        // Create a sample parent
-        Parent parent = new Parent("PAR001", "user1234", "12345678", "John Smith", "john.smith@email.com", 
-                                  "123 Main St, City");
-        parent.setNumberOfChildren(1);
-        users.add(parent);
+        // Check if we have a parent
+        boolean hasParent = users.stream().anyMatch(u -> u instanceof Parent);
+        if (!hasParent) {
+            // Create a sample parent
+            Parent parent = new Parent("PAR001", "user1234", "12345678", "John Smith", "john.smith@email.com", 
+                                      "123 Main St, City");
+            parent.setNumberOfChildren(1);
+            users.add(parent);
+        }
 
-        // Create a sample vaccinator
-        // Username is now the Vaccinator ID (e.g., NUR001)
-        Vaccinator vaccinator = new Vaccinator("VAC001", "NUR001", "password", "Nurse Joy", "joy@center.com", "NUR001", "SITE-001", "456 Health St");
-        users.add(vaccinator);
-        
-        Vaccinator doctor = new Vaccinator("VAC002", "DOC001", "password", "Dr. Oak", "oak@center.com", "DOC001", "SITE-001", "789 Lab St");
-        users.add(doctor);
+        // We do NOT create sample vaccinators here anymore.
+        // They are created by HumanResourceService.initializeDummyData() -> addStaff()
+        // which ensures they are linked to the HR system.
     }
     
     /**
@@ -201,6 +203,26 @@ public class UserService {
 
     public static void setAllData(List<User> data) {
         users = data;
+    }
+
+    /**
+     * Add a new Vaccinator user.
+     */
+    public static void addVaccinator(String userId, String username, String password, String name, String contactInfo, String vaccinatorId, String siteId, String address) {
+        // Check if username already exists
+        for (User u : users) {
+            if (u.getUsername().equalsIgnoreCase(username)) {
+                return; // User already exists
+            }
+        }
+        Vaccinator vaccinator = new Vaccinator(userId, username, password, name, contactInfo, vaccinatorId, siteId, address);
+        users.add(vaccinator);
+        StorageService.saveAll();
+    }
+
+    public static void removeUser(String userId) {
+        users.removeIf(u -> u.getUserId().equals(userId));
+        StorageService.saveAll();
     }
 }
 

@@ -101,6 +101,30 @@ public class HumanResourceController {
         contactCol.setStyle("-fx-alignment: CENTER;");
         siteCol.setStyle("-fx-alignment: CENTER-LEFT;");
         
+        // Add context menu to copy ID
+        table.setRowFactory(tv -> {
+            TableRow<StaffMember> row = new TableRow<>();
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem copyIdItem = new MenuItem("Copy ID");
+            copyIdItem.setOnAction(event -> {
+                StaffMember item = row.getItem();
+                if (item != null) {
+                    javafx.scene.input.ClipboardContent content = new javafx.scene.input.ClipboardContent();
+                    content.putString(item.getProfessionalId());
+                    javafx.scene.input.Clipboard.getSystemClipboard().setContent(content);
+                }
+            });
+            contextMenu.getItems().add(copyIdItem);
+
+            // Only show context menu for non-empty rows
+            row.contextMenuProperty().bind(
+                javafx.beans.binding.Bindings.when(row.emptyProperty())
+                .then((ContextMenu)null)
+                .otherwise(contextMenu)
+            );
+            return row;
+        });
+
         table.setItems(list);
     }
 
@@ -183,9 +207,9 @@ public class HumanResourceController {
             return;
         }
         
-        String profId = hrService.generateProfessionalId(role);
+        String profId = HumanResourceService.generateProfessionalId(role);
 
-        hrService.addStaff(name, role, jobTitle, profId, contact, site);
+        HumanResourceService.addStaff(name, role, jobTitle, profId, contact, site);
         loadData();
         
         // Clear fields
@@ -211,7 +235,7 @@ public class HumanResourceController {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            hrService.removeStaff(selected.getId());
+            HumanResourceService.removeStaff(selected.getId());
             loadData();
         }
     }

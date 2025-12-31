@@ -95,9 +95,8 @@ public class StorageService {
         List<Vaccinator> vaccinators = loadData(VACCINATORS_FILE, new TypeToken<List<Vaccinator>>(){}.getType());
         
         // Ensure default vaccinator exists if file was missing/empty
-        if (vaccinators == null || vaccinators.isEmpty()) {
+        if (vaccinators == null) {
             vaccinators = new ArrayList<>();
-            vaccinators.add(new Vaccinator("VAC001", "NUR001", "password", "Nurse Joy", "joy@center.com", "NUR001", "SITE-001", "456 Health St"));
         }
         
         List<User> allUsers = new ArrayList<>();

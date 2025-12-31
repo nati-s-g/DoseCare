@@ -44,6 +44,11 @@ public class HumanResourceService {
         List<VaccinationSite> sites = VaccinationSiteService.getAllData();
         if (sites.isEmpty()) return;
 
+        // Add known staff for testing
+        VaccinationSite firstSite = sites.get(0);
+        addStaff("Nurse Joy", "Nurse", null, "VAC-001", "joy@center.com", firstSite);
+        addStaff("Dr. Oak", "Doctor", null, "DOC-001", "oak@center.com", firstSite);
+
         // Ensure at least one Nurse, Doctor, and Site Manager per site
         for (VaccinationSite site : sites) {
             createStaffForSite("Nurse", null, site);
@@ -115,13 +120,21 @@ public class HumanResourceService {
         String id = UUID.randomUUID().toString();
         StaffMember staff = new StaffMember(id, name, role, jobTitle, professionalId, contactInfo, site.getSiteId(), site.getName());
         staffList.add(staff);
+        
+        // Create Vaccinator account for Doctors and Nurses
+        if ("Doctor".equals(role) || "Nurse".equals(role)) {
+            // Use professionalId as username, default password "12345678"
+            UserService.addVaccinator(id, professionalId, "12345678", name, contactInfo, professionalId, site.getSiteId(), site.getLocation());
+        }
+        
         StorageService.saveAll();
         return staff;
     }
 
-    public boolean removeStaff(String id) {
+    public static boolean removeStaff(String id) {
         boolean removed = staffList.removeIf(s -> s.getId().equals(id));
         if (removed) {
+            UserService.removeUser(id);
             StorageService.saveAll();
         }
         return removed;
