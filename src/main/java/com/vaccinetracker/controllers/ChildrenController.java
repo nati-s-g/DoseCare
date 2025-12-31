@@ -282,6 +282,13 @@ public class ChildrenController {
         vrStatusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         vrAdminDateColumn.setCellValueFactory(new PropertyValueFactory<>("dateAdministered"));
         
+        // Align columns
+        vrVaccineColumn.setStyle("-fx-alignment: CENTER;");
+        vrSiteColumn.setStyle("-fx-alignment: CENTER;");
+        vrDueDateColumn.setStyle("-fx-alignment: CENTER;");
+        vrStatusColumn.setStyle("-fx-alignment: CENTER;");
+        vrAdminDateColumn.setStyle("-fx-alignment: CENTER;");
+        
         vaccinationRecordTable.setItems(vaccinationRecordsList);
         
         // Configure Vaccine ComboBox

@@ -3,21 +3,21 @@
     "childId": "CHD-1E936C99-3E1C",
     "name": "Yordanos Zelalem",
     "dateOfBirth": "2025-04-05",
-    "parentId": "P045",
+    "parentId": "PAR001",
     "hospitalId": "H004",
     "gender": "Female",
-    "guardianName": "Frehiwot Mengistu",
-    "guardianContact": "+251931942774"
+    "guardianName": "Ashebir",
+    "guardianContact": "john.smith@email.com"
   },
   {
     "childId": "CHD-0705BE2C-51F6",
     "name": "Robel Ali",
     "dateOfBirth": "2024-06-15",
-    "parentId": "P063",
+    "parentId": "PAR001",
     "hospitalId": "H005",
     "gender": "Male",
-    "guardianName": "Ali Omar",
-    "guardianContact": "+251959668800"
+    "guardianName": "Ashebir",
+    "guardianContact": "john.smith@email.com"
   },
   {
     "childId": "CHD-CC1EB97D-E5EB",

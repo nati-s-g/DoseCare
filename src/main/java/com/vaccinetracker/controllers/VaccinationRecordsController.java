@@ -181,8 +181,8 @@ public class VaccinationRecordsController {
         ageColumn.setCellValueFactory(new PropertyValueFactory<>("age"));
         
         // Align columns
-        childNameColumn.setStyle("-fx-alignment: CENTER-LEFT;");
-        vaccineNameColumn.setStyle("-fx-alignment: CENTER-LEFT;");
+        childNameColumn.setStyle("-fx-alignment: CENTER;");
+        vaccineNameColumn.setStyle("-fx-alignment: CENTER;");
         statusColumn.setStyle("-fx-alignment: CENTER;");
         dateAdministeredColumn.setStyle("-fx-alignment: CENTER;");
         nextDueDateColumn.setStyle("-fx-alignment: CENTER;");
