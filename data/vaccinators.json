@@ -9,5 +9,16 @@
     "name": "Nurse Joy",
     "contactInfo": "joy@center.com",
     "role": "VACCINATOR"
+  },
+  {
+    "vaccinatorId": "DOC001",
+    "siteId": "SITE-001",
+    "address": "789 Lab St",
+    "userId": "VAC002",
+    "username": "DOC001",
+    "password": "password",
+    "name": "Dr. Oak",
+    "contactInfo": "oak@center.com",
+    "role": "VACCINATOR"
   }
 ]

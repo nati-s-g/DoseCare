@@ -5,28 +5,8 @@
     "userId": "PAR001",
     "username": "user1234",
     "password": "12345678",
-    "name": "my nammee",
+    "name": "John Smith",
     "contactInfo": "john.smith@email.com",
-    "role": "PARENT"
-  },
-  {
-    "address": "cvbn",
-    "numberOfChildren": 0,
-    "userId": "PAR003",
-    "username": "cvbnm",
-    "password": "vbn",
-    "name": "fgh",
-    "contactInfo": "vcbn",
-    "role": "PARENT"
-  },
-  {
-    "address": "try",
-    "numberOfChildren": 0,
-    "userId": "PAR004",
-    "username": "user12345",
-    "password": "12345678",
-    "name": "user12345",
-    "contactInfo": "retyu",
     "role": "PARENT"
   }
 ]

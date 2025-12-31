@@ -30,48 +30,6 @@
     "recommendedAgeInDays": 42
   },
   {
-    "vaccineId": "VAC006",
-    "name": "DPT (2nd)",
-    "description": "Diphtheria, Pertussis, Tetanus - second dose",
-    "recommendedAgeInDays": 70
-  },
-  {
-    "vaccineId": "VAC007",
-    "name": "Polio (Oral 2nd)",
-    "description": "Oral Polio Vaccine - second dose",
-    "recommendedAgeInDays": 70
-  },
-  {
-    "vaccineId": "VAC008",
-    "name": "DPT (3rd)",
-    "description": "Diphtheria, Pertussis, Tetanus - third dose",
-    "recommendedAgeInDays": 98
-  },
-  {
-    "vaccineId": "VAC009",
-    "name": "Polio (Oral 3rd)",
-    "description": "Oral Polio Vaccine - third dose",
-    "recommendedAgeInDays": 98
-  },
-  {
-    "vaccineId": "VAC010",
-    "name": "Measles",
-    "description": "Measles vaccine",
-    "recommendedAgeInDays": 270
-  },
-  {
-    "vaccineId": "VAC011",
-    "name": "DPT Booster",
-    "description": "Diphtheria, Pertussis, Tetanus booster",
-    "recommendedAgeInDays": 540
-  },
-  {
-    "vaccineId": "VAC012",
-    "name": "Polio Booster",
-    "description": "Oral Polio Vaccine booster",
-    "recommendedAgeInDays": 540
-  },
-  {
     "vaccineId": "VAC020",
     "name": "6-in-1 (1st dose)",
     "description": "Diphtheria, hepatitis B, Hib, polio, tetanus, whooping cough",
@@ -88,6 +46,18 @@
     "name": "MenB (1st dose)",
     "description": "Meningococcal group B bacteria",
     "recommendedAgeInDays": 56
+  },
+  {
+    "vaccineId": "VAC006",
+    "name": "DPT (2nd)",
+    "description": "Diphtheria, Pertussis, Tetanus - second dose",
+    "recommendedAgeInDays": 70
+  },
+  {
+    "vaccineId": "VAC007",
+    "name": "Polio (Oral 2nd)",
+    "description": "Oral Polio Vaccine - second dose",
+    "recommendedAgeInDays": 70
   },
   {
     "vaccineId": "VAC023",
@@ -108,6 +78,18 @@
     "recommendedAgeInDays": 84
   },
   {
+    "vaccineId": "VAC008",
+    "name": "DPT (3rd)",
+    "description": "Diphtheria, Pertussis, Tetanus - third dose",
+    "recommendedAgeInDays": 98
+  },
+  {
+    "vaccineId": "VAC009",
+    "name": "Polio (Oral 3rd)",
+    "description": "Oral Polio Vaccine - third dose",
+    "recommendedAgeInDays": 98
+  },
+  {
     "vaccineId": "VAC026",
     "name": "6-in-1 (3rd dose)",
     "description": "Diphtheria, hepatitis B, Hib, polio, tetanus, whooping cough",
@@ -118,6 +100,12 @@
     "name": "Pneumococcal (1st dose)",
     "description": "Pneumococcal vaccine (PCV)",
     "recommendedAgeInDays": 112
+  },
+  {
+    "vaccineId": "VAC010",
+    "name": "Measles",
+    "description": "Measles vaccine",
+    "recommendedAgeInDays": 270
   },
   {
     "vaccineId": "VAC028",
@@ -142,6 +130,18 @@
     "name": "Hib/MenC (1st dose)",
     "description": "Haemophilus influenzae type b (Hib) and meningitis C",
     "recommendedAgeInDays": 365
+  },
+  {
+    "vaccineId": "VAC011",
+    "name": "DPT Booster",
+    "description": "Diphtheria, Pertussis, Tetanus booster",
+    "recommendedAgeInDays": 540
+  },
+  {
+    "vaccineId": "VAC012",
+    "name": "Polio Booster",
+    "description": "Oral Polio Vaccine booster",
+    "recommendedAgeInDays": 540
   },
   {
     "vaccineId": "VAC032",

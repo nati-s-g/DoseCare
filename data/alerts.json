@@ -4,7 +4,7 @@
     "title": "Free Vaccination Week",
     "message": "This week, all vaccination sites are offering free vaccinations for children under 5 years.",
     "severityLevel": "LOW",
-    "dateCreated": "2025-12-27",
+    "dateCreated": "2025-12-31",
     "isActive": true
   },
   {
@@ -12,7 +12,7 @@
     "title": "New Measles Vaccine Available",
     "message": "The new measles vaccine is now available at all vaccination sites. Contact your nearest site for scheduling.",
     "severityLevel": "MEDIUM",
-    "dateCreated": "2025-12-27",
+    "dateCreated": "2025-12-31",
     "isActive": true
   },
   {
@@ -20,7 +20,7 @@
     "title": "Polio Awareness Campaign",
     "message": "Join the polio vaccination campaign. All children between 0-5 years are eligible for free vaccination.",
     "severityLevel": "MEDIUM",
-    "dateCreated": "2025-12-27",
+    "dateCreated": "2025-12-31",
     "isActive": true
   }
 ]

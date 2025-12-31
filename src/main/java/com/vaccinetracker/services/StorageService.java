@@ -7,6 +7,7 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.vaccinetracker.model.*;
+import javafx.beans.property.*;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -32,6 +33,10 @@ public class StorageService {
     static {
         gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .registerTypeHierarchyAdapter(StringProperty.class, new StringPropertyAdapter())
+                .registerTypeHierarchyAdapter(IntegerProperty.class, new IntegerPropertyAdapter())
+                .registerTypeHierarchyAdapter(BooleanProperty.class, new BooleanPropertyAdapter())
+                .registerTypeHierarchyAdapter(DoubleProperty.class, new DoublePropertyAdapter())
                 .setPrettyPrinting()
                 .create();
         
@@ -174,6 +179,82 @@ public class StorageService {
                 return null;
             }
             return LocalDate.parse(in.nextString());
+        }
+    }
+
+    private static class StringPropertyAdapter extends TypeAdapter<StringProperty> {
+        @Override
+        public void write(JsonWriter out, StringProperty value) throws IOException {
+            out.value(value == null ? null : value.get());
+        }
+
+        @Override
+        public StringProperty read(JsonReader in) throws IOException {
+            if (in.peek() == com.google.gson.stream.JsonToken.NULL) {
+                in.nextNull();
+                return null;
+            }
+            return new SimpleStringProperty(in.nextString());
+        }
+    }
+
+    private static class IntegerPropertyAdapter extends TypeAdapter<IntegerProperty> {
+        @Override
+        public void write(JsonWriter out, IntegerProperty value) throws IOException {
+            if (value == null) {
+                out.nullValue();
+            } else {
+                out.value(value.get());
+            }
+        }
+
+        @Override
+        public IntegerProperty read(JsonReader in) throws IOException {
+            if (in.peek() == com.google.gson.stream.JsonToken.NULL) {
+                in.nextNull();
+                return null;
+            }
+            return new SimpleIntegerProperty(in.nextInt());
+        }
+    }
+
+    private static class BooleanPropertyAdapter extends TypeAdapter<BooleanProperty> {
+        @Override
+        public void write(JsonWriter out, BooleanProperty value) throws IOException {
+            if (value == null) {
+                out.nullValue();
+            } else {
+                out.value(value.get());
+            }
+        }
+
+        @Override
+        public BooleanProperty read(JsonReader in) throws IOException {
+            if (in.peek() == com.google.gson.stream.JsonToken.NULL) {
+                in.nextNull();
+                return null;
+            }
+            return new SimpleBooleanProperty(in.nextBoolean());
+        }
+    }
+
+    private static class DoublePropertyAdapter extends TypeAdapter<DoubleProperty> {
+        @Override
+        public void write(JsonWriter out, DoubleProperty value) throws IOException {
+            if (value == null) {
+                out.nullValue();
+            } else {
+                out.value(value.get());
+            }
+        }
+
+        @Override
+        public DoubleProperty read(JsonReader in) throws IOException {
+            if (in.peek() == com.google.gson.stream.JsonToken.NULL) {
+                in.nextNull();
+                return null;
+            }
+            return new SimpleDoubleProperty(in.nextDouble());
         }
     }
 }
