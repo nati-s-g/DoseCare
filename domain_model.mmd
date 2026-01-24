@@ -42,14 +42,28 @@ classDiagram
     class AlertService
     class StorageService
 
-    %% Service Relationships
+    %% Service Relationships - Connecting Entities to Services
     AuthService ..> User : authenticates
-    UserService ..> User : manages
-    ChildService ..> Child : manages
-    VaccinationService ..> VaccinationRecord : creates
-    VaccineService ..> Vaccine : manages
-    VaccinationSiteService ..> VaccinationSite : manages
-    VaccinationSiteService ..> InventoryItem : manages
-    HumanResourceService ..> StaffMember : manages
-    AlertService ..> HealthAlert : sends
-    StorageService ..> User : persists
+    UserService ..> User : manages accounts
+    ChildService ..> Child : handles registration
+    VaccinationService ..> VaccinationRecord : creates & tracks
+    VaccineService ..> Vaccine : catalogs
+    VaccinationSiteService ..> VaccinationSite : maintains
+    VaccinationSiteService ..> InventoryItem : updates stock
+    HumanResourceService ..> StaffMember : recruits & manages
+    AlertService ..> HealthAlert : broadcasts
+    StorageService ..> User : persists data
+
+    %% Actor Interactions ("Works")
+    Parent ..> ChildService : registers children
+    Parent ..> VaccinationService : views history
+    
+    Admin ..> HumanResourceService : manages staff
+    Admin ..> VaccinationSiteService : manages sites & inventory
+    Admin ..> VaccineService : manages vaccine types
+    Admin ..> AlertService : sends health alerts
+    
+    Vaccinator ..> VaccinationService : records administration
+    Vaccinator ..> VaccinationSiteService : checks inventory
+
+    User ..> AuthService : logs in
