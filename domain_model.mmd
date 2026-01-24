@@ -1,69 +1,120 @@
 classDiagram
     direction TB
     
-    %% By removing namespaces, the layout engine can pack items tighter together
-    
-    class User
+    %% ==========================================
+    %% ACTORS
+    %% ==========================================
     class Admin
-    class Parent
     class Vaccinator
-    class StaffMember
+    class Parent
 
+    %% ==========================================
+    %% 1. ADMIN MODULES
+    %% ==========================================
+    class Admin_Dashboard {
+        Monitor System Data
+    }
+    class Admin_Children {
+        Register Child
+        Keep Records
+        Notify Parents
+    }
+    class Admin_Sites {
+        Monitor Sites
+    }
+    class Admin_Inventory {
+        Manage Stocks
+    }
+    class Admin_HR {
+        Manage Staff
+    }
+    class Admin_Alerts {
+        Send Health Alerts
+    }
+
+    %% Admin Composition
+    Admin *-- Admin_Dashboard
+    Admin *-- Admin_Children
+    Admin *-- Admin_Sites
+    Admin *-- Admin_Inventory
+    Admin *-- Admin_HR
+    Admin *-- Admin_Alerts
+
+    %% ==========================================
+    %% 2. VACCINATOR MODULES
+    %% ==========================================
+    class Vaccinator_Dashboard {
+        View Pending Vaccinations
+    }
+    class Vaccinator_Records {
+        Register Child
+        View Child Records
+    }
+
+    %% Vaccinator Composition
+    Vaccinator *-- Vaccinator_Dashboard
+    Vaccinator *-- Vaccinator_Records
+
+    %% ==========================================
+    %% 3. PARENT MODULES
+    %% ==========================================
+    class Parent_Dashboard {
+        View Health Alerts
+    }
+    class Parent_MyChildren {
+        Add Children
+        Manage Profile
+    }
+    class Parent_Schedule {
+        View Appointments
+    }
+    class Parent_Records {
+        View History
+    }
+
+    %% Parent Composition
+    Parent *-- Parent_Dashboard
+    Parent *-- Parent_MyChildren
+    Parent *-- Parent_Schedule
+    Parent *-- Parent_Records
+
+    %% ==========================================
+    %% DOMAIN ENTITIES
+    %% ==========================================
     class Child
     class VaccinationRecord
-    class Vaccine
-    class HealthAlert
-
     class VaccinationSite
     class InventoryItem
+    class StaffMember
+    class HealthAlert
+    class Vaccine
 
-    %% Relationships
-    User <|-- Admin
-    User <|-- Parent
-    User <|-- Vaccinator
+    %% ==========================================
+    %% FUNCTIONAL RELATIONSHIPS
+    %% ==========================================
     
-    Parent "1" *-- "n" Child : registers
+    %% Admin Actions
+    Admin_Children ..> Child : manages
+    Admin_Children ..> Parent : notifies
+    Admin_Sites ..> VaccinationSite : monitors
+    Admin_Inventory ..> InventoryItem : manages
+    Admin_Inventory ..> Vaccine : catalogs
+    Admin_HR ..> StaffMember : manages
+    Admin_Alerts ..> HealthAlert : broadcasts
+
+    %% Vaccinator Actions
+    Vaccinator_Dashboard ..> VaccinationRecord : tracks pending
+    Vaccinator_Records ..> VaccinationRecord : updates status
+    Vaccinator_Records ..> Child : registers
+
+    %% Parent Actions
+    Parent_Dashboard ..> HealthAlert : receives
+    Parent_MyChildren ..> Child : manages
+    Parent_Schedule ..> VaccinationRecord : tracks
+    Parent_Records ..> VaccinationRecord : reviews
+    
+    %% Entity-to-Entity Connections
     Child "1" *-- "n" VaccinationRecord : has
     VaccinationRecord "n" --> "1" Vaccine : type
-    Vaccinator "n" --> "1" VaccinationSite : at
-    StaffMember "n" --> "1" VaccinationSite : at
     InventoryItem "n" --> "1" VaccinationSite : at
-    InventoryItem "n" --> "1" Vaccine : stocks
-    HealthAlert "n" --> "1" Child : targets
-
-    %% Services Layer
-    class AuthService
-    class UserService
-    class ChildService
-    class VaccinationService
-    class VaccineService
-    class VaccinationSiteService
-    class HumanResourceService
-    class AlertService
-    class StorageService
-
-    %% Service Relationships - Connecting Entities to Services
-    AuthService ..> User : authenticates
-    UserService ..> User : manages accounts
-    ChildService ..> Child : handles registration
-    VaccinationService ..> VaccinationRecord : creates & tracks
-    VaccineService ..> Vaccine : catalogs
-    VaccinationSiteService ..> VaccinationSite : maintains
-    VaccinationSiteService ..> InventoryItem : updates stock
-    HumanResourceService ..> StaffMember : recruits & manages
-    AlertService ..> HealthAlert : broadcasts
-    StorageService ..> User : persists data
-
-    %% Actor Interactions ("Works")
-    Parent ..> ChildService : registers children
-    Parent ..> VaccinationService : views history
-    
-    Admin ..> HumanResourceService : manages staff
-    Admin ..> VaccinationSiteService : manages sites & inventory
-    Admin ..> VaccineService : manages vaccine types
-    Admin ..> AlertService : sends health alerts
-    
-    Vaccinator ..> VaccinationService : records administration
-    Vaccinator ..> VaccinationSiteService : checks inventory
-
-    User ..> AuthService : logs in
+    StaffMember "n" --> "1" VaccinationSite : works at
