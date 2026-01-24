@@ -1,120 +1,101 @@
-classDiagram
-    direction TB
+flowchart TD
+    %% ==========================================
+    %% STYLING: Large Fonts & Clear Boxes
+    %% ==========================================
+    classDef adminFill fill:#bbdefb,stroke:#0d47a1,stroke-width:4px,fontsize:24px,rx:10
+    classDef vaccFill fill:#ffcc80,stroke:#e65100,stroke-width:4px,fontsize:24px,rx:10
+    classDef parentFill fill:#e1bee7,stroke:#4a148c,stroke-width:4px,fontsize:24px,rx:10
     
-    %% ==========================================
-    %% ACTORS
-    %% ==========================================
-    class Admin
-    class Vaccinator
-    class Parent
+    classDef moduleFill fill:#ffffff,stroke:#455a64,stroke-width:2px,fontsize:18px,rx:5
+    classDef dataFill fill:#cfd8dc,stroke:#37474f,stroke-width:2px,fontsize:18px,shape:rect
 
     %% ==========================================
-    %% 1. ADMIN MODULES
+    %% SUBGRAPH STYLING (Rounded Corners)
     %% ==========================================
-    class Admin_Dashboard {
-        Monitor System Data
-    }
-    class Admin_Children {
-        Register Child
-        Keep Records
-        Notify Parents
-    }
-    class Admin_Sites {
-        Monitor Sites
-    }
-    class Admin_Inventory {
-        Manage Stocks
-    }
-    class Admin_HR {
-        Manage Staff
-    }
-    class Admin_Alerts {
-        Send Health Alerts
-    }
-
-    %% Admin Composition
-    Admin *-- Admin_Dashboard
-    Admin *-- Admin_Children
-    Admin *-- Admin_Sites
-    Admin *-- Admin_Inventory
-    Admin *-- Admin_HR
-    Admin *-- Admin_Alerts
+    style AdminZone fill:#e3f2fd,stroke:#0d47a1,stroke-width:2px,rx:20,ry:20
+    style VaccZone fill:#fff3e0,stroke:#e65100,stroke-width:2px,rx:20,ry:20
+    style ParentZone fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,rx:20,ry:20
 
     %% ==========================================
-    %% 2. VACCINATOR MODULES
+    %% 1. ADMIN ZONE
     %% ==========================================
-    class Vaccinator_Dashboard {
-        View Pending Vaccinations
-    }
-    class Vaccinator_Records {
-        Register Child
-        View Child Records
-    }
+    subgraph AdminZone [ADMINISTRATION]
+        direction TB
+        Admin(ADMIN):::adminFill
+        
+        %% Modules
+        A_Dash(Dashboard):::moduleFill
+        A_Child(Children Mgmt):::moduleFill
+        A_Inv(Inventory & Sites):::moduleFill
+        A_HR(HR & Staff):::moduleFill
+        A_Alert(Health Alerts):::moduleFill
 
-    %% Vaccinator Composition
-    Vaccinator *-- Vaccinator_Dashboard
-    Vaccinator *-- Vaccinator_Records
-
-    %% ==========================================
-    %% 3. PARENT MODULES
-    %% ==========================================
-    class Parent_Dashboard {
-        View Health Alerts
-    }
-    class Parent_MyChildren {
-        Add Children
-        Manage Profile
-    }
-    class Parent_Schedule {
-        View Appointments
-    }
-    class Parent_Records {
-        View History
-    }
-
-    %% Parent Composition
-    Parent *-- Parent_Dashboard
-    Parent *-- Parent_MyChildren
-    Parent *-- Parent_Schedule
-    Parent *-- Parent_Records
+        %% Connections
+        Admin --> A_Dash
+        Admin --> A_Child
+        Admin --> A_Inv
+        Admin --> A_HR
+        Admin --> A_Alert
+    end
 
     %% ==========================================
-    %% DOMAIN ENTITIES
+    %% 2. VACCINATOR ZONE
     %% ==========================================
-    class Child
-    class VaccinationRecord
-    class VaccinationSite
-    class InventoryItem
-    class StaffMember
-    class HealthAlert
-    class Vaccine
+    subgraph VaccZone [CLINIC]
+        direction TB
+        Vacc(VACCINATOR):::vaccFill
+        
+        %% Modules
+        V_Dash(Dashboard):::moduleFill
+        V_Rec(Records & Register):::moduleFill
+
+        %% Connections
+        Vacc --> V_Dash
+        Vacc --> V_Rec
+    end
 
     %% ==========================================
-    %% FUNCTIONAL RELATIONSHIPS
+    %% 3. PARENT ZONE
+    %% ==========================================
+    subgraph ParentZone [FAMILY]
+        direction TB
+        Par(PARENT):::parentFill
+        
+        %% Modules
+        P_Dash(Main Dashboard):::moduleFill
+        P_Kids(My Children):::moduleFill
+        P_Sched(Schedule & Records):::moduleFill
+
+        %% Connections
+        Par --> P_Dash
+        Par --> P_Kids
+        Par --> P_Sched
+    end
+
+    %% ==========================================
+    %% 4. DATA LAYER (Centralized)
+    %% ==========================================
+    D_Child[Child Profile]:::dataFill
+    D_Stock[Vaccine Stock]:::dataFill
+    D_Staff[Staff Records]:::dataFill
+    D_Recs[Health Records]:::dataFill
+
+    %% ==========================================
+    %% 5. SIMPLIFIED FLOWS
     %% ==========================================
     
-    %% Admin Actions
-    Admin_Children ..> Child : manages
-    Admin_Children ..> Parent : notifies
-    Admin_Sites ..> VaccinationSite : monitors
-    Admin_Inventory ..> InventoryItem : manages
-    Admin_Inventory ..> Vaccine : catalogs
-    Admin_HR ..> StaffMember : manages
-    Admin_Alerts ..> HealthAlert : broadcasts
+    %% Admin Flows
+    A_Child -->|Registers| D_Child
+    A_Inv -->|Controls| D_Stock
+    A_HR -->|Manages| D_Staff
 
-    %% Vaccinator Actions
-    Vaccinator_Dashboard ..> VaccinationRecord : tracks pending
-    Vaccinator_Records ..> VaccinationRecord : updates status
-    Vaccinator_Records ..> Child : registers
+    %% Vaccinator Flows
+    V_Rec -->|Updates| D_Recs
+    V_Rec -.->|Access| D_Child
 
-    %% Parent Actions
-    Parent_Dashboard ..> HealthAlert : receives
-    Parent_MyChildren ..> Child : manages
-    Parent_Schedule ..> VaccinationRecord : tracks
-    Parent_Records ..> VaccinationRecord : reviews
-    
-    %% Entity-to-Entity Connections
-    Child "1" *-- "n" VaccinationRecord : has
-    VaccinationRecord "n" --> "1" Vaccine : type
-    InventoryItem "n" --> "1" VaccinationSite : at
-    StaffMember "n" --> "1" VaccinationSite : works at
+    %% Parent Flows
+    P_Kids -->|Views| D_Child
+    P_Sched -->|Checks| D_Recs
+
+    %% Alerts (Direct)
+    A_Alert -.->|Broadcasts| P_Dash
