@@ -10,6 +10,7 @@ import com.vaccinetracker.services.ChildService;
 import com.vaccinetracker.services.VaccinationService;
 import com.vaccinetracker.services.VaccinationSiteService;
 import com.vaccinetracker.services.VaccineService;
+import com.vaccinetracker.services.StorageService;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -591,8 +592,37 @@ public class ChildrenController {
             String title = "Vaccine Alert: " + vaccineName;
             String message = explanation + "\n\nDue Date: " + dueDateStr + "\nLocation: " + siteName + "\nChild: " + child.getName() + " (" + child.getChildId() + ")";
             alertService.createTargetedAlert(title, message, HealthAlert.SeverityLevel.MEDIUM, child.getChildId());
+            
+            // Sync with vaccination records
+            if (vaccinationService != null && dueDate != null) {
+                 List<VaccinationRecord> records = vaccinationService.getRecordsByChild(child.getChildId());
+                 boolean recordExists = false;
+                 
+                 for (VaccinationRecord record : records) {
+                     if (record.getVaccineId().equals(selectedVaccine.getVaccineId()) && 
+                         record.getStatus() == VaccinationRecord.VaccinationStatus.PENDING) {
+                         
+                         // Update existing pending record
+                         record.setNextDueDate(dueDate);
+                         if (selectedSite != null) {
+                             record.setVaccinationSiteId(selectedSite.getSiteId());
+                         }
+                         recordExists = true;
+                         break; 
+                     }
+                 }
+                 
+                 if (!recordExists) {
+                     // Create new record
+                     String siteId = selectedSite != null ? selectedSite.getSiteId() : null;
+                     vaccinationService.addVaccinationRecord(child.getChildId(), selectedVaccine.getVaccineId(), dueDate, siteId);
+                 }
+            }
             count++;
         }
+        
+        // Ensure all changes (including manual updates to records) are saved
+        StorageService.saveAll();
 
         showAlert(Alert.AlertType.INFORMATION, "Success", "Sent " + count + " notifications successfully.");
         

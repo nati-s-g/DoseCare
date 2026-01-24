@@ -5,7 +5,7 @@
     "userId": "PAR001",
     "username": "user1234",
     "password": "12345678",
-    "name": "Abebe",
+    "name": "Mengistu",
     "contactInfo": "abebe123@email.com",
     "role": "PARENT"
   },
@@ -17,6 +17,16 @@
     "password": "12345678",
     "name": "a",
     "contactInfo": "aaa@aaa",
+    "role": "PARENT"
+  },
+  {
+    "address": "123 avenue",
+    "numberOfChildren": 0,
+    "userId": "PAR026",
+    "username": "user1",
+    "password": "12345678",
+    "name": "mengistu",
+    "contactInfo": "dfghjk@gmail.com",
     "role": "PARENT"
   }
 ]

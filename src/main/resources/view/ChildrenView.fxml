@@ -44,7 +44,6 @@
                             </columnResizePolicy>
                         </TableView>
                         <HBox alignment="CENTER_RIGHT" spacing="10">
-                            <Button text="Notify Parent" onAction="#handleNotifyFromList" styleClass="button-primary"/>
                             <Button text="Remove Child" onAction="#handleRemoveChild" styleClass="button-secondary"/>
                         </HBox>
                     </VBox>
