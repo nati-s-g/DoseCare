@@ -1,0 +1,55 @@
+classDiagram
+    direction TB
+    
+    %% By removing namespaces, the layout engine can pack items tighter together
+    
+    class User
+    class Admin
+    class Parent
+    class Vaccinator
+    class StaffMember
+
+    class Child
+    class VaccinationRecord
+    class Vaccine
+    class HealthAlert
+
+    class VaccinationSite
+    class InventoryItem
+
+    %% Relationships
+    User <|-- Admin
+    User <|-- Parent
+    User <|-- Vaccinator
+    
+    Parent "1" *-- "n" Child : registers
+    Child "1" *-- "n" VaccinationRecord : has
+    VaccinationRecord "n" --> "1" Vaccine : type
+    Vaccinator "n" --> "1" VaccinationSite : at
+    StaffMember "n" --> "1" VaccinationSite : at
+    InventoryItem "n" --> "1" VaccinationSite : at
+    InventoryItem "n" --> "1" Vaccine : stocks
+    HealthAlert "n" --> "1" Child : targets
+
+    %% Services Layer
+    class AuthService
+    class UserService
+    class ChildService
+    class VaccinationService
+    class VaccineService
+    class VaccinationSiteService
+    class HumanResourceService
+    class AlertService
+    class StorageService
+
+    %% Service Relationships
+    AuthService ..> User : authenticates
+    UserService ..> User : manages
+    ChildService ..> Child : manages
+    VaccinationService ..> VaccinationRecord : creates
+    VaccineService ..> Vaccine : manages
+    VaccinationSiteService ..> VaccinationSite : manages
+    VaccinationSiteService ..> InventoryItem : manages
+    HumanResourceService ..> StaffMember : manages
+    AlertService ..> HealthAlert : sends
+    StorageService ..> User : persists
