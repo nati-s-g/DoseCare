@@ -3,8 +3,9 @@
     "recordId": "REC000001",
     "childId": "CHD-E530A732-021B",
     "vaccineId": "VAC001",
+    "dateAdministered": "2026-01-24",
     "nextDueDate": "2026-01-07",
-    "status": "PENDING",
+    "status": "COMPLETED",
     "vaccinationSiteId": "SITE-001"
   },
   {
