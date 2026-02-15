@@ -484,7 +484,7 @@ public class AdminController {
             controller.setIsAdminView(true);
             controller.initialize();
             
-            App.setRoot(root, "Vaccination Records - Vaccine Tracker");
+            App.setRoot(root, "Vaccination Records - CoreVax");
         } catch (IOException e) {
             System.err.println("Error loading vaccination records view: " + e.getMessage());
             e.printStackTrace();
@@ -555,7 +555,7 @@ public class AdminController {
     private void handleLogout() {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
-            App.setRoot(root, "Vaccine Tracker - Login");
+            App.setRoot(root, "CoreVax - Login");
         } catch (IOException e) {
             System.err.println("Error loading login view: " + e.getMessage());
             e.printStackTrace();

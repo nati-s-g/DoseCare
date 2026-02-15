@@ -211,7 +211,7 @@ public class LoginController {
                 controller.setVaccinator((com.vaccinetracker.model.Vaccinator) user);
             }
             
-            App.setRoot(root, "Vaccinator Dashboard - DoseCare");
+            App.setRoot(root, "Vaccinator Dashboard - CoreVax");
         } catch (Exception e) {
             e.printStackTrace();
             showError("Error", "Could not load Vaccinator Dashboard: " + e.getMessage());
@@ -259,7 +259,7 @@ public class LoginController {
                 
                 // Show admin dashboard
                 System.out.println("Setting root...");
-                App.setRoot(root, "Admin Dashboard - Vaccine Tracker");
+                App.setRoot(root, "Admin Dashboard - CoreVax");
                 System.out.println("Admin dashboard loaded successfully!");
             }
         } catch (Exception e) {
@@ -317,7 +317,7 @@ public class LoginController {
                 
                 // Show parent dashboard
                 System.out.println("Setting root...");
-                App.setRoot(root, "Parent Dashboard - Vaccine Tracker");
+                App.setRoot(root, "Parent Dashboard - CoreVax");
                 System.out.println("Parent dashboard loaded successfully!");
             }
         } catch (Exception e) {

@@ -90,10 +90,10 @@ public class ChildrenController {
     
     @FXML
     private ComboBox<Vaccine> notifyVaccineComboBox;
-    @FXML
-    private ListView<String> notifyParentList;
+
     @FXML
     private ComboBox<VaccinationSite> notifySiteComboBox;
+
     @FXML
     private DatePicker notifyDueDatePicker;
     @FXML
@@ -282,7 +282,6 @@ public class ChildrenController {
                                 // Deselecting
                                 wrapper.setSelected(false);
                                 wrapper.getMetadata().remove("SelectedParents"); // Clean up
-                                updateNotifyParentList(); // Update main list
                             }
                         }
                     });
@@ -514,9 +513,6 @@ public class ChildrenController {
                 notifyList.add(new ChildSelectionWrapper(child));
                 vaccinationChildList.add(new ChildSelectionWrapper(child));
             }
-            
-            // Initial update
-            updateNotifyParentList();
         }
     }
 
@@ -547,7 +543,6 @@ public class ChildrenController {
             // Store the specific selection in the wrapper metadata
             if (!selectedParents.isEmpty()) {
                 wrapper.getMetadata().put("SelectedParents", selectedParents);
-                updateNotifyParentList(); // Update the main dropdown
                 return true;
             } else {
                  showAlert(Alert.AlertType.WARNING, "No Parent Selected", "You must select at least one parent.");
@@ -555,39 +550,6 @@ public class ChildrenController {
             }
         }
         return false;
-    }
-
-    private void updateNotifyParentList() {
-        List<String> notificationTargets = new ArrayList<>();
-        
-        for (ChildSelectionWrapper wrapper : notifyList) {
-            if (wrapper.isSelected()) {
-                Child child = wrapper.getChild();
-                List<String> specificSelection = (List<String>) wrapper.getMetadata().get("SelectedParents");
-                
-                if (specificSelection != null) {
-                    for (String p : specificSelection) {
-                        // Construct a descriptive string: "ParentName (Role) - Child: ChildName"
-                        String role = (p.equals(child.getFatherName())) ? "Father" : 
-                                      (p.equals(child.getMotherName())) ? "Mother" : "Parent";
-                        notificationTargets.add(p + " (" + role + ") - Child: " + child.getName());
-                    }
-                } else {
-                    // Fallback (shouldn't happen with new logic, but safe to keep)
-                    if (child.getFatherName() != null) notificationTargets.add(child.getFatherName() + " (Father) - Child: " + child.getName());
-                    if (child.getMotherName() != null) notificationTargets.add(child.getMotherName() + " (Mother) - Child: " + child.getName());
-                }
-            }
-        }
-        
-        // Sort for better readability
-        notificationTargets.sort(String::compareTo);
-        
-        // Update the ListView
-        notifyParentList.setItems(FXCollections.observableArrayList(notificationTargets));
-        // Make it non-selectable (viewing only)
-        notifyParentList.setMouseTransparent(true);
-        notifyParentList.setFocusTraversable(false);
     }
     
     // Removed old logic that filtered table by parent selection since flow is reversed now
@@ -722,7 +684,6 @@ public class ChildrenController {
                 wrapper.getMetadata().remove("SelectedParents");
             }
         }
-        updateNotifyParentList();
     }
 
     @FXML

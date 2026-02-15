@@ -28,8 +28,8 @@
       <VBox styleClass="sidebar">
          <!-- Logo -->
          <HBox alignment="CENTER" spacing="0">
-            <Label text="Dose" styleClass="brand-green" />
-            <Label text="Care" styleClass="brand-blue" />
+            <Label text="Core" styleClass="brand-green" />
+            <Label text="Vax" styleClass="brand-blue" />
          </HBox>
          
          <!-- Profile Section -->

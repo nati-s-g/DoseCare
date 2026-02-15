@@ -1,8 +1,8 @@
 @echo off
-echo Starting DoseCare Application...
+echo Starting CoreVax Application...
 echo.
 
-if not exist target\VaccineTracker-1.0-SNAPSHOT.jar (
+if not exist target\CoreVax-1.0-SNAPSHOT.jar (
     echo Fat JAR not found. Building project...
     call mvn clean package
     if errorlevel 1 (
@@ -12,8 +12,8 @@ if not exist target\VaccineTracker-1.0-SNAPSHOT.jar (
     )
 )
 
-echo Running application...
-java -jar target\VaccineTracker-1.0-SNAPSHOT.jar
+echo Launching CoreVax...
+java -jar target\CoreVax-1.0-SNAPSHOT.jar
 if errorlevel 1 (
     echo Application crashed with error code %errorlevel%
 )

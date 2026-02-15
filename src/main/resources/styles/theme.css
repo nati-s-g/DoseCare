@@ -1,8 +1,8 @@
 /* Global design tokens */
 .root {
   /* Brand colors */
-  -brand-blue: #5AAFD6;   /* Care */
-  -brand-green: #8BCB75;  /* Dose */
+  -brand-blue: #5AAFD6;   /* Vax */
+  -brand-green: #8BCB75;  /* Core */
 
   /* Background gradients */
   -bg-left-start: #3DA7C3;

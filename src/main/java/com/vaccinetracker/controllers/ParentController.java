@@ -750,7 +750,7 @@ public class ParentController {
     private void handleLogout() {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
-            App.setRoot(root, "Vaccine Tracker - Login");
+            App.setRoot(root, "CoreVax - Login");
         } catch (IOException e) {
             System.err.println("Error loading login view: " + e.getMessage());
             e.printStackTrace();
