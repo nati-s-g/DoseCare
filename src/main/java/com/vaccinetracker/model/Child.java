@@ -19,8 +19,10 @@ public class Child {
     private String parentId;        // ID of the parent/guardian
     private String hospitalId;      // Hospital where registered
     private String gender;          // Gender of the child
-    private String guardianName;    // Name of the guardian
-    private String guardianContact; // Contact number of the guardian
+    private String fatherName;      // Name of the father (Guardian 1)
+    private String fatherContact;   // Contact number of the father
+    private String motherName;      // Name of the mother (Guardian 2)
+    private String motherContact;   // Contact number of the mother
     
     /**
      * Constructor to create a new Child.
@@ -31,18 +33,22 @@ public class Child {
      * @param parentId Parent's user ID
      * @param hospitalId Hospital identifier
      * @param gender Gender of the child
-     * @param guardianName Name of the guardian
-     * @param guardianContact Contact number of the guardian
+     * @param fatherName Name of the father
+     * @param fatherContact Contact number of the father
+     * @param motherName Name of the mother
+     * @param motherContact Contact number of the mother
      */
-    public Child(String childId, String name, LocalDate dateOfBirth, String parentId, String hospitalId, String gender, String guardianName, String guardianContact) {
+    public Child(String childId, String name, LocalDate dateOfBirth, String parentId, String hospitalId, String gender, String fatherName, String fatherContact, String motherName, String motherContact) {
         this.childId = childId;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.parentId = parentId;
         this.hospitalId = hospitalId;
         this.gender = gender;
-        this.guardianName = guardianName;
-        this.guardianContact = guardianContact;
+        this.fatherName = fatherName;
+        this.fatherContact = fatherContact;
+        this.motherName = motherName;
+        this.motherContact = motherContact;
     }
     
     // Getter methods
@@ -70,12 +76,25 @@ public class Child {
         return gender;
     }
 
-    public String getGuardianName() {
-        return guardianName;
+    public String getFatherName() {
+        return fatherName;
     }
 
-    public String getGuardianContact() {
-        return guardianContact;
+    public String getFatherContact() {
+        return fatherContact;
+    }
+
+    public String getMotherName() {
+        return motherName;
+    }
+
+    public String getMotherContact() {
+        return motherContact;
+    }
+
+    // Legacy getter for compatibility - returns Father's name
+    public String getGuardianName() {
+        return fatherName;
     }
     
     // Setter methods
@@ -91,12 +110,20 @@ public class Child {
         this.gender = gender;
     }
 
-    public void setGuardianName(String guardianName) {
-        this.guardianName = guardianName;
+    public void setFatherName(String fatherName) {
+        this.fatherName = fatherName;
     }
 
-    public void setGuardianContact(String guardianContact) {
-        this.guardianContact = guardianContact;
+    public void setFatherContact(String fatherContact) {
+        this.fatherContact = fatherContact;
+    }
+
+    public void setMotherName(String motherName) {
+        this.motherName = motherName;
+    }
+
+    public void setMotherContact(String motherContact) {
+        this.motherContact = motherContact;
     }
 
     public void setParentId(String parentId) {

@@ -30,10 +30,16 @@ public class RegisterChildController {
     private DatePicker dateOfBirthPicker;
     
     @FXML
-    private TextField parentNameField;
+    private TextField fatherNameField;
     
     @FXML
-    private TextField parentContactField;
+    private TextField fatherContactField;
+    
+    @FXML
+    private TextField motherNameField;
+    
+    @FXML
+    private TextField motherContactField;
     
     @FXML
     private TextField hospitalIdField;
@@ -86,10 +92,8 @@ public class RegisterChildController {
         
         // Pre-fill parent info if available
         if (currentUser != null) {
-            parentNameField.setText(currentUser.getName());
-            if (currentUser.getContactInfo() != null) {
-                parentContactField.setText(currentUser.getContactInfo());
-            }
+            // Logic to determine if current user is father or mother could go here
+            // fatherNameField.setText(currentUser.getName()); // Example
         }
     }
     
@@ -107,8 +111,11 @@ public class RegisterChildController {
             // Get input values
             String childName = childNameField.getText().trim();
             LocalDate dateOfBirth = dateOfBirthPicker.getValue();
-            String parentName = parentNameField.getText().trim();
-            String parentContact = parentContactField.getText().trim();
+            String fatherName = fatherNameField.getText().trim();
+            String fatherContact = fatherContactField.getText().trim();
+            String motherName = motherNameField.getText().trim();
+            String motherContact = motherContactField.getText().trim();
+
             String hospitalId = hospitalIdField.getText().trim();
             
             if (hospitalId.isEmpty()) {
@@ -120,7 +127,7 @@ public class RegisterChildController {
             String parentId = (currentUser != null) ? currentUser.getUserId() : "PAR001";
             
             // Register the child
-            Child child = childService.registerChild(childName, dateOfBirth, parentId, hospitalId, "Unknown", parentName, parentContact);
+            Child child = ChildService.registerChild(childName, dateOfBirth, parentId, hospitalId, "Unknown", fatherName, fatherContact, motherName, motherContact);
             
             // Create vaccination schedule for the child
             var schedule = vaccinationService.createScheduleForChild(child.getChildId());
@@ -156,12 +163,20 @@ public class RegisterChildController {
             errors.append("Date of birth cannot be in the future.\n");
         }
         
-        if (parentNameField.getText().trim().isEmpty()) {
-            errors.append("Parent name is required.\n");
+        if (fatherNameField.getText().trim().isEmpty()) {
+            errors.append("Father's name is required.\n");
         }
         
-        if (parentContactField.getText().trim().isEmpty()) {
-            errors.append("Parent contact is required.\n");
+        if (fatherContactField.getText().trim().isEmpty()) {
+            errors.append("Father's contact is required.\n");
+        }
+
+        if (motherNameField.getText().trim().isEmpty()) {
+            errors.append("Mother's name is required.\n");
+        }
+        
+        if (motherContactField.getText().trim().isEmpty()) {
+            errors.append("Mother's contact is required.\n");
         }
         
         if (errors.length() > 0) {
@@ -198,8 +213,10 @@ public class RegisterChildController {
     private void handleClear() {
         childNameField.clear();
         dateOfBirthPicker.setValue(LocalDate.now());
-        parentNameField.clear();
-        parentContactField.clear();
+        fatherNameField.clear();
+        fatherContactField.clear();
+        motherNameField.clear();
+        motherContactField.clear();
         hospitalIdField.setText("HOSP001");
         statusLabel.setVisible(false);
     }

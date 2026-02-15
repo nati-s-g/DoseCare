@@ -110,16 +110,29 @@ public class StorageService {
         }
         
         List<Child> children = loadData(CHILDREN_FILE, new TypeToken<List<Child>>(){}.getType());
-        if (children != null && !children.isEmpty()) ChildService.setAllData(children);
+        if (children != null && !children.isEmpty()) {
+            ChildService.setAllData(children);
+        } else {
+            // Initialize dummy data if file missing or empty
+            ChildService.initializeDummyData();
+        }
         
         List<HealthAlert> alerts = loadData(ALERTS_FILE, new TypeToken<List<HealthAlert>>(){}.getType());
         if (alerts != null && !alerts.isEmpty()) AlertService.setAllData(alerts);
         
         List<VaccinationSite> sites = loadData(SITES_FILE, new TypeToken<List<VaccinationSite>>(){}.getType());
-        if (sites != null && !sites.isEmpty()) VaccinationSiteService.setAllData(sites);
+        if (sites != null && !sites.isEmpty()) {
+            VaccinationSiteService.setAllData(sites);
+        } else {
+            VaccinationSiteService.initializeSampleSites();
+        }
         
         List<Vaccine> vaccines = loadData(VACCINES_FILE, new TypeToken<List<Vaccine>>(){}.getType());
-        if (vaccines != null && !vaccines.isEmpty()) VaccineService.setAllData(vaccines);
+        if (vaccines != null && !vaccines.isEmpty()) {
+            VaccineService.setAllData(vaccines);
+        } else {
+            VaccineService.preloadVaccines();
+        }
         
         // Ensure new vaccines are added even if data was loaded
         VaccineService.preloadVaccines();

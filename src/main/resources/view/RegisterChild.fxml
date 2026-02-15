@@ -40,17 +40,25 @@
                <Label text="Date of Birth *:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                <DatePicker fx:id="dateOfBirthPicker" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                
-               <!-- Parent Name -->
-               <Label text="Parent Name *:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-               <TextField fx:id="parentNameField" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+               <!-- Father Name -->
+               <Label text="Father's Name (Guardian 1) *:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+               <TextField fx:id="fatherNameField" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                
-               <!-- Parent Contact -->
-               <Label text="Parent Contact *:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-               <TextField fx:id="parentContactField" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+               <!-- Father Contact -->
+               <Label text="Father's Contact *:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+               <TextField fx:id="fatherContactField" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+               
+               <!-- Mother Name -->
+               <Label text="Mother's Name (Guardian 2) *:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+               <TextField fx:id="motherNameField" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+               
+               <!-- Mother Contact -->
+               <Label text="Mother's Contact *:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+               <TextField fx:id="motherContactField" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                
                <!-- Hospital ID -->
-               <Label text="Hospital ID:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-               <TextField fx:id="hospitalIdField" prefWidth="300" text="HOSP001" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+               <Label text="Hospital ID:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+               <TextField fx:id="hospitalIdField" prefWidth="300" text="HOSP001" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             </GridPane>
             
             <!-- Status Label -->

@@ -51,8 +51,8 @@ public class ChildService {
             "Haile", "Solomon", "Tekle", "Fikru", "Zelalem", "Mulugeta", "Getachew", "Abraham"
         };
 
-        // Generate 20 random children
-        for (int i = 0; i < 20; i++) {
+        // Generate 30 random children (Increased from 20 to 30 as requested to add at least 10 more)
+        for (int i = 0; i < 30; i++) {
             // Random gender
             String gender = Math.random() < 0.5 ? "Male" : "Female";
             
@@ -68,17 +68,6 @@ public class ChildService {
             
             String childName = firstName + " " + fatherName;
             
-            String guardianName;
-            // 30% chance guardian is mother
-            if (Math.random() < 0.3) {
-                String motherFirstName = femaleFirstNames[(int)(Math.random() * femaleFirstNames.length)];
-                String motherFatherName = lastNames[(int)(Math.random() * lastNames.length)];
-                guardianName = motherFirstName + " " + motherFatherName;
-            } else {
-                // Guardian is father
-                guardianName = fatherName + " " + grandFatherName;
-            }
-            
             // Random age between 0 days and 5 years (approx 1825 days)
             int ageInDays = (int)(Math.random() * 1825);
             LocalDate dob = LocalDate.now().minusDays(ageInDays);
@@ -87,11 +76,18 @@ public class ChildService {
             String parentId = "P" + String.format("%03d", (int)(Math.random() * 100));
             String hospitalId = "H" + String.format("%03d", (int)(Math.random() * 5) + 1);
             
-            registerChild(childName, dob, parentId, hospitalId, gender, guardianName, generateRandomContact());
+            // Generate distinct Mother and Father info
+            String fatherFullName = fatherName + " " + grandFatherName;
+            
+            String motherFirstName = femaleFirstNames[(int)(Math.random() * femaleFirstNames.length)];
+            String motherFatherName = lastNames[(int)(Math.random() * lastNames.length)];
+            String motherFullName = motherFirstName + " " + motherFatherName;
+
+            registerChild(childName, dob, parentId, hospitalId, gender, fatherFullName, generateRandomContact(), motherFullName, generateRandomContact());
         }
     }
 
-    private static String generateRandomContact() {
+    public static String generateRandomContact() {
         // Generate 8 random digits
         int randomNum = 10000000 + (int)(Math.random() * 90000000);
         return "+2519" + randomNum;
@@ -105,16 +101,18 @@ public class ChildService {
      * @param parentId Parent's user ID
      * @param hospitalId Hospital identifier
      * @param gender Gender of the child
-     * @param guardianName Name of the guardian
-     * @param guardianContact Contact number of the guardian
+     * @param fatherName Name of the father
+     * @param fatherContact Contact number of the father
+     * @param motherName Name of the mother
+     * @param motherContact Contact number of the mother
      * @return The created Child object
      */
-    public static Child registerChild(String name, LocalDate dateOfBirth, String parentId, String hospitalId, String gender, String guardianName, String guardianContact) {
+    public static Child registerChild(String name, LocalDate dateOfBirth, String parentId, String hospitalId, String gender, String fatherName, String fatherContact, String motherName, String motherContact) {
         // Generate a unique and complex child ID
-        String childId = "CHD-" + UUID.randomUUID().toString().substring(0, 13).toUpperCase();
+        String childId = "CHD-" + UUID.randomUUID().toString().substring(0, 5).toUpperCase() + "-" + UUID.randomUUID().toString().substring(0, 5).toUpperCase(); // Shortened for readability based on OCR image
         
         // Create new child object
-        Child child = new Child(childId, name, dateOfBirth, parentId, hospitalId, gender, guardianName, guardianContact);
+        Child child = new Child(childId, name, dateOfBirth, parentId, hospitalId, gender, fatherName, fatherContact, motherName, motherContact);
         
         // Add to the list
         children.add(child);
@@ -252,11 +250,14 @@ public class ChildService {
      * @param newGuardianName New guardian name
      * @param newGuardianContact New guardian contact
      */
+    // This method needs to be split or refactored as we now track individual parent info
     public void updateGuardianInfo(String parentId, String newGuardianName, String newGuardianContact) {
+        // Legacy support: Updates Father's info by default or should be deprecated
+        // For now, we'll update Father's info
         for (Child child : children) {
             if (child.getParentId().equals(parentId)) {
-                child.setGuardianName(newGuardianName);
-                child.setGuardianContact(newGuardianContact);
+                child.setFatherName(newGuardianName);
+                child.setFatherContact(newGuardianContact);
             }
         }
     }

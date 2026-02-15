@@ -36,8 +36,10 @@
                                 <TableColumn fx:id="dobColumn" text="Date of Birth" prefWidth="120"/>
                                 <TableColumn fx:id="ageColumn" text="Age" prefWidth="100"/>
                                 <TableColumn fx:id="genderColumn" text="Gender" prefWidth="100"/>
-                                <TableColumn fx:id="guardianColumn" text="Guardian" prefWidth="150"/>
-                                <TableColumn fx:id="contactColumn" text="Contact" prefWidth="150"/>
+                                <TableColumn fx:id="fatherColumn" text="Father (Guardian 1)" prefWidth="150"/>
+                                <TableColumn fx:id="fatherContactColumn" text="Contact 1" prefWidth="120"/>
+                                <TableColumn fx:id="motherColumn" text="Mother (Guardian 2)" prefWidth="150"/>
+                                <TableColumn fx:id="motherContactColumn" text="Contact 2" prefWidth="120"/>
                             </columns>
                             <columnResizePolicy>
                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -72,13 +74,23 @@
                                 </VBox>
                                 
                                 <VBox spacing="5">
-                                    <Label text="Guardian Name" styleClass="form-label"/>
-                                    <TextField fx:id="guardianField" promptText="Enter guardian's full name" styleClass="text-field"/>
+                                    <Label text="Father's Name (Guardian 1)" styleClass="form-label"/>
+                                    <TextField fx:id="fatherNameField" promptText="Enter father's full name" styleClass="text-field"/>
                                 </VBox>
 
                                 <VBox spacing="5">
-                                    <Label text="Guardian Contact" styleClass="form-label"/>
-                                    <TextField fx:id="contactField" promptText="Enter guardian's contact number" styleClass="text-field"/>
+                                    <Label text="Father's Contact" styleClass="form-label"/>
+                                    <TextField fx:id="fatherContactField" promptText="Enter father's contact number" styleClass="text-field"/>
+                                </VBox>
+                                
+                                <VBox spacing="5">
+                                    <Label text="Mother's Name (Guardian 2)" styleClass="form-label"/>
+                                    <TextField fx:id="motherNameField" promptText="Enter mother's full name" styleClass="text-field"/>
+                                </VBox>
+
+                                <VBox spacing="5">
+                                    <Label text="Mother's Contact" styleClass="form-label"/>
+                                    <TextField fx:id="motherContactField" promptText="Enter mother's contact number" styleClass="text-field"/>
                                 </VBox>
                                 
                                 <HBox spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 20 0 0 0;">

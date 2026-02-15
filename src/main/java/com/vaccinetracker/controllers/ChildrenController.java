@@ -54,9 +54,13 @@ public class ChildrenController {
     @FXML
     private TableColumn<Child, String> genderColumn;
     @FXML
-    private TableColumn<Child, String> guardianColumn;
+    private TableColumn<Child, String> fatherColumn; // Renamed from guardianColumn
     @FXML
-    private TableColumn<Child, String> contactColumn;
+    private TableColumn<Child, String> fatherContactColumn; // Renamed from contactColumn
+    @FXML
+    private TableColumn<Child, String> motherColumn; // New
+    @FXML
+    private TableColumn<Child, String> motherContactColumn; // New
 
     @FXML
     private TextField nameField;
@@ -65,9 +69,14 @@ public class ChildrenController {
     @FXML
     private ComboBox<String> genderComboBox;
     @FXML
-    private TextField guardianField;
+    private TextField fatherNameField; // Renamed from guardianField
     @FXML
-    private TextField contactField;
+    private TextField fatherContactField; // Renamed from contactField
+    @FXML
+    private TextField motherNameField; // New
+    @FXML
+    private TextField motherContactField; // New
+
 
     // Notify Tab Controls
     @FXML
@@ -232,8 +241,10 @@ public class ChildrenController {
         dobColumn.setCellValueFactory(new PropertyValueFactory<>("dateOfBirthString")); 
         ageColumn.setCellValueFactory(new PropertyValueFactory<>("ageString")); 
         genderColumn.setCellValueFactory(new PropertyValueFactory<>("gender"));
-        guardianColumn.setCellValueFactory(new PropertyValueFactory<>("guardianName"));
-        contactColumn.setCellValueFactory(new PropertyValueFactory<>("guardianContact"));
+        fatherColumn.setCellValueFactory(new PropertyValueFactory<>("fatherName"));
+        fatherContactColumn.setCellValueFactory(new PropertyValueFactory<>("fatherContact"));
+        motherColumn.setCellValueFactory(new PropertyValueFactory<>("motherName"));
+        motherContactColumn.setCellValueFactory(new PropertyValueFactory<>("motherContact"));
 
         // Initialize Gender ComboBox
         genderComboBox.setItems(FXCollections.observableArrayList("Male", "Female"));
@@ -477,9 +488,16 @@ public class ChildrenController {
         for (ChildSelectionWrapper wrapper : notifyList) {
             if (wrapper.isSelected()) {
                 anySelected = true;
-                String gName = wrapper.getChild().getGuardianName();
-                if (gName != null && !gName.isEmpty() && !selectedParents.contains(gName)) {
-                    selectedParents.add(gName);
+                Child child = wrapper.getChild();
+
+                String fName = child.getFatherName();
+                if (fName != null && !fName.isEmpty() && !selectedParents.contains(fName)) {
+                    selectedParents.add(fName);
+                }
+                
+                String mName = child.getMotherName();
+                if (mName != null && !mName.isEmpty() && !selectedParents.contains(mName)) {
+                    selectedParents.add(mName);
                 }
             }
         }
@@ -520,14 +538,16 @@ public class ChildrenController {
             String name = nameField.getText();
             LocalDate dob = dobPicker.getValue();
             String gender = genderComboBox.getValue();
-            String guardian = guardianField.getText();
-            String contact = contactField.getText();
+            String fatherName = fatherNameField.getText();
+            String fatherContact = fatherContactField.getText();
+            String motherName = motherNameField.getText();
+            String motherContact = motherContactField.getText();
             
             // Default hospital and parent ID for now
             String hospitalId = "H001"; 
             String parentId = "P_NEW"; 
 
-            childService.registerChild(name, dob, parentId, hospitalId, gender, guardian, contact);
+            ChildService.registerChild(name, dob, parentId, hospitalId, gender, fatherName, fatherContact, motherName, motherContact);
             
             // Refresh list
             loadChildren();
@@ -595,8 +615,10 @@ public class ChildrenController {
         nameField.clear();
         dobPicker.setValue(null);
         genderComboBox.getSelectionModel().clearSelection();
-        guardianField.clear();
-        contactField.clear();
+        fatherNameField.clear();
+        fatherContactField.clear();
+        motherNameField.clear();
+        motherContactField.clear();
     }
 
     @FXML
@@ -705,8 +727,10 @@ public class ChildrenController {
         if (nameField.getText().isEmpty() || 
             dobPicker.getValue() == null || 
             genderComboBox.getValue() == null || 
-            guardianField.getText().isEmpty() ||
-            contactField.getText().isEmpty()) {
+            fatherNameField.getText().isEmpty() ||
+            fatherContactField.getText().isEmpty() ||
+            motherNameField.getText().isEmpty() ||
+            motherContactField.getText().isEmpty()) {
             
             showAlert(Alert.AlertType.ERROR, "Validation Error", "Please fill in all fields.");
             return false;
