@@ -91,7 +91,7 @@ public class ChildrenController {
     @FXML
     private ComboBox<Vaccine> notifyVaccineComboBox;
     @FXML
-    private ComboBox<String> notifyParentComboBox;
+    private ListView<String> notifyParentList;
     @FXML
     private ComboBox<VaccinationSite> notifySiteComboBox;
     @FXML
@@ -253,13 +253,64 @@ public class ChildrenController {
         childrenTable.setItems(childrenList);
 
         // Initialize Notify Table
+        // Custom cell factory for CheckBox to trigger popup logic
         selectColumn.setCellValueFactory(cellData -> cellData.getValue().selectedProperty());
-        selectColumn.setCellFactory(CheckBoxTableCell.forTableColumn(selectColumn));
+        
+        // Add a listener to handle selection logic more robustly
+        // Instead of simple CheckBoxTableCell, we use a custom cell with internal checkbox to intercept clicks
+        selectColumn.setCellFactory(column -> {
+            TableCell<ChildSelectionWrapper, Boolean> cell = new TableCell<ChildSelectionWrapper, Boolean>() {
+                private final CheckBox checkBox = new CheckBox();
+
+                {
+                    checkBox.setOnAction(event -> {
+                        ChildSelectionWrapper wrapper = (ChildSelectionWrapper) getTableRow().getItem();
+                        if (wrapper != null) {
+                            boolean newSelectedState = checkBox.isSelected();
+                            
+                            if (newSelectedState) {
+                                // Trigger Popup Logic BEFORE setting true
+                                boolean confirm = ChildrenController.this.showParentSelectionPopup(wrapper);
+                                if (confirm) {
+                                    wrapper.setSelected(true);
+                                } else {
+                                    // User cancelled or closed popup
+                                    checkBox.setSelected(false);
+                                    wrapper.setSelected(false);
+                                }
+                            } else {
+                                // Deselecting
+                                wrapper.setSelected(false);
+                                wrapper.getMetadata().remove("SelectedParents"); // Clean up
+                                updateNotifyParentList(); // Update main list
+                            }
+                        }
+                    });
+                    setAlignment(javafx.geometry.Pos.CENTER);
+                }
+
+                @Override
+                protected void updateItem(Boolean item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setGraphic(null);
+                    } else {
+                        ChildSelectionWrapper wrapper = (ChildSelectionWrapper) getTableRow().getItem();
+                        // Update checkbox state without triggering event handler loop if possible
+                        // But setOnAction is only triggered by user interaction, so setSelected is safe
+                        checkBox.setSelected(wrapper != null && wrapper.isSelected());
+                        setGraphic(checkBox);
+                    }
+                }
+            };
+            return cell;
+        });
+
         notifyNameColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getChild().getName()));
         notifyIdColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getChild().getChildId()));
         
         notifyTable.setItems(notifyList);
-        notifyTable.setEditable(true);
+        notifyTable.setEditable(true); // Table must be editable for custom interactions
 
         // Initialize Vaccination Records Tab
         vcSelectColumn.setCellValueFactory(cellData -> cellData.getValue().selectedProperty());
@@ -320,16 +371,8 @@ public class ChildrenController {
         vaccineComboBox.setConverter(vaccineConverter);
         notifyVaccineComboBox.setConverter(vaccineConverter);
         
-        // Parent Selection Listener - Selecting a parent can auto-fill message
-        notifyParentComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal != null) {
-                // Optional: You could update the message template with "Dear " + newVal
-                if (explanationArea.getText().isEmpty()) {
-                    explanationArea.setText("Dear " + newVal + ", \n\n");
-                }
-            }
-        });
-
+        // Parent Selection Listener - Logic removed as we use bulk notify now
+        
         // Configure Site ComboBox
         StringConverter<VaccinationSite> siteConverter = new StringConverter<VaccinationSite>() {
             @Override
@@ -467,12 +510,8 @@ public class ChildrenController {
             vaccinationChildList.clear();
             
             for (Child child : allChildren) {
-                ChildSelectionWrapper wrapper = new ChildSelectionWrapper(child);
-                
-                // Add listener to update parent list when selection changes
-                wrapper.selectedProperty().addListener((obs, wasSelected, isSelected) -> updateNotifyParentList());
-                
-                notifyList.add(wrapper);
+                // Wrapper init handled inside loop, no listener here - listener is on the cell
+                notifyList.add(new ChildSelectionWrapper(child));
                 vaccinationChildList.add(new ChildSelectionWrapper(child));
             }
             
@@ -481,39 +520,74 @@ public class ChildrenController {
         }
     }
 
+    private boolean showParentSelectionPopup(ChildSelectionWrapper wrapper) {
+        Child child = wrapper.getChild();
+        
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Select Parent to Notify");
+        alert.setHeaderText("Who should receive the notification for " + child.getName() + "?");
+        
+        CheckBox fatherCheck = new CheckBox("Father: " + child.getFatherName() + " (" + child.getFatherContact() + ")");
+        CheckBox motherCheck = new CheckBox("Mother: " + child.getMotherName() + " (" + child.getMotherContact() + ")");
+        
+        // Default selection logic (e.g. select both or just father)
+        fatherCheck.setSelected(true);
+        motherCheck.setSelected(true);
+        
+        javafx.scene.layout.VBox content = new javafx.scene.layout.VBox(10);
+        content.getChildren().addAll(fatherCheck, motherCheck);
+        alert.getDialogPane().setContent(content);
+        
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            List<String> selectedParents = new ArrayList<>();
+            if (fatherCheck.isSelected()) selectedParents.add(child.getFatherName());
+            if (motherCheck.isSelected()) selectedParents.add(child.getMotherName());
+            
+            // Store the specific selection in the wrapper metadata
+            if (!selectedParents.isEmpty()) {
+                wrapper.getMetadata().put("SelectedParents", selectedParents);
+                updateNotifyParentList(); // Update the main dropdown
+                return true;
+            } else {
+                 showAlert(Alert.AlertType.WARNING, "No Parent Selected", "You must select at least one parent.");
+                 return false;
+            }
+        }
+        return false;
+    }
+
     private void updateNotifyParentList() {
-        List<String> selectedParents = new ArrayList<>();
-        boolean anySelected = false;
+        List<String> notificationTargets = new ArrayList<>();
         
         for (ChildSelectionWrapper wrapper : notifyList) {
             if (wrapper.isSelected()) {
-                anySelected = true;
                 Child child = wrapper.getChild();
-
-                String fName = child.getFatherName();
-                if (fName != null && !fName.isEmpty() && !selectedParents.contains(fName)) {
-                    selectedParents.add(fName);
-                }
+                List<String> specificSelection = (List<String>) wrapper.getMetadata().get("SelectedParents");
                 
-                String mName = child.getMotherName();
-                if (mName != null && !mName.isEmpty() && !selectedParents.contains(mName)) {
-                    selectedParents.add(mName);
+                if (specificSelection != null) {
+                    for (String p : specificSelection) {
+                        // Construct a descriptive string: "ParentName (Role) - Child: ChildName"
+                        String role = (p.equals(child.getFatherName())) ? "Father" : 
+                                      (p.equals(child.getMotherName())) ? "Mother" : "Parent";
+                        notificationTargets.add(p + " (" + role + ") - Child: " + child.getName());
+                    }
+                } else {
+                    // Fallback (shouldn't happen with new logic, but safe to keep)
+                    if (child.getFatherName() != null) notificationTargets.add(child.getFatherName() + " (Father) - Child: " + child.getName());
+                    if (child.getMotherName() != null) notificationTargets.add(child.getMotherName() + " (Mother) - Child: " + child.getName());
                 }
             }
         }
         
-        selectedParents.sort(String::compareTo);
+        // Sort for better readability
+        notificationTargets.sort(String::compareTo);
         
-        // Update the ComboBox
-        notifyParentComboBox.setItems(FXCollections.observableArrayList(selectedParents));
-        
-        if (!selectedParents.isEmpty()) {
-            notifyParentComboBox.setPromptText("Select Parent (" + selectedParents.size() + " available)");
-        } else if (anySelected) {
-            notifyParentComboBox.setPromptText("No parent info found");
-        } else {
-            notifyParentComboBox.setPromptText("Select children to see parents");
-        }
+        // Update the ListView
+        notifyParentList.setItems(FXCollections.observableArrayList(notificationTargets));
+        // Make it non-selectable (viewing only)
+        notifyParentList.setMouseTransparent(true);
+        notifyParentList.setFocusTraversable(false);
     }
     
     // Removed old logic that filtered table by parent selection since flow is reversed now
@@ -623,10 +697,32 @@ public class ChildrenController {
 
     @FXML
     private void handleSelectAll() {
+        // Warning: Bulk select might be tricky with popup requirement.
+        // For simplicity, let's select ALL parents for ALL children if "Select All" is clicked
+        // Or show a bulk dialog.
+        
         boolean allSelected = notifyList.stream().allMatch(ChildSelectionWrapper::isSelected);
-        for (ChildSelectionWrapper wrapper : notifyList) {
-            wrapper.setSelected(!allSelected);
+        boolean newState = !allSelected;
+        
+        if (newState) {
+            // Bulk Select -> Assume both parents for ease, or iterate and ask?
+            // "Select All" usually bypasses individual confirmation
+            for (ChildSelectionWrapper wrapper : notifyList) {
+                wrapper.setSelected(true);
+                // Auto-add both parents to metadata
+                List<String> parents = new ArrayList<>();
+                if (wrapper.getChild().getFatherName() != null) parents.add(wrapper.getChild().getFatherName());
+                if (wrapper.getChild().getMotherName() != null) parents.add(wrapper.getChild().getMotherName());
+                wrapper.getMetadata().put("SelectedParents", parents);
+            }
+        } else {
+            // Deselect All
+             for (ChildSelectionWrapper wrapper : notifyList) {
+                wrapper.setSelected(false);
+                wrapper.getMetadata().remove("SelectedParents");
+            }
         }
+        updateNotifyParentList();
     }
 
     @FXML
@@ -678,7 +774,7 @@ public class ChildrenController {
         for (Child child : selectedChildren) {
             String title = "Vaccine Alert: " + vaccineName;
             String message = explanation + "\n\nDue Date: " + dueDateStr + "\nLocation: " + siteName + "\nChild: " + child.getName() + " (" + child.getChildId() + ")";
-            alertService.createTargetedAlert(title, message, HealthAlert.SeverityLevel.MEDIUM, child.getChildId());
+            AlertService.createTargetedAlert(title, message, HealthAlert.SeverityLevel.MEDIUM, child.getChildId());
             
             // Sync with vaccination records
             if (vaccinationService != null && dueDate != null) {
@@ -750,10 +846,12 @@ public class ChildrenController {
     public static class ChildSelectionWrapper {
         private final Child child;
         private final BooleanProperty selected;
+        private final java.util.Map<String, Object> metadata; // For storing extra state like selected parents
 
         public ChildSelectionWrapper(Child child) {
             this.child = child;
             this.selected = new SimpleBooleanProperty(false);
+            this.metadata = new java.util.HashMap<>();
         }
 
         public Child getChild() {
@@ -770,6 +868,10 @@ public class ChildrenController {
 
         public BooleanProperty selectedProperty() {
             return selected;
+        }
+        
+        public java.util.Map<String, Object> getMetadata() {
+            return metadata;
         }
     }
 }

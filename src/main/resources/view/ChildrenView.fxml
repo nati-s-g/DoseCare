@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
@@ -110,7 +111,7 @@
                             <Label text="Select Children to Notify" styleClass="section-header"/>
                             <HBox spacing="10" alignment="CENTER_LEFT">
                                 <Label text="Filter by Parent:" />
-                                <ComboBox fx:id="notifyParentComboBox" promptText="Choose a parent..." maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                                <ListView fx:id="notifyParentList" prefHeight="100" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
                             </HBox>
                             <Button text="Select All" onAction="#handleSelectAll" styleClass="button-secondary"/>
                             <TableView fx:id="notifyTable" VBox.vgrow="ALWAYS">

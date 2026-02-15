@@ -372,6 +372,7 @@ public class AdminController {
         } catch (Exception e) {
             System.err.println("Error loading children view: " + e.getMessage());
             e.printStackTrace();
+            new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR, "Error loading Children View: " + e.getMessage() + "\nSee console for stack trace.").showAndWait();
         }
     }
 
