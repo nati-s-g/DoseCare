@@ -96,6 +96,10 @@
                         <!-- Left: Child Selection -->
                         <VBox spacing="10" HBox.hgrow="ALWAYS" maxWidth="400">
                             <Label text="Select Children to Notify" styleClass="section-header"/>
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="Filter by Parent:" />
+                                <ComboBox fx:id="notifyParentComboBox" promptText="Choose a parent..." maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                            </HBox>
                             <Button text="Select All" onAction="#handleSelectAll" styleClass="button-secondary"/>
                             <TableView fx:id="notifyTable" VBox.vgrow="ALWAYS">
                                 <columns>

@@ -82,6 +82,8 @@ public class ChildrenController {
     @FXML
     private ComboBox<Vaccine> notifyVaccineComboBox;
     @FXML
+    private ComboBox<String> notifyParentComboBox;
+    @FXML
     private ComboBox<VaccinationSite> notifySiteComboBox;
     @FXML
     private DatePicker notifyDueDatePicker;
@@ -306,6 +308,16 @@ public class ChildrenController {
         };
         vaccineComboBox.setConverter(vaccineConverter);
         notifyVaccineComboBox.setConverter(vaccineConverter);
+        
+        // Parent Selection Listener - Selecting a parent can auto-fill message
+        notifyParentComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                // Optional: You could update the message template with "Dear " + newVal
+                if (explanationArea.getText().isEmpty()) {
+                    explanationArea.setText("Dear " + newVal + ", \n\n");
+                }
+            }
+        });
 
         // Configure Site ComboBox
         StringConverter<VaccinationSite> siteConverter = new StringConverter<VaccinationSite>() {
@@ -442,12 +454,65 @@ public class ChildrenController {
             // Populate notify list
             notifyList.clear();
             vaccinationChildList.clear();
+            
             for (Child child : allChildren) {
-                notifyList.add(new ChildSelectionWrapper(child));
+                ChildSelectionWrapper wrapper = new ChildSelectionWrapper(child);
+                
+                // Add listener to update parent list when selection changes
+                wrapper.selectedProperty().addListener((obs, wasSelected, isSelected) -> updateNotifyParentList());
+                
+                notifyList.add(wrapper);
                 vaccinationChildList.add(new ChildSelectionWrapper(child));
             }
+            
+            // Initial update
+            updateNotifyParentList();
         }
     }
+
+    private void updateNotifyParentList() {
+        List<String> selectedParents = new ArrayList<>();
+        boolean anySelected = false;
+        
+        for (ChildSelectionWrapper wrapper : notifyList) {
+            if (wrapper.isSelected()) {
+                anySelected = true;
+                String gName = wrapper.getChild().getGuardianName();
+                if (gName != null && !gName.isEmpty() && !selectedParents.contains(gName)) {
+                    selectedParents.add(gName);
+                }
+            }
+        }
+        
+        selectedParents.sort(String::compareTo);
+        
+        // Update the ComboBox
+        notifyParentComboBox.setItems(FXCollections.observableArrayList(selectedParents));
+        
+        if (!selectedParents.isEmpty()) {
+            notifyParentComboBox.setPromptText("Select Parent (" + selectedParents.size() + " available)");
+        } else if (anySelected) {
+            notifyParentComboBox.setPromptText("No parent info found");
+        } else {
+            notifyParentComboBox.setPromptText("Select children to see parents");
+        }
+    }
+    
+    // Removed old logic that filtered table by parent selection since flow is reversed now
+/*    private void filterNotifyTableByParent(String parentName) {
+         // Filter the table to show only children of this parent
+         // And automatically select them
+         ObservableList<ChildSelectionWrapper> filtered = FXCollections.observableArrayList();
+         for (ChildSelectionWrapper wrapper : notifyList) {
+             if (parentName.equals(wrapper.getChild().getGuardianName())) {
+                 wrapper.setSelected(true);
+                 filtered.add(wrapper);
+             } else {
+                 wrapper.setSelected(false);
+             }
+         }
+         notifyTable.setItems(filtered);
+    } */
 
     @FXML
     private void handleSave() {
