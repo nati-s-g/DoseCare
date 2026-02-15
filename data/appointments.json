@@ -1,0 +1,52 @@
+[
+  {
+    "appointmentId": "APT-001",
+    "childId": "CHD-2A889-92206",
+    "vaccineName": "BCG",
+    "date": "2025-11-20",
+    "time": "09:00",
+    "notes": "First vaccination",
+    "siteId": "SITE-001",
+    "status": "COMPLETED"
+  },
+  {
+    "appointmentId": "APT-002",
+    "childId": "CHD-2000F-DCBEB",
+    "vaccineName": "DPT",
+    "date": "2026-02-16",
+    "time": "10:30",
+    "notes": "Please check for allergies",
+    "siteId": "SITE-001",
+    "status": "COMPLETED"
+  },
+  {
+    "appointmentId": "APT-003",
+    "childId": "CHD-7068A-FF05B",
+    "vaccineName": "Polio (Oral)",
+    "date": "2026-02-18",
+    "time": "14:00",
+    "notes": "Rescheduled from last week",
+    "siteId": "SITE-002",
+    "status": "CONFIRMED"
+  },
+  {
+    "appointmentId": "APT-004",
+    "childId": "CHD-375D8-81340",
+    "vaccineName": "Hepatitis B (Birth)",
+    "date": "2026-03-01",
+    "time": "08:00",
+    "notes": "Morning slot preferred",
+    "siteId": "SITE-002",
+    "status": "REQUESTED"
+  },
+  {
+    "appointmentId": "cede57f3-61a2-4510-aa61-04eb88e032ae",
+    "childId": "CHD-2A889-92206",
+    "vaccineName": "Polio",
+    "date": "2026-02-16",
+    "time": "09:00",
+    "notes": "abcd-efgh",
+    "siteId": "SITE-001",
+    "status": "CONFIRMED"
+  }
+]

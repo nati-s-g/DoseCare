@@ -9,6 +9,9 @@ import com.vaccinetracker.services.UserService;
 import com.vaccinetracker.services.VaccinationService;
 import com.vaccinetracker.services.VaccinationSiteService;
 import com.vaccinetracker.services.VaccineService;
+import com.vaccinetracker.services.AppointmentService;
+import com.vaccinetracker.model.Appointment;
+import com.vaccinetracker.model.Child;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.fxml.FXML;
@@ -21,7 +24,12 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.geometry.Insets;
 import java.io.IOException;
 import java.util.Map;
 import java.util.HashMap;
@@ -56,6 +64,9 @@ public class AdminController {
     private Button hrMenuButton;
 
     @FXML
+    private Button appointmentsMenuButton;
+
+    @FXML
     private Button alertsMenuButton;
 
     @FXML
@@ -88,6 +99,7 @@ public class AdminController {
     private VaccinationSiteService vaccinationSiteService;
     private AlertService alertService;
     private HumanResourceService hrService;
+    private AppointmentService appointmentService;
     
     /**
      * Set the current user.
@@ -114,6 +126,7 @@ public class AdminController {
         vaccinationSiteService = new VaccinationSiteService();
         alertService = new AlertService();
         hrService = new HumanResourceService(vaccinationSiteService);
+        appointmentService = new AppointmentService();
         
         updateDashboardStats();
 
@@ -385,11 +398,87 @@ public class AdminController {
         inventoryMenuButton.getStyleClass().remove("active");
         hrMenuButton.getStyleClass().remove("active");
         alertsMenuButton.getStyleClass().remove("active");
+        if (appointmentsMenuButton != null) appointmentsMenuButton.getStyleClass().remove("active");
         
         // Set active
         if (!activeButton.getStyleClass().contains("active")) {
             activeButton.getStyleClass().add("active");
         }
+    }
+
+    @FXML
+    private void handleAppointmentsMenu() {
+        if (mainContent == null) return;
+        
+        VBox appointmentsView = new VBox(20);
+        appointmentsView.setPadding(new Insets(20));
+        
+        Label title = new Label("Appointment Management");
+        title.getStyleClass().add("chart-title");
+        
+        Label subtitle = new Label("View appointment status across all sites");
+        subtitle.setStyle("-fx-text-fill: -text-muted;");
+        
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setFitToWidth(true);
+        scrollPane.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
+        
+        VBox list = new VBox(10);
+        list.setStyle("-fx-padding: 0 15 0 0;");
+        
+        java.util.List<Appointment> allAppointments = appointmentService.getAllAppointments();
+        
+        if (allAppointments.isEmpty()) {
+            list.getChildren().add(new Label("No appointments found."));
+        } else {
+            // Sort by Date (newest first)
+            allAppointments.sort((a1, a2) -> a2.getDate().compareTo(a1.getDate()));
+            
+            for (Appointment appt : allAppointments) {
+                HBox card = new HBox(15);
+                card.setPadding(new Insets(15));
+                card.setStyle("-fx-background-color: white; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);");
+                card.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+                
+                VBox info = new VBox(5);
+                Child child = childService.getChildById(appt.getChildId());
+                Label childName = new Label(child != null ? child.getName() : "Unknown Child");
+                childName.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+                
+                Label detailsLabel = new Label(appt.getVaccineName() + " @ " + appt.getDate() + " " + appt.getTime());
+                Label notesLabel = new Label("Notes: " + appt.getNotes());
+                notesLabel.setStyle("-fx-text-fill: -text-muted; -fx-font-size: 11px;");
+                
+                info.getChildren().addAll(childName, detailsLabel, notesLabel);
+                
+                Region spacer = new Region();
+                HBox.setHgrow(spacer, Priority.ALWAYS);
+                
+                VBox statusBox = new VBox(5);
+                statusBox.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
+                
+                Label statusLabel = new Label(appt.getStatus().toString());
+                String color = "#757575";
+                if (appt.getStatus() == Appointment.AppointmentStatus.CONFIRMED) color = "#2e7d32";
+                if (appt.getStatus() == Appointment.AppointmentStatus.COMPLETED) color = "#1976d2";
+                if (appt.getStatus() == Appointment.AppointmentStatus.CANCELLED) color = "#d32f2f";
+                
+                statusLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-weight: bold; -fx-font-size: 12px;");
+                
+                statusBox.getChildren().add(statusLabel);
+                
+                card.getChildren().addAll(info, spacer, statusBox);
+                list.getChildren().add(card);
+            }
+        }
+        
+        scrollPane.setContent(list);
+        VBox.setVgrow(scrollPane, Priority.ALWAYS);
+        
+        appointmentsView.getChildren().addAll(title, subtitle, scrollPane);
+        
+        mainContent.getChildren().setAll(appointmentsView);
+        updateActiveMenuButton(appointmentsMenuButton);
     }
     
     /**

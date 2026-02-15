@@ -15,6 +15,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.time.LocalTime;
+
 public class StorageService {
     
     private static final String DATA_DIR = "data";
@@ -27,12 +29,14 @@ public class StorageService {
     private static final String VACCINES_FILE = DATA_DIR + "/vaccines.json";
     private static final String RECORDS_FILE = DATA_DIR + "/records.json";
     private static final String STAFF_FILE = DATA_DIR + "/staff.json";
+    private static final String APPOINTMENTS_FILE = DATA_DIR + "/appointments.json";
     
     private static Gson gson;
     
     static {
         gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .registerTypeAdapter(LocalTime.class, new LocalTimeAdapter())
                 .registerTypeHierarchyAdapter(StringProperty.class, new StringPropertyAdapter())
                 .registerTypeHierarchyAdapter(IntegerProperty.class, new IntegerPropertyAdapter())
                 .registerTypeHierarchyAdapter(BooleanProperty.class, new BooleanPropertyAdapter())
@@ -66,6 +70,7 @@ public class StorageService {
         saveData(VACCINES_FILE, VaccineService.getAllData());
         saveData(RECORDS_FILE, VaccinationService.getAllData());
         saveData(STAFF_FILE, HumanResourceService.getAllData());
+        // AppointmentService manages its own save on change, but could be added here if static access provided
         
         System.out.println("All data saved successfully to " + new File(DATA_DIR).getAbsolutePath());
     }
@@ -153,7 +158,7 @@ public class StorageService {
         System.out.println("All data loaded successfully.");
     }
     
-    private static <T> void saveData(String filePath, List<T> data) {
+    public static <T> void saveData(String filePath, List<T> data) {
         try (Writer writer = new FileWriter(filePath)) {
             gson.toJson(data, writer);
         } catch (IOException e) {
@@ -161,7 +166,7 @@ public class StorageService {
         }
     }
     
-    private static <T> List<T> loadData(String filePath, Type type) {
+    public static <T> List<T> loadData(String filePath, Type type) {
         File file = new File(filePath);
         if (!file.exists()) return null;
         
@@ -191,6 +196,26 @@ public class StorageService {
                 return null;
             }
             return LocalDate.parse(in.nextString());
+        }
+    }
+    
+    private static class LocalTimeAdapter extends TypeAdapter<LocalTime> {
+        @Override
+        public void write(JsonWriter out, LocalTime value) throws IOException {
+            if (value == null) {
+                out.nullValue();
+            } else {
+                out.value(value.toString());
+            }
+        }
+
+        @Override
+        public LocalTime read(JsonReader in) throws IOException {
+            if (in.peek() == com.google.gson.stream.JsonToken.NULL) {
+                in.nextNull();
+                return null;
+            }
+            return LocalTime.parse(in.nextString());
         }
     }
 

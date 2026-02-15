@@ -41,6 +41,7 @@
          <VBox styleClass="menu-container">
             <Button text="Dashboard" styleClass="menu-button, active" fx:id="dashboardMenuButton" onAction="#handleDashboardMenu"/>
             <Button text="My Children" styleClass="menu-button" fx:id="childrenMenuButton" onAction="#handleChildrenMenu"/>
+            <Button text="Appointments" styleClass="menu-button" fx:id="appointmentsMenuButton" onAction="#handleAppointmentsMenu"/>
             <Button text="Vaccination Schedule" styleClass="menu-button" fx:id="scheduleMenuButton" onAction="#handleScheduleMenu"/>
             <Button text="Records" styleClass="menu-button" fx:id="recordsMenuButton" onAction="#handleRecordsMenu"/>
          </VBox>

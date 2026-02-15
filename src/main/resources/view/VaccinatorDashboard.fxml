@@ -40,6 +40,7 @@
          <VBox styleClass="menu-container">
             <Button text="Dashboard" styleClass="menu-button, active" fx:id="dashboardMenuButton" onAction="#handleDashboardMenu"/>
             <Button text="Vaccination Records" styleClass="menu-button" fx:id="recordsMenuButton" onAction="#handleRecordsMenu"/>
+            <Button text="Appointments" styleClass="menu-button" fx:id="appointmentsMenuButton" onAction="#handleAppointmentsMenu"/>
             <Button text="My Profile" styleClass="menu-button" fx:id="profileMenuButton" onAction="#handleProfileMenu"/>
          </VBox>
       </VBox>

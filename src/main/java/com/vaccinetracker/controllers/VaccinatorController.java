@@ -11,12 +11,17 @@ import com.vaccinetracker.services.VaccineService;
 import com.vaccinetracker.services.StorageService;
 import com.vaccinetracker.model.VaccinationSite;
 import com.vaccinetracker.services.VaccinationSiteService;
+import com.vaccinetracker.services.AppointmentService;
+import com.vaccinetracker.model.Appointment;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.Node;
 import javafx.geometry.Insets;
 import javafx.beans.property.SimpleStringProperty;
@@ -45,6 +50,8 @@ public class VaccinatorController {
     
     @FXML private Button dashboardMenuButton;
     @FXML private Button recordsMenuButton;
+    @FXML private Button scheduleMenuButton;
+    @FXML private Button appointmentsMenuButton;
     @FXML private Button profileMenuButton;
     @FXML private VBox mainContent;
 
@@ -53,6 +60,7 @@ public class VaccinatorController {
     private ChildService childService;
     private VaccineService vaccineService;
     private VaccinationSiteService vaccinationSiteService;
+    private AppointmentService appointmentService;
     
     private List<Node> dashboardContent;
 
@@ -64,6 +72,7 @@ public class VaccinatorController {
             vaccineService = new VaccineService();
             vaccinationService = new VaccinationService(childService, vaccineService);
             vaccinationSiteService = new VaccinationSiteService();
+            appointmentService = new AppointmentService();
             
             setupTable();
             
@@ -191,6 +200,126 @@ public class VaccinatorController {
         totalVaccinatedLabel.setText(String.valueOf(count));
     }
 
+    @FXML
+    private void handleAppointmentsMenu() {
+        if (mainContent == null) return;
+        
+        dashboardMenuButton.getStyleClass().remove("active");
+        recordsMenuButton.getStyleClass().remove("active");
+        profileMenuButton.getStyleClass().remove("active");
+        appointmentsMenuButton.getStyleClass().add("active");
+        
+        VBox appointmentsView = new VBox(20);
+        appointmentsView.setPadding(new Insets(20));
+        
+        Label title = new Label("Manage Appointments");
+        title.getStyleClass().add("chart-title");
+        
+        Label subtitle = new Label("Review requests and manage existing appointments");
+        subtitle.setStyle("-fx-text-fill: -text-muted;");
+        
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setFitToWidth(true);
+        scrollPane.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
+        
+        VBox list = new VBox(10);
+        list.setStyle("-fx-padding: 0 15 0 0;");
+        
+        Runnable refreshList = () -> {
+            list.getChildren().clear();
+            List<Appointment> allAppointments = appointmentService.getAllAppointments();
+            
+            // Filter: Show REQUESTED, CONFIRMED (to complete), and COMPLETED (for history maybe? let's stick to actionable)
+            // Let's show everything but sort by importance: REQUESTED first, then CONFIRMED
+            // FILTER BY SITE ID
+            
+            allAppointments.removeIf(a -> a.getSiteId() != null && !a.getSiteId().equals(currentVaccinator.getSiteId()));
+            
+            allAppointments.sort((a1, a2) -> {
+                if (a1.getStatus() == Appointment.AppointmentStatus.REQUESTED && a2.getStatus() != Appointment.AppointmentStatus.REQUESTED) return -1;
+                if (a1.getStatus() != Appointment.AppointmentStatus.REQUESTED && a2.getStatus() == Appointment.AppointmentStatus.REQUESTED) return 1;
+                return a1.getDate().compareTo(a2.getDate());
+            });
+            
+            if (allAppointments.isEmpty()) {
+                list.getChildren().add(new Label("No appointments found."));
+            } else {
+                for (Appointment appt : allAppointments) {
+                    HBox card = new HBox(15);
+                    card.setPadding(new Insets(15));
+                    card.setStyle("-fx-background-color: white; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);");
+                    card.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+                    
+                    VBox info = new VBox(5);
+                    Child child = childService.getChildById(appt.getChildId());
+                    Label childName = new Label(child != null ? child.getName() : "Unknown Child");
+                    childName.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+                    
+                    Label detailsLabel = new Label(appt.getVaccineName() + " @ " + appt.getDate() + " " + appt.getTime());
+                    Label notesLabel = new Label("Notes: " + appt.getNotes());
+                    notesLabel.setStyle("-fx-text-fill: -text-muted; -fx-font-size: 11px;");
+                    
+                    info.getChildren().addAll(childName, detailsLabel, notesLabel);
+                    
+                    Region spacer = new Region();
+                    HBox.setHgrow(spacer, Priority.ALWAYS);
+                    
+                    HBox actions = new HBox(8);
+                    actions.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
+                    
+                    if (appt.getStatus() == Appointment.AppointmentStatus.REQUESTED) {
+                        Button approveBtn = new Button("Approve");
+                        approveBtn.setStyle("-fx-background-color: #2e7d32; -fx-text-fill: white; -fx-cursor: hand;");
+                        approveBtn.setOnAction(e -> {
+                            appointmentService.updateStatus(appt.getAppointmentId(), Appointment.AppointmentStatus.CONFIRMED);
+                             // Reload list using a hacky self-reference or just calling the method again?
+                             // Since we are inside the runnable, we can call it recursively if we assigned it to a var, 
+                             // but simpler is to just run the handleAppointmentsMenu() again or clear/repop.
+                             handleAppointmentsMenu();
+                        });
+                        
+                        Button declineBtn = new Button("Decline");
+                        declineBtn.setStyle("-fx-background-color: #d32f2f; -fx-text-fill: white; -fx-cursor: hand;");
+                        declineBtn.setOnAction(e -> {
+                             appointmentService.updateStatus(appt.getAppointmentId(), Appointment.AppointmentStatus.CANCELLED);
+                             handleAppointmentsMenu();
+                        });
+                        actions.getChildren().addAll(approveBtn, declineBtn);
+                        
+                    } else if (appt.getStatus() == Appointment.AppointmentStatus.CONFIRMED) {
+                        Label statusLabel = new Label("CONFIRMED");
+                        statusLabel.setStyle("-fx-text-fill: #2e7d32; -fx-font-weight: bold; -fx-padding: 0 10 0 0;");
+                        
+                        Button completeBtn = new Button("Complete");
+                        completeBtn.setStyle("-fx-background-color: #1976d2; -fx-text-fill: white; -fx-cursor: hand;");
+                        completeBtn.setOnAction(e -> {
+                             appointmentService.updateStatus(appt.getAppointmentId(), Appointment.AppointmentStatus.COMPLETED);
+                             handleAppointmentsMenu();
+                        });
+                        actions.getChildren().addAll(statusLabel, completeBtn);
+                        
+                    } else {
+                        Label statusLabel = new Label(appt.getStatus().toString());
+                        String color = appt.getStatus() == Appointment.AppointmentStatus.COMPLETED ? "#1976d2" : "#757575";
+                        statusLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-weight: bold;");
+                        actions.getChildren().add(statusLabel);
+                    }
+                    
+                    card.getChildren().addAll(info, spacer, actions);
+                    list.getChildren().add(card);
+                }
+            }
+        };
+        
+        refreshList.run();
+        
+        scrollPane.setContent(list);
+        VBox.setVgrow(scrollPane, Priority.ALWAYS);
+        
+        appointmentsView.getChildren().addAll(title, subtitle, scrollPane);
+        mainContent.getChildren().setAll(appointmentsView);
+    }
+    
     @FXML
     private void handleLogout() {
         try {
