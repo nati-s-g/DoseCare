@@ -1,8 +1,6 @@
 package com.vaccinetracker.services;
 
-import com.google.gson.reflect.TypeToken;
 import com.vaccinetracker.model.Appointment;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -13,25 +11,31 @@ import java.util.stream.Collectors;
  */
 public class AppointmentService {
     
-    private static final String DATA_FILE = "data/appointments.json";
-    private StorageService storageService;
-    private List<Appointment> appointments;
+    // Static list to hold all appointments
+    private static List<Appointment> appointments = new ArrayList<>();
     
     public AppointmentService() {
-        this.storageService = new StorageService();
-        loadAppointments();
+        // No initialization needed as data is loaded by StorageService
     }
     
-    private void loadAppointments() {
-        Type listType = new TypeToken<ArrayList<Appointment>>(){}.getType();
-        appointments = storageService.loadData(DATA_FILE, listType);
-        if (appointments == null) {
-            appointments = new ArrayList<>();
+    /**
+     * Set all appointment data. Used by StorageService.
+     */
+    public static void setAllData(List<Appointment> data) {
+        if (data != null) {
+            appointments = data;
         }
     }
     
+    /**
+     * Get all appointment data. Used by StorageService.
+     */
+    public static List<Appointment> getAllData() {
+        return appointments;
+    }
+    
     private void saveAppointments() {
-        storageService.saveData(DATA_FILE, appointments);
+        StorageService.saveData(StorageService.APPOINTMENTS_FILE, appointments);
     }
     
     public Appointment createAppointment(String childId, String vaccineName, java.time.LocalDate date, java.time.LocalTime time, String siteId, String notes) {

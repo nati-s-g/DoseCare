@@ -28,8 +28,8 @@ public class StorageService {
     private static final String SITES_FILE = DATA_DIR + "/sites.json";
     private static final String VACCINES_FILE = DATA_DIR + "/vaccines.json";
     private static final String RECORDS_FILE = DATA_DIR + "/records.json";
-    private static final String STAFF_FILE = DATA_DIR + "/staff.json";
-    private static final String APPOINTMENTS_FILE = DATA_DIR + "/appointments.json";
+    public static final String STAFF_FILE = DATA_DIR + "/staff.json";
+    public static final String APPOINTMENTS_FILE = DATA_DIR + "/appointments.json";
     
     private static Gson gson;
     
@@ -70,7 +70,7 @@ public class StorageService {
         saveData(VACCINES_FILE, VaccineService.getAllData());
         saveData(RECORDS_FILE, VaccinationService.getAllData());
         saveData(STAFF_FILE, HumanResourceService.getAllData());
-        // AppointmentService manages its own save on change, but could be added here if static access provided
+        saveData(APPOINTMENTS_FILE, AppointmentService.getAllData());
         
         System.out.println("All data saved successfully to " + new File(DATA_DIR).getAbsolutePath());
     }
@@ -154,6 +154,12 @@ public class StorageService {
         } else {
             HumanResourceService.initializeDummyData();
         }
+
+        List<Appointment> appointments = loadData(APPOINTMENTS_FILE, new TypeToken<List<Appointment>>(){}.getType());
+        if (appointments != null && !appointments.isEmpty()) {
+            AppointmentService.setAllData(appointments);
+        }
+        // No dummy data init for appointments
         
         System.out.println("All data loaded successfully.");
     }
