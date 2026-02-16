@@ -1,8 +1,8 @@
 @echo off
-title CoreVax Launcher
-set "JAR_PATH=target\CoreVax-1.0-SNAPSHOT.jar"
+title DoseCare Launcher
+set "JAR_PATH=target\DoseCare-1.0-SNAPSHOT.jar"
 
-echo Starting CoreVax Application...
+echo Starting DoseCare Application...
 echo.
 
 REM Check if Java is installed
@@ -25,7 +25,7 @@ if not exist "%JAR_PATH%" (
     )
 )
 
-echo Launching CoreVax...
+echo Launching DoseCare...
 java -jar "%JAR_PATH%"
 
 if %errorlevel% neq 0 (

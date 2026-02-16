@@ -324,7 +324,7 @@ public class VaccinatorController {
     private void handleLogout() {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
-            App.setRoot(root, "CoreVax - Login");
+            App.setRoot(root, "DoseCare - Login");
         } catch (Exception e) {
             e.printStackTrace();
         }

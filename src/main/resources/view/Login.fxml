@@ -20,8 +20,8 @@
                 <VBox spacing="6" alignment="CENTER_LEFT">
                   <HBox spacing="4" alignment="CENTER_LEFT" styleClass="brand-title">
                     <children>
-                      <Label text="Core" styleClass="brand-green"/>
-                      <Label text="Vax" styleClass="brand-blue"/>
+                      <Label text="Dose" styleClass="brand-green"/>
+                      <Label text="Care" styleClass="brand-blue"/>
                     </children>
                   </HBox>
                   <Label text="Vaccination Management System" styleClass="subtitle"/>

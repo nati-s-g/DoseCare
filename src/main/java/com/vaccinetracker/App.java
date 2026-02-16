@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * JavaFX Application - CoreVax
+ * JavaFX Application - DoseCare
  * Main entry point for the application.
  */
 public class App extends Application {
@@ -64,7 +64,7 @@ public class App extends Application {
             }
             
             // Set stage properties
-            stage.setTitle("CoreVax - Login");
+            stage.setTitle("DoseCare - Login");
             stage.setScene(mainScene);
             stage.setMinWidth(900);
             stage.setMinHeight(600);

@@ -309,7 +309,7 @@ public class VaccinationRecordsController {
                 controller.setCurrentUser(null);
                 controller.initialize();
                 
-                App.setRoot(root, "Admin Dashboard - CoreVax");
+                App.setRoot(root, "Admin Dashboard - DoseCare");
             } else {
                 // Go back to parent dashboard
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ParentDashboard.fxml"));
@@ -320,7 +320,7 @@ public class VaccinationRecordsController {
                 controller.setCurrentUser(null);
                 controller.initialize();
                 
-                App.setRoot(root, "Parent Dashboard - CoreVax");
+                App.setRoot(root, "Parent Dashboard - DoseCare");
             }
         } catch (IOException e) {
             System.err.println("Error loading dashboard: " + e.getMessage());

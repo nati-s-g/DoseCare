@@ -235,7 +235,7 @@ public class RegisterChildController {
             controller.setCurrentUser(currentUser);
             controller.initialize();
             
-            App.setRoot(root, "Admin Dashboard - CoreVax");
+            App.setRoot(root, "Admin Dashboard - DoseCare");
         } catch (IOException e) {
             System.err.println("Error loading admin dashboard: " + e.getMessage());
             e.printStackTrace();
