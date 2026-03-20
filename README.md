@@ -21,5 +21,5 @@
 *   **Password:** `12345678`
 
 ### **3. Parent**
-*   **Username:** `user1`
+*   **Username:** `user1234`
 *   **Password:** `12345678`
