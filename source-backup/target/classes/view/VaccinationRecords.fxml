@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vaccinetracker.controllers.VaccinationRecordsController" stylesheets="@../styles/theme.css, @../styles/admin.css">
+   <top>
+      <VBox spacing="15" style="-fx-padding: 20 30 0 30;">
+          <HBox alignment="CENTER_LEFT" spacing="20">
+             <Label text="Vaccination Records" styleClass="chart-title" />
+             <Region HBox.hgrow="ALWAYS" />
+             <Button text="Back" fx:id="backButton" styleClass="button-secondary" onAction="#handleBack" />
+          </HBox>
+          <Separator />
+      </VBox>
+   </top>
+   
+   <center>
+      <VBox spacing="20" style="-fx-padding: 30px; -fx-background-color: transparent;" alignment="TOP_CENTER">
+         
+         <VBox styleClass="card" spacing="15" prefWidth="1000" alignment="CENTER">
+            <Label fx:id="titleLabel" text="Vaccination Records" styleClass="label-header" />
+            
+            <!-- Records Table -->
+            <TableView fx:id="recordsTable" prefWidth="950" prefHeight="500">
+               <columns>
+                  <TableColumn fx:id="childNameColumn" text="Child Name" prefWidth="150" />
+                  <TableColumn fx:id="vaccineNameColumn" text="Vaccine" prefWidth="200" />
+                  <TableColumn fx:id="statusColumn" text="Status" prefWidth="120" />
+                  <TableColumn fx:id="dateAdministeredColumn" text="Date Administered" prefWidth="150" />
+                  <TableColumn fx:id="nextDueDateColumn" text="Next Due Date" prefWidth="150" />
+                  <TableColumn fx:id="ageColumn" text="Child Age (Days)" prefWidth="130" />
+               </columns>
+            </TableView>
+            
+            <!-- No records label -->
+            <Label fx:id="noRecordsLabel" text="No vaccination records found" visible="false" />
+            
+            <!-- Summary Label -->
+            <Label fx:id="summaryLabel" text="" />
+         </VBox>
+         
+      </VBox>
+   </center>
+</BorderPane>
+

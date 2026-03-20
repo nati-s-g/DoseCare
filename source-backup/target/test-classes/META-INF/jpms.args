@@ -1,0 +1,4 @@
+--patch-module
+com.vaccinetracker=_
+--add-reads
+com.vaccinetracker=ALL-UNNAMED

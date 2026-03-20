@@ -1,0 +1,120 @@
+/* Split background panels */
+.split-right {
+  /* Left-to-right gradient per request */
+  -fx-background-color: linear-gradient(to right, #A0D4C5, #A0D5C1);
+  -fx-border-width: 0;
+  -fx-padding: 0;
+}
+
+/* Apply directly to the illustration */
+.split-right .image-view {
+  -fx-effect: null;
+  -fx-opacity: 1.0;
+  -fx-blend-mode: src-over;
+}
+
+/* Login form container (no card shadow needed on white bg) */
+.login-form {
+  -fx-padding: 24 28 28 28;
+  -fx-max-width: 450;
+}
+
+/* Brand header */
+.brand-title .brand-green {
+  -fx-text-fill: -brand-green;
+  -fx-font-size: 26px;
+  -fx-font-weight: 700;
+}
+.brand-title .brand-blue {
+  -fx-text-fill: -brand-blue;
+  -fx-font-size: 26px;
+  -fx-font-weight: 700;
+}
+.subtitle {
+  -fx-text-fill: -text-muted;
+  -fx-font-size: 12px;
+}
+.title {
+  -fx-text-fill: -text-dark;
+  -fx-font-size: 20px;
+  -fx-font-weight: 700;
+  -fx-padding: 8 0 4 0;
+}
+
+/* Segmented toggle */
+.segmented {
+  -fx-background-color: rgba(255,255,255,0.6);
+  -fx-background-radius: 22;
+  -fx-padding: 4;
+}
+.segmented .toggle-button {
+  -fx-background-color: transparent;
+  -fx-text-fill: -text-dark;
+  -fx-background-radius: 18;
+  -fx-padding: 6 12;
+  -fx-border-color: rgba(0,0,0,0.10);
+  -fx-border-radius: 18;
+  -fx-cursor: hand;
+}
+.segmented .toggle-button:selected {
+  -fx-background-color: -brand-blue;
+  -fx-text-fill: white;
+  -fx-border-color: transparent;
+}
+
+/* Inputs */
+.text-field, .password-field {
+  -fx-background-color: #F7F9FB;
+  -fx-background-radius: 22;
+  -fx-border-color: rgba(0,0,0,0.12);
+  -fx-border-radius: 22;
+  -fx-padding: 10 16;
+  -fx-prompt-text-fill: #8FA1B2;
+  -fx-text-fill: -text-dark;
+}
+.text-field:focused, .password-field:focused {
+  -fx-background-color: white;
+  -fx-border-color: derive(-brand-blue, -20%);
+}
+
+/* Primary button */
+.button.primary {
+  -fx-background-color: -brand-blue;
+  -fx-text-fill: white;
+  -fx-background-radius: 24;
+  -fx-padding: 10 18;
+  -fx-font-weight: 700;
+  -fx-cursor: hand;
+}
+.button.primary:hover {
+  -fx-background-color: derive(-brand-blue, -10%);
+}
+.button.primary:pressed {
+  -fx-background-color: derive(-brand-blue, -20%);
+}
+
+/* Secondary button */
+.button.secondary {
+  -fx-background-color: transparent;
+  -fx-text-fill: -brand-blue;
+  -fx-background-radius: 24;
+  -fx-border-color: -brand-blue;
+  -fx-border-radius: 24;
+  -fx-border-width: 1.5;
+  -fx-padding: 9 18;
+  -fx-font-weight: 700;
+  -fx-cursor: hand;
+}
+.button.secondary:hover {
+  -fx-background-color: rgba(90, 175, 214, 0.1);
+}
+.button.secondary:pressed {
+  -fx-background-color: rgba(90, 175, 214, 0.2);
+}
+
+/* Link */
+.hyperlink {
+  -fx-text-fill: derive(-brand-blue, -10%);
+  -fx-underline: true;
+  -fx-padding: 6 0 0 0;
+}

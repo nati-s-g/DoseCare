@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.control.Separator?>
+
+<BorderPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="com.vaccinetracker.controllers.AdminController"
+            stylesheets="@../styles/theme.css, @../styles/admin.css">
+   
+   <!-- Left Sidebar -->
+   <left>
+      <VBox styleClass="sidebar">
+         <!-- Logo -->
+         <HBox alignment="CENTER" spacing="0">
+            <Label text="Dose" styleClass="brand-green" />
+            <Label text="Care" styleClass="brand-blue" />
+         </HBox>
+         
+         <!-- Profile Section -->
+         <VBox styleClass="profile-section">
+            <StackPane>
+               <Circle radius="35" fill="TRANSPARENT" stroke="WHITE" strokeWidth="2" />
+               <SVGPath content="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="WHITE" scaleX="2.5" scaleY="2.5" />
+            </StackPane>
+            <Label text="Admin" styleClass="profile-name" />
+         </VBox>
+         
+         <!-- Menu Items -->
+         <VBox styleClass="menu-container">
+            <Button text="Dashboard" styleClass="menu-button, active" fx:id="dashboardMenuButton" onAction="#handleDashboardMenu"/>
+            <Button text="Children" styleClass="menu-button" fx:id="childrenMenuButton" onAction="#handleChildrenMenu"/>
+            <Button text="Vaccination Sites" styleClass="menu-button" fx:id="sitesMenuButton" onAction="#handleManageSites"/>
+            <Button text="Inventory" styleClass="menu-button" fx:id="inventoryMenuButton" onAction="#handleManageVaccines"/>
+            <Button text="Human Resources" styleClass="menu-button" fx:id="hrMenuButton" onAction="#handleHumanResources"/>
+            <Button text="Appointments" styleClass="menu-button" fx:id="appointmentsMenuButton" onAction="#handleAppointmentsMenu"/>
+            <Button text="Health Alerts" styleClass="menu-button" fx:id="alertsMenuButton" onAction="#handleViewHealthAlerts"/>
+         </VBox>
+      </VBox>
+   </left>
+   
+   <!-- Center Content -->
+   <center>
+      <VBox fx:id="contentArea" styleClass="content-area">
+         <!-- Top Bar -->
+         <VBox spacing="15">
+             <HBox styleClass="top-bar">
+                <Button text="Back to Dashboard" styleClass="top-button" onAction="#handleBack"/>
+                <Button text="Logout" fx:id="logoutButton" styleClass="top-button" onAction="#handleLogout" />
+             </HBox>
+             <Separator styleClass="header-separator" />
+         </VBox>
+         
+         <!-- Dashboard Content -->
+         <VBox fx:id="mainContent" spacing="20" VBox.vgrow="ALWAYS">
+            
+            <!-- Stats Cards Row 1 -->
+            <HBox spacing="20" alignment="CENTER_LEFT">
+               <VBox styleClass="stat-card, card-blue" HBox.hgrow="ALWAYS">
+                  <Label fx:id="doctorCountLabel" text="0" styleClass="stat-count" />
+                  <Label text="Doctors" styleClass="stat-label" />
+               </VBox>
+               <VBox styleClass="stat-card, card-green" HBox.hgrow="ALWAYS">
+                  <Label fx:id="nurseCountLabel" text="0" styleClass="stat-count" />
+                  <Label text="Nurses" styleClass="stat-label" />
+               </VBox>
+               <VBox styleClass="stat-card, card-purple" HBox.hgrow="ALWAYS">
+                  <Label fx:id="staffCountLabel" text="0" styleClass="stat-count" />
+                  <Label text="Other Staff" styleClass="stat-label" />
+               </VBox>
+            </HBox>
+
+            <!-- Stats Cards Row 2 -->
+            <HBox spacing="20" alignment="CENTER_LEFT">
+               <VBox styleClass="stat-card, card-orange" HBox.hgrow="ALWAYS">
+                  <Label fx:id="childCountLabel" text="0" styleClass="stat-count" />
+                  <Label text="Children" styleClass="stat-label" />
+               </VBox>
+               <VBox styleClass="stat-card, card-blue" HBox.hgrow="ALWAYS">
+                  <Label fx:id="siteCountLabel" text="0" styleClass="stat-count" />
+                  <Label text="Vaccination Sites" styleClass="stat-label" />
+               </VBox>
+               <VBox styleClass="stat-card, card-green" HBox.hgrow="ALWAYS">
+                  <Label fx:id="vaccineCountLabel" text="0" styleClass="stat-count" />
+                  <Label text="Vaccine Types" styleClass="stat-label" />
+               </VBox>
+            </HBox>
+            
+            <!-- Chart Section -->
+            <VBox styleClass="chart-container" VBox.vgrow="ALWAYS" maxHeight="400">
+               <HBox alignment="CENTER_LEFT" spacing="10">
+                   <Label text="Children Vaccinated" styleClass="chart-title" />
+                   <ComboBox fx:id="yearComboBox" prefWidth="100"/>
+                   
+                   <!-- Custom Legend -->
+                   <HBox alignment="CENTER_LEFT" spacing="15" styleClass="custom-legend">
+                       <HBox alignment="CENTER_LEFT" spacing="5">
+                           <Circle radius="5" styleClass="legend-symbol-boys" />
+                           <Label text="Boys" styleClass="legend-label" />
+                       </HBox>
+                       <HBox alignment="CENTER_LEFT" spacing="5">
+                           <Circle radius="5" styleClass="legend-symbol-girls" />
+                           <Label text="Girls" styleClass="legend-label" />
+                       </HBox>
+                   </HBox>
+
+                   <Region HBox.hgrow="ALWAYS"/>
+                   <Button text="Add Monthly Report" onAction="#handleAddReport" styleClass="button-secondary"/>
+               </HBox>
+               <LineChart fx:id="vaccinationChart" legendVisible="false" animated="true" verticalGridLinesVisible="false" createSymbols="true">
+                 <xAxis>
+                   <CategoryAxis label="Month" />
+                 </xAxis>
+                 <yAxis>
+                   <NumberAxis label="Children" />
+                 </yAxis>
+               </LineChart>
+            </VBox>
+            
+         </VBox>
+      </VBox>
+   </center>
+   
+</BorderPane>
+
