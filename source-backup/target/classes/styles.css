@@ -1,0 +1,267 @@
+/* CoreVax Application Stylesheet */
+
+/* Root style - applies to the entire application */
+.root {
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: #f5f5f5;
+}
+
+/* Button Styles */
+.button {
+    -fx-background-color: -brand-green;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20 10 20;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: derive(-brand-green, -10%);
+}
+
+.button:pressed {
+    -fx-background-color: derive(-brand-green, -20%);
+}
+
+.button-primary {
+    -fx-background-color: -brand-blue;
+}
+
+.button-primary:hover {
+    -fx-background-color: derive(-brand-blue, -10%);
+}
+
+.button-danger {
+    -fx-background-color: #f44336;
+}
+
+.button-danger:hover {
+    -fx-background-color: #da190b;
+}
+
+.button-secondary {
+    -fx-background-color: #757575;
+}
+
+.button-secondary:hover {
+    -fx-background-color: #616161;
+}
+
+/* Label Styles */
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: -text-dark;
+}
+
+.label-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -brand-blue;
+}
+
+.label-subtitle {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -text-muted;
+}
+
+.label-header {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -text-dark;
+}
+
+.label-info {
+    -fx-text-fill: -brand-blue;
+}
+
+.label-success {
+    -fx-text-fill: -brand-green;
+}
+
+.label-error {
+    -fx-text-fill: #f44336;
+}
+
+.label-warning {
+    -fx-text-fill: #ff9800;
+}
+
+/* TextField Styles */
+.text-field {
+    -fx-font-size: 14px;
+    -fx-padding: 8px;
+    -fx-background-color: white;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.text-field:focused {
+    -fx-border-color: -brand-blue;
+    -fx-border-width: 2px;
+}
+
+/* TextArea Styles */
+.text-area {
+    -fx-font-size: 14px;
+    -fx-padding: 8px;
+    -fx-background-color: white;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.text-area:focused {
+    -fx-border-color: -brand-blue;
+    -fx-border-width: 2px;
+}
+
+/* DatePicker Styles */
+.date-picker {
+    -fx-font-size: 14px;
+}
+
+/* ComboBox Styles */
+.combo-box {
+    -fx-font-size: 14px;
+    -fx-padding: 8px;
+    -fx-background-color: white;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.combo-box:focused {
+    -fx-border-color: -brand-blue;
+    -fx-border-width: 2px;
+}
+
+/* TableView Styles */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.table-view .column-header {
+    -fx-background-color: -brand-blue;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10px;
+}
+
+.table-view .table-row-cell {
+    -fx-background-color: white;
+}
+
+.table-view .table-row-cell:odd {
+    -fx-background-color: #f9f9f9;
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: derive(-brand-blue, 80%);
+}
+
+.table-view .table-cell {
+    -fx-padding: 8px;
+    -fx-border-color: transparent;
+}
+
+/* VBox and HBox Styles */
+.vbox-container {
+    -fx-spacing: 15px;
+    -fx-padding: 20px;
+    -fx-background-color: white;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+.hbox-container {
+    -fx-spacing: 10px;
+    -fx-padding: 10px;
+}
+
+/* GridPane Styles */
+.grid-pane {
+    -fx-hgap: 15px;
+    -fx-vgap: 15px;
+    -fx-padding: 20px;
+}
+
+/* Card Style (for dashboard items) */
+.card {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 2);
+}
+
+.card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 15, 0, 0, 4);
+    -fx-cursor: hand;
+}
+
+/* Alert/Notification Styles */
+.alert-box {
+    -fx-background-color: #fff3cd;
+    -fx-border-color: #ffc107;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-padding: 15px;
+    -fx-spacing: 10px;
+}
+
+.alert-error {
+    -fx-background-color: #f8d7da;
+    -fx-border-color: #f44336;
+}
+
+.alert-success {
+    -fx-background-color: #d4edda;
+    -fx-border-color: -brand-green;
+}
+
+.alert-info {
+    -fx-background-color: #d1ecf1;
+    -fx-border-color: -brand-blue;
+}
+
+/* Status Labels */
+.status-pending {
+    -fx-text-fill: #ff9800;
+    -fx-font-weight: bold;
+}
+
+.status-completed {
+    -fx-text-fill: -brand-green;
+    -fx-font-weight: bold;
+}
+
+.status-overdue {
+    -fx-text-fill: #f44336;
+    -fx-font-weight: bold;
+}
+
+/* Severity Levels */
+.severity-low {
+    -fx-text-fill: -brand-green;
+}
+
+.severity-medium {
+    -fx-text-fill: #ff9800;
+}
+
+.severity-high {
+    -fx-text-fill: #f44336;
+    -fx-font-weight: bold;
+}
+
