@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.vaccinetracker.controllers.VaccinationSitesController"
+      stylesheets="@../styles/theme.css, @../styles/admin.css"
+      spacing="20" styleClass="content-area">
+
+    <Label text="Vaccination Sites Management" styleClass="page-title" />
+
+    <HBox spacing="20" VBox.vgrow="ALWAYS">
+        <!-- Left: Sites List -->
+        <VBox spacing="10" HBox.hgrow="ALWAYS">
+            <Label text="Registered Sites" styleClass="section-header"/>
+            <TableView fx:id="sitesTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="siteIdColumn" text="Site ID" prefWidth="80"/>
+                    <TableColumn fx:id="nameColumn" text="Name" prefWidth="200"/>
+                    <TableColumn fx:id="locationColumn" text="Location" prefWidth="200"/>
+                    <TableColumn fx:id="contactColumn" text="Contact Info" prefWidth="150"/>
+                </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                </columnResizePolicy>
+            </TableView>
+            <HBox alignment="CENTER_RIGHT">
+                <Button text="Remove Selected Site" onAction="#handleRemoveSite" styleClass="button-secondary"/>
+            </HBox>
+        </VBox>
+
+        <!-- Right: Add New Site Form -->
+        <VBox spacing="20" maxWidth="400" style="-fx-padding: 20; -fx-background-color: white; -fx-background-radius: 5; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+            <Label text="Add New Site" styleClass="section-header"/>
+            
+            <VBox spacing="5">
+                <Label text="Site Name" styleClass="form-label"/>
+                <TextField fx:id="nameField" promptText="Enter hospital/clinic name" styleClass="text-field"/>
+            </VBox>
+            
+            <VBox spacing="5">
+                <Label text="Location" styleClass="form-label"/>
+                <TextField fx:id="locationField" promptText="Enter address" styleClass="text-field"/>
+            </VBox>
+            
+            <VBox spacing="5">
+                <Label text="Contact Info" styleClass="form-label"/>
+                <TextField fx:id="contactField" promptText="Phone or Email" styleClass="text-field"/>
+            </VBox>
+            
+            <HBox spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 20 0 0 0;">
+                <Button text="Clear" onAction="#handleClear" styleClass="button-secondary"/>
+                <Button text="Add Site" onAction="#handleAddSite" styleClass="button-primary"/>
+            </HBox>
+        </VBox>
+    </HBox>
+</VBox>

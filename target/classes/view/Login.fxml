@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.vaccinetracker.controllers.LoginController"
+            stylesheets="@../styles/theme.css, @../styles/login.css"
+            prefWidth="900" prefHeight="600">
+  <children>
+    <HBox AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
+          AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
+      <children>
+        <!-- Left: White login container (60%) -->
+        <StackPane style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
+          <children>
+            <VBox maxWidth="450" spacing="16" alignment="CENTER" styleClass="login-form">
+              <children>
+                <VBox spacing="6" alignment="CENTER_LEFT">
+                  <HBox spacing="4" alignment="CENTER_LEFT" styleClass="brand-title">
+                    <children>
+                      <Label text="Dose" styleClass="brand-green"/>
+                      <Label text="Care" styleClass="brand-blue"/>
+                    </children>
+                  </HBox>
+                  <Label text="Vaccination Management System" styleClass="subtitle"/>
+                </VBox>
+
+                <!-- Visual separator -->
+                <Region prefHeight="1" maxWidth="450" style="-fx-background-color: #E0E0E0;" />
+
+                <Label text="Login" styleClass="title" maxWidth="Infinity" alignment="CENTER"/>
+
+                <!-- Segmented role toggle -->
+                <fx:define>
+                    <ToggleGroup fx:id="roleToggle"/>
+                </fx:define>
+                
+                <HBox spacing="8" styleClass="segmented" alignment="CENTER">
+                  <children>
+                    <ToggleButton text="Admin" fx:id="adminToggle" toggleGroup="$roleToggle"/>
+                    <ToggleButton text="Vaccinator" fx:id="vaccinatorToggle" toggleGroup="$roleToggle"/>
+                    <ToggleButton text="Parent" fx:id="parentToggle" selected="true" toggleGroup="$roleToggle"/>
+                  </children>
+                </HBox>
+
+                <TextField fx:id="usernameField" promptText="Username" maxWidth="450"/>
+                <PasswordField fx:id="passwordField" promptText="Password" maxWidth="450"/>
+
+                <Button fx:id="loginButton" text="Login" styleClass="primary" onAction="#handleLogin" maxWidth="450"/>
+                <Button fx:id="signUpButton" text="Sign Up as a Parent" styleClass="secondary" onAction="#handleSignUp" maxWidth="450"/>
+                <Hyperlink fx:id="forgotLink" text="Forgot Password?"/>
+              </children>
+            </VBox>
+          </children>
+        </StackPane>
+
+        <!-- Right: Gradient + illustration (40% of 900 = 360) -->
+        <StackPane prefWidth="360.0" minWidth="360.0" styleClass="split-right">
+          <children>
+            <!-- Illustration; styleClass ensures blending styles apply -->
+            <ImageView fitWidth="280" preserveRatio="true" styleClass="image-view">
+              <image>
+                <Image url="@../images/login_illustration.png"/>
+              </image>
+            </ImageView>
+          </children>
+        </StackPane>
+      </children>
+    </HBox>
+  </children>
+</AnchorPane>
+
