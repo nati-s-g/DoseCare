@@ -1,12 +1,10 @@
-DoseCare Application
+# DoseCare
 
-REQUIREMENTS:
-- Java 25 or higher must be installed on your computer.
+## Installation
 
-INSTRUCTIONS:
-1. Extract this entire folder to your computer.
-2. Double-click "run.bat" to start the application.
+1.  **Download** this folder.
+2.  **Run** the application by double-clicking `run.bat`.
 
-TROUBLESHOOTING:
-- If the app doesn't start, ensure you have Java 25 installed.
-- Do not separate the 'data' folder from the application.
+## Requirements
+
+-   **Java 25** or higher must be installed.

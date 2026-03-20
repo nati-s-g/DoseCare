@@ -1,34 +1,26 @@
 @echo off
-title DoseCare Launcher
-set "JAR_PATH=target\DoseCare-1.0-SNAPSHOT.jar"
+title DoseCare
+echo Starting DoseCare...
 
-echo Starting DoseCare Application...
-echo.
-
-REM Check if Java is installed
-where java >nul 2>nul
+REM Check for Java 25
+java -version 2>&1 | findstr "version \"25" >nul
 if %errorlevel% neq 0 (
-    echo Error: Java is not installed or not in your PATH.
-    echo Please install Java 25 or later.
+    echo Warning: Java 25 was not detected explicitly. Attempting to run anyway...
+)
+
+echo Launching application...
+if exist DoseCare.jar (
+    java -jar DoseCare.jar
+) else (
+    echo Error: DoseCare.jar not found!
+    echo Please make sure the application is installed correctly.
     pause
     exit /b 1
 )
 
-REM Check if JAR exists, build if not
-if not exist "%JAR_PATH%" (
-    echo Fat JAR not found. Building project...
-    call mvn clean package
-    if %errorlevel% neq 0 (
-        echo Build failed!
-        pause
-        exit /b 1
-    )
-)
-
-echo Launching DoseCare...
-java -jar "%JAR_PATH%"
-
 if %errorlevel% neq 0 (
-    echo Application crashed with error code %errorlevel%
+    echo.
+    echo Error: Application exited with code %errorlevel%
+    echo Ensure Java 25 is installed.
     pause
 )
